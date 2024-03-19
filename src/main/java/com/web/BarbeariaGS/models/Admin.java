@@ -7,10 +7,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-public class Admin {
 @Entity
 @Table(name = "administradores")
-public class Cliente {
+public class Admin {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,4 +57,4 @@ public class Cliente {
         this.senha = senha;
     }
  }
-}
+
