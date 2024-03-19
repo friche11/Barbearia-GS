@@ -7,13 +7,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.web.BarbeariaGS.models.Admin;
-import com.web.BarbeariaGS.services.AdminRepo;
+import com.web.BarbeariaGS.repository.AdminRepo;
+import com.web.BarbeariaGS.repository.ClientesRepo;
 
 @Controller
 public class AdminController {
     
     @Autowired
-    private AdminRepo repo;
+    private AdminRepo adminRepo;
+
+    @Autowired
+    private ClientesRepo clienteRepo;
 
      //Rota para página de admin
     @GetMapping("/administradores")
@@ -31,13 +35,17 @@ public class AdminController {
     @PostMapping("/administradores/criar")
     public String criar(Admin admin, @RequestParam String email){
         // Verifica se o e-mail já está em uso
-        if (repo.existsByEmail(email)) {
+        if (adminRepo.existsByEmail(email)) {
             // Se o e-mail já está em uso, redireciona de volta para a página de cadastro com uma mensagem de erro
+            return "redirect:/administradores/novo?error=emailInUse";
+        }
+        if(clienteRepo.existsByEmail(email)){
+            // Se o e-mail já está em uso na tabela cliente, redireciona de volta para a página de cadastro com uma mensagem de erro
             return "redirect:/administradores/novo?error=emailInUse";
         }
         
         // Se o e-mail não está em uso, salva o admin e redireciona para a página de admin
-        repo.save(admin);
+        adminRepo.save(admin);
         return "redirect:/administradores";
     }
 }
