@@ -7,13 +7,20 @@
         }
     
                 </style>
+
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
+
+                  <!-- Exibir mensagem de erro -->
+              
 
                     <!-- Page Heading -->
                     <h1 class="h3 mb-2 text-gray-800" style="text-align: center;">Cadastre-se</h1>
                     
 
+                    <div class="alert alert-danger mt-3" role="alert" th:if="${param.error}">
+                      O e-mail fornecido já está em uso. Por favor, escolha outro e-mail.
+                  </div>
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4" style="padding: 30px;">
                         <form method="POST" action="/clientes/criar" onsubmit="return confirm('Deseja confirmar a ação?')">
