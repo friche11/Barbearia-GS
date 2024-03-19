@@ -16,13 +16,13 @@ public class Cliente {
     @Column(name = "id")
      private int id;
 
-     @Column(name = "nome", nullable = false)
+     @Column(name = "nome", length = 100, nullable = false)
      private String nome;
  
-     @Column(name = "email",  nullable = false)
+     @Column(name = "email", length = 256, nullable = false)
      private String email;
  
-     @Column(name = "senha",  nullable = false)
+     @Column(name = "senha", length = 10, nullable = false)
      private String senha;
     
      public int getId() {
