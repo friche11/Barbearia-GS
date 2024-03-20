@@ -66,4 +66,11 @@ public class LoginController {
         }
     }
 
+      //Rota para deslogar
+      @GetMapping("/sair")
+      public String sair(HttpServletResponse response){    
+          CookieService.setCookie(response, "usuarioId", "", 0); 
+          return "redirect:/";
+      }
+
 }

@@ -54,7 +54,7 @@ public class ClienteController {
 
         if (adminRepo.existsByEmail(email)) {
             // Se o e-mail já está em uso na tabela administradores, redireciona de volta para a página de cadastro com uma mensagem de erro
-            return "redirect:/administradores/novo?error=emailInUse";
+            return "redirect:/clientes/novo?error=emailInUse";
         }
         
         // Se o e-mail não está em uso, salva o cliente e redireciona para a página de clientes

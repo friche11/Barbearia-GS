@@ -105,6 +105,10 @@ align-items: center; /* Centralizar os itens verticalmente */
   width: 100%;
 
 }
+
+.sair-container {
+  margin-top: 20px;
+}
   
 h2 {
     color: #F47968;

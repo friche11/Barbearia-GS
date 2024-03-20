@@ -20,9 +20,21 @@
     </div>
     
     </nav>
+
     <div class="botao-container">
-    <button class="botao">Agendar</button>
+      <button class="botao" onclick="logout()">Sair</button>
   </div>
+  
+  <script>
+  function logout() {
+      // Excluir o cookie
+      document.cookie = "usuarioId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+  
+      // Redirecionar para a rota de logout
+      window.location.href = "/sair";
+  }
+  </script>
+    
 </div>
   </header>
 </body>

@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>Barbearia GS</title>
      <link rel="stylesheet" href="../css/navbar.css">
+     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 </head>
 <body>
   <header class="header">
@@ -23,6 +24,29 @@
     <div class="botao-container">
     <button class="botao">Agendar</button>
   </div>
+
+  <div class="sair-container">
+    <button class="botao" onclick="confirmarSair()">Sair</button>
+</div>
+
+<script>
+function confirmarSair() {
+    // Exibe uma caixa de diálogo personalizada
+    Swal.fire({
+        title: 'Tem certeza que deseja sair?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Sim',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        // Se o usuário clicar em "Sim", exclui o cookie e redireciona para a rota de logout
+        if (result.isConfirmed) {
+            document.cookie = "usuarioId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            window.location.href = "/sair";
+        }
+    });
+}
+</script>
 </div>
   </header>
 </body>
