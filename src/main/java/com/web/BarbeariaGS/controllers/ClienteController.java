@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.web.BarbeariaGS.models.Cliente;
 import com.web.BarbeariaGS.repository.AdminRepo;
 import com.web.BarbeariaGS.repository.ClientesRepo;
+import com.web.BarbeariaGS.services.CookieService;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 
 
@@ -23,8 +26,15 @@ public class ClienteController {
 
      //Rota para página de cliente
     @GetMapping("/clientes")
-    public String index(){
-        return "clientes/index";
+    public String index(HttpServletRequest request){
+         // Verifica se o cookie de usuário existe e está dentro do prazo de validade
+         if (CookieService.getCookie(request, "usuarioId") != null) {
+            // Se o cookie existe e está dentro do prazo de validade, redireciona para a página principal
+            return "clientes/index";
+        } else {
+            // Se o cookie não existe ou está expirado, redireciona para a página de login
+            return "redirect:/login";
+        }
     }
 
      //Rota para página de cadastro de cliente

@@ -3,6 +3,7 @@ package com.web.BarbeariaGS.controllers;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +29,15 @@ public class LoginController {
 
     //Rota para página de login
     @GetMapping("/login")
-    public String index(){
-        return "login/index";
+    public String index(HttpServletRequest request){
+         // Verifica se o cookie de usuário existe e está dentro do prazo de validade
+         if (CookieService.getCookie(request, "usuarioId") != null) {
+            // Se o cookie existe e está dentro do prazo de validade, redireciona para a página principal
+            return "redirect:/";
+        } else {
+            // Se o cookie não existe ou está expirado, redireciona para a página de login
+            return "login/index";
+        }
     }
     
      // Rota para realizar login

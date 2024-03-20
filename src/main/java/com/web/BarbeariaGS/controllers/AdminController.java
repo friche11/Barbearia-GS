@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.web.BarbeariaGS.models.Admin;
 import com.web.BarbeariaGS.repository.AdminRepo;
 import com.web.BarbeariaGS.repository.ClientesRepo;
+import com.web.BarbeariaGS.services.CookieService;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 public class AdminController {
@@ -21,8 +24,15 @@ public class AdminController {
 
      //Rota para página de admin
     @GetMapping("/administradores")
-    public String index(){
-        return "administradores/index";
+    public String index(HttpServletRequest request){
+         // Verifica se o cookie de usuário existe e está dentro do prazo de validade
+         if (CookieService.getCookie(request, "usuarioId") != null) {
+            // Se o cookie existe e está dentro do prazo de validade, redireciona para a página principal
+            return "administradores/index";
+        } else {
+            // Se o cookie não existe ou está expirado, redireciona para a página de login
+            return "redirect:/login";
+        }
     }
 
      //Rota para página de cadastro de admin
