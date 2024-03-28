@@ -22,7 +22,23 @@
   <!-- Custom styles for this template-->
   <link href="/css/sb-admin-2.css" rel="stylesheet">
      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+     <style>
+          .swal2-title {
+    color: #bf8b15 !important; /* Cor do título */
+  }
+  .swal2-content {
+    color: #000 !important; /* Cor do texto */
+  }
+  .swal2-confirm.swal2-styled {
+    background-color: #bf8b15;
+    color: #fff; /* Cor do texto nos botões */
+  }
 
+  .swal2-cancel.swal2-styled{
+    background-color: #ff0000;
+    color: #fff; /* Cor do texto nos botões */
+  }
+     </style>
 </head>
 
 <body class="bg-gradient-primary">
@@ -47,11 +63,18 @@
                                     <div class="alert alert-danger mt-3" role="alert" th:if="${param.error}">
                                         O e-mail fornecido já está em uso.
                                     </div>
-                                    <form class="user" action="/clientes/criar" method="POST" onsubmit="return confirm('Deseja confirmar a ação?')">
+                                    <div class="alert alert-danger mt-3" role="alert" th:if="${param.errorSenhaInvalida}">
+                                        A senha precisa ter até 10 caracteres.
+                                    </div>
+                                    <div class="alert alert-danger mt-3" role="alert" th:if="${param.errorEmailInvalido}">
+                                        O email deve ter até 100 caracteres.
+                                    </div>
+                                    <form id="cadastroForm" class="user" action="/clientes/criar" method="POST" onsubmit="return confirmarCadastro()">
                                         <div class="form-group">
                                             <input type="text" class="form-control form-control-user"
                                                 required id="nome" name="nome" placeholder="Digite seu nome">
                                         </div>
+                                       
                                         <div class="form-group">
                                             <input type="email" class="form-control form-control-user"
                                                 id="email" name="email"
@@ -86,6 +109,45 @@
 
     </div>
 
+    <script>
+        document.getElementById('cadastroForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Impede o envio padrão do formulário
+
+    // Exibe uma caixa de diálogo personalizada
+    Swal.fire({
+        title: 'Tem certeza que deseja se cadastrar?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Cadastrar',
+        cancelButtonText: 'Cancelar',
+        iconColor: '#bf8b15'
+    }).then((result) => {
+        // Se o usuário confirmar, envia o formulário via AJAX
+        if (result.isConfirmed) {
+            enviarFormulario(); // Função para enviar o formulário
+        }
+    });
+});
+
+function enviarFormulario() {
+    var form = document.getElementById('cadastroForm');
+    var formData = new FormData(form);
+
+    // Envia o formulário via AJAX
+    fetch(form.action, {
+        method: form.method,
+        body: formData
+    })
+    .then(response => {
+        if (response.redirected) {
+            window.location.href = response.url; // Redireciona se necessário
+        }
+    })
+    .catch(error => console.error('Erro:', error));
+}
+
+    </script>
+    
     <!-- Bootstrap core JavaScript-->
     <script src="/vendor/jquery/jquery.min.js"></script>
     <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -95,6 +157,7 @@
 
     <!-- Custom scripts for all pages-->
     <script src="/js/sb-admin-2.min.js"></script>
+    
 
 </body>
 

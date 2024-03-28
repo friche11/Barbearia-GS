@@ -63,7 +63,7 @@ public class LoginController {
             CookieService.setCookie(response, "usuarioEmail", URLEncoder.encode(client.getEmail(), "UTF-8"), tempoLogado);
             return "redirect:/clientes";
         } else {
-            model.addAttribute("erro", "Usuário ou senha inválidos");
+            model.addAttribute("erro", "Email ou senha inválidos");
             return "login/index";
         }
     }

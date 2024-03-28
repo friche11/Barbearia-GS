@@ -41,6 +41,12 @@
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">Seja bem-vindo!</h1>
                                     </div>
+
+
+                                    <div th:if="${erro != null}"  th:text="${erro}" class="alert alert-danger">
+
+                                    </div>
+
                                     <form class="user" action="/logar" method="POST">
                                         <div class="form-group">
                                             <input type="email" class="form-control form-control-user"
@@ -59,9 +65,7 @@
                             
                                         </div>
 
-                                        <div th:if="${erro != null}"  th:text="${erro}" class="alert alert-danger">
-
-                                        </div>
+                                        
                                         <button class="btn btn-primary btn-user btn-block">
                                             Login
                                         </button>

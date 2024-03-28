@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.web.BarbeariaGS.models.Cliente;
 import com.web.BarbeariaGS.repository.AdminRepo;
@@ -12,6 +13,7 @@ import com.web.BarbeariaGS.repository.ClientesRepo;
 import com.web.BarbeariaGS.services.CookieService;
 
 import jakarta.servlet.http.HttpServletRequest;
+
 
 
 
@@ -45,7 +47,16 @@ public class ClienteController {
 
      //Rota para metodo POST de cadastro de cliente
     @PostMapping("/clientes/criar")
-    public String criar(Cliente cliente, @RequestParam String email){
+    public String criar(Cliente cliente, @RequestParam String email, @RequestParam String senha){
+         // Verifica se a senha ultrapassa 10 caracteres
+         if (senha.length() > 10) {
+            return "redirect:/clientes/novo?errorSenhaInvalida=Senha não pode ter mais de 10 caracteres";
+        }
+
+        // Verifica se o email ultrapassa 100 caracteres
+        if (email.length() > 100) {
+            return "redirect:/clientes/novo?errorEmailInvalido=Email não pode ter mais de 100 caracteres";
+        }
          // Verifica se o e-mail já está em uso
          if (clienteRepo.existsByEmail(email)) {
             // Se o e-mail já está em uso, redireciona de volta para a página de cadastro com uma mensagem de erro
@@ -59,6 +70,7 @@ public class ClienteController {
         
         // Se o e-mail não está em uso, salva o cliente e redireciona para a página de clientes
         clienteRepo.save(cliente);
-        return "redirect:/clientes";
+        return "redirect:/login";
+        
     }
 }
