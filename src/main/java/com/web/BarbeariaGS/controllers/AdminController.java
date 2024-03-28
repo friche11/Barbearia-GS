@@ -2,6 +2,7 @@ package com.web.BarbeariaGS.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,22 +24,31 @@ public class AdminController {
     private ClientesRepo clienteRepo;
 
      //Rota para página de admin
-    @GetMapping("/administradores")
-    public String index(HttpServletRequest request){
+     @GetMapping("/administradores")
+     public String index(HttpServletRequest request, Model model){
          // Verifica se o cookie de usuário existe e está dentro do prazo de validade
          if (CookieService.getCookie(request, "usuarioId") != null) {
             // Se o cookie existe e está dentro do prazo de validade, redireciona para a página principal
+            model.addAttribute("logado", true);
             return "administradores/index";
         } else {
             // Se o cookie não existe ou está expirado, redireciona para a página de login
             return "redirect:/login";
         }
-    }
+     }
 
      //Rota para página de cadastro de admin
      @GetMapping("/administradores/novo")
-     public String novo(){
-         return "administradores/novo";
+     public String novo(HttpServletRequest request, Model model){
+        // Verifica se o cookie de usuário existe e está dentro do prazo de validade
+        if (CookieService.getCookie(request, "usuarioId") != null) {
+            // Se o cookie existe e está dentro do prazo de validade, redireciona para a página principal
+            model.addAttribute("logado", true);
+            return "administradores/novo";
+        } else {
+            // Se o cookie não existe ou está expirado, redireciona para a página de login
+            return "redirect:/login";
+        }
      }
 
     //Rota para metodo POST de cadastro de admin

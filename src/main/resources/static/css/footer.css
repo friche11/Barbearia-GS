@@ -9,6 +9,16 @@
     
   }
   
+  .swal-title {
+    color: #bf8b15; /* Cor do título */
+  }
+  .swal-text {
+    color: #000; /* Cor do texto */
+  }
+  .swal-button {
+    background-color: #bf8b15; /* Cor do botão */
+  }
+  
   .footerColumns {
     display: flex;
     justify-content: space-between;

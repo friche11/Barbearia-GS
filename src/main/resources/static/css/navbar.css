@@ -60,7 +60,7 @@ align-items: center; /* Centralizar os itens verticalmente */
 .botao-container {
   margin-left:auto; /* Move o container do botão para a direita */
   margin-right: 50px;
-  margin-top: 20px;
+  margin-top: -20px;
 }
 
 .botao{
@@ -82,7 +82,7 @@ align-items: center; /* Centralizar os itens verticalmente */
   transform: scale(1.05);
 }
   
-.list a {
+.list .personalizado {
     text-decoration: none;
     color: rgb(0, 0, 0);
     padding: 0px 25px 10px 0px;
@@ -90,7 +90,7 @@ align-items: center; /* Centralizar os itens verticalmente */
     
   }
 
-.list a::after{
+.list .personalizado::after{
   content: "";
   width: 0%;
   height: 4px;
@@ -101,13 +101,13 @@ align-items: center; /* Centralizar os itens verticalmente */
   transition: 0.5s ease-in-out;
 }
 
-.list a:hover::after {
+.list .personalizado:hover::after {
   width: 100%;
 
 }
 
 .sair-container {
-  margin-top: 20px;
+  margin-top: -20px;
 }
   
 h2 {
@@ -128,6 +128,7 @@ ul li {
     padding: 0.5rem 2rem ;
     margin-bottom: 0px;
     font-size: 20px;
+    margin-top: -20px;
 
   }
   

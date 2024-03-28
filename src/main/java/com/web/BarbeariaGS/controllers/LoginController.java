@@ -52,6 +52,7 @@ public class LoginController {
             }
             CookieService.setCookie(response, "usuarioId", String.valueOf(adm.getId()), tempoLogado);
             CookieService.setCookie(response, "usuarioNome", URLEncoder.encode(adm.getNome(), "UTF-8"), tempoLogado);
+            CookieService.setCookie(response, "usuarioEmail", URLEncoder.encode(adm.getEmail(), "UTF-8"), tempoLogado);
             return "redirect:/administradores";
         } else if (client != null) {
             if (lembrar != null) {
@@ -59,6 +60,7 @@ public class LoginController {
             }
             CookieService.setCookie(response, "usuarioId", String.valueOf(client.getId()), tempoLogado);
             CookieService.setCookie(response, "usuarioNome", URLEncoder.encode(client.getNome(), "UTF-8"), tempoLogado);
+            CookieService.setCookie(response, "usuarioEmail", URLEncoder.encode(client.getEmail(), "UTF-8"), tempoLogado);
             return "redirect:/clientes";
         } else {
             model.addAttribute("erro", "Usuário ou senha inválidos");
@@ -70,6 +72,8 @@ public class LoginController {
       @GetMapping("/sair")
       public String sair(HttpServletResponse response){    
           CookieService.setCookie(response, "usuarioId", "", 0); 
+          CookieService.setCookie(response, "usuarioEmail", "", 0); 
+          CookieService.setCookie(response, "usuarioNome", "", 0); 
           return "redirect:/";
       }
 
