@@ -50,7 +50,7 @@
     </nav>
 
     <div class="botao-container">
-    <button class="botao" onclick="redirecionarParaAdministradores()">Gerenciar</button>
+    <button class="botao" onclick="redirecionarParaEscolhaGerenciar()">Gerenciar</button>
 
   </div>
 
@@ -77,8 +77,23 @@
       });
   }
 
-  function redirecionarParaAdministradores() {
-    window.location.href = "/administradores/novo";
+  function redirecionarParaEscolhaGerenciar() {
+    // Exibe uma caixa de diálogo personalizada
+    Swal.fire({
+          title: 'Quer gerenciar administradores ou funcionários?',
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonText: 'Funcionários',
+          cancelButtonText: 'Administradores',
+          iconColor: '#bf8b15'
+      }).then((result) => {
+
+          if (result.isConfirmed) {
+              window.location.href = "/administradores/gerenciar/funcionários";
+          } else {
+              window.location.href = "/administradores/novo";
+          }
+      });
 }
   </script>
     

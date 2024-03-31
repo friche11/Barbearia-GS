@@ -5129,9 +5129,6 @@ a.badge-dark:focus, a.badge-dark.focus {
   
 }
 
-.alert-danger hr {
-  border-top-color: #f5b7b1;
-}
 
 .alert-danger .alert-link {
   color: #4f1915;

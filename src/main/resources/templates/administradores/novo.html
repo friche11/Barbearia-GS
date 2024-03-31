@@ -1,4 +1,16 @@
 <div th:replace="~{fragments/navbar}"></div>
+<!-- Custom fonts for this template-->
+<link rel="stylesheet" href="../css/navbar.css">
+<link rel="stylesheet" href="../css/Logo.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
+<link
+ href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+ rel="stylesheet">
+
+<!-- Custom styles for this template-->
+<link href="/css/sb-admin-2.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
                 <style>
                      .container-fluid {
             max-width: 800px; /* Defina a largura máxima do container */
@@ -25,18 +37,18 @@
   }
 </style>
                 <!-- Begin Page Content -->
-                <div class="container-fluid">
+                <div class="container-fluid" style="padding-top: 70px;">
 
-                    <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800" style="text-align: center;">Adicione outro administrador para seu sistema</h1>
-                    
-                    <div class="alert alert-danger mt-3" role="alert" th:if="${param.error}">
-                        O e-mail fornecido já está em uso. Por favor, escolha outro e-mail.
-                    </div>
                     
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4" style="padding: 30px;">
-                        <form method="POST" action="/administradores/criar" onsubmit="return confirm('Deseja confirmar a ação?')">
+                      <h1 class="h4 text-gray-900 mb-4" style="text-align: center;">Cadastre outro administrador para seu sistema</h1>
+                      
+                      <div class="alert alert-danger mt-3" role="alert" th:if="${param.error}">
+                        O e-mail fornecido já está em uso. Por favor, escolha outro e-mail.
+                    </div>
+                        <form id="cadastroForm" method="POST" action="/administradores/criar" onsubmit="return confirmarCadastro()">
+                        
                             <div class="form-group">
                               <label for="nome">Nome</label>
                               <input type="text" class="form-control" required id="nome" name="nome" placeholder="Digite seu nome">
@@ -50,9 +62,50 @@
                               <input type="password" class="form-control" required id="senha" name="senha" placeholder="Digite sua senha">
                             </div>
                             <button type="submit" class="btn btn-primary">Cadastrar</button>
+                        
+                            
                         </form>
                     </div>
 
                 </div>
+                <script>
+                  document.getElementById('cadastroForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Impede o envio padrão do formulário
+
+    // Exibe uma caixa de diálogo personalizada
+    Swal.fire({
+        title: 'Tem certeza que deseja cadastrar novo admin?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Cadastrar',
+        cancelButtonText: 'Cancelar',
+        iconColor: '#bf8b15'
+    }).then((result) => {
+        // Se o usuário confirmar, envia o formulário via AJAX
+        if (result.isConfirmed) {
+            enviarFormulario(); // Função para enviar o formulário
+        }
+    });
+});
+
+function enviarFormulario() {
+    var form = document.getElementById('cadastroForm');
+    var formData = new FormData(form);
+
+    // Envia o formulário via AJAX
+    fetch(form.action, {
+        method: form.method,
+        body: formData
+    })
+    .then(response => {
+        if (response.redirected) {
+            window.location.href = response.url; // Redireciona se necessário
+        }
+    })
+    .catch(error => console.error('Erro:', error));
+}
+
+
+                </script>
                 <!-- /.container-fluid -->
                 <div th:replace="~{fragments/footer}"></div>

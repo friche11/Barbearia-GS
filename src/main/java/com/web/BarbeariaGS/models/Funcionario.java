@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -26,6 +28,10 @@ public class Funcionario {
  
      @Column(name = "senha", length = 10, nullable = false)
      private String senha;
+
+    @ManyToOne
+    @JoinColumn(name = "admin_id")
+    private Admin admin;
     
      public int getId() {
         return id;
@@ -65,6 +71,14 @@ public class Funcionario {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    public Admin getAdmin() {
+        return admin;
+    }
+    
+    public void setAdmin(Admin admin) {
+        this.admin = admin;
     }
 
 }
