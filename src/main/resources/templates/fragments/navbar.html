@@ -108,9 +108,11 @@ function redirecionarParaEscolhaGerenciar() {
       }).then((result) => {
 
           if (result.isConfirmed) {
-              window.location.href = "/administradores/gerenciar/funcionários";
-          } else {
+              window.location.href = "/gerenciar/funcionarios";
+          } else if(result.dismiss === Swal.DismissReason.cancel){
               window.location.href = "/administradores/novo";
+          } else{
+            window.location.href = "/administradores";
           }
       });
 }

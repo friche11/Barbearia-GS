@@ -1,7 +1,9 @@
 <div th:replace="~{fragments/navbar}"></div>
 <!-- Custom fonts for this template-->
-<link rel="stylesheet" href="../css/navbar.css">
-<link rel="stylesheet" href="../css/Logo.css">
+<link rel="stylesheet" href="/css/navbar.css">
+<link rel="stylesheet" href="/css/Logo.css">
+<link rel="stylesheet" href="/css/footer.css">
+
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
 <link
  href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
@@ -37,29 +39,33 @@
   }
 </style>
                 <!-- Begin Page Content -->
-                <div class="container-fluid" style="padding-top: 70px;">
+                <div class="container-fluid" style="padding-top: 70px; ">
 
                     
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4" style="padding: 30px;">
-                      <h1 class="h4 text-gray-900 mb-4" style="text-align: center;">Cadastre outro administrador para seu sistema</h1>
+                      <h1 class="h4 text-gray-900 mb-4" style="text-align: center;">Cadastre um funcionário</h1>
                       
                       <div class="alert alert-danger mt-3" role="alert" th:if="${param.error}">
                         O e-mail fornecido já está em uso. Por favor, escolha outro e-mail.
                     </div>
-                        <form id="cadastroForm" method="POST" action="/administradores/criar" onsubmit="return confirmarCadastro()">
+                        <form id="cadastroForm" method="POST" action="/gerenciar/funcionarios/criar" onsubmit="return confirmarCadastro()">
                         
                             <div class="form-group">
                               <label for="nome">Nome</label>
-                              <input type="text" class="form-control" required id="nome" name="nome" placeholder="Digite o nome">
+                              <input type="text" class="form-control" required id="nome" name="nome" placeholder="Digite seu nome">
                             </div>
                             <div class="form-group">
+                                <label for="nome">Cargo</label>
+                                <input type="text" class="form-control" required id="cargo" name="cargo" placeholder="Digite seu cargo">
+                              </div>
+                            <div class="form-group">
                               <label for="email">Email</label>
-                              <input type="email" class="form-control" required id="email" name="email" placeholder="Digite o email">
+                              <input type="email" class="form-control" required id="email" name="email" placeholder="Digite seu email">
                             </div>
                             <div class="form-group">
                               <label for="senha">Senha</label>
-                              <input type="password" class="form-control" required id="senha" name="senha" placeholder="Digite a senha">
+                              <input type="password" class="form-control" required id="senha" name="senha" placeholder="Digite sua senha">
                             </div>
                             <button type="submit" class="btn btn-primary">Cadastrar</button>
                         
@@ -74,7 +80,7 @@
 
     // Exibe uma caixa de diálogo personalizada
     Swal.fire({
-        title: 'Tem certeza que deseja cadastrar novo admin?',
+        title: 'Tem certeza que deseja cadastrar novo funcionário?',
         icon: 'question',
         showCancelButton: true,
         confirmButtonText: 'Cadastrar',

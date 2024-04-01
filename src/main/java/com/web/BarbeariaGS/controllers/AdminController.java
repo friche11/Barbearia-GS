@@ -36,7 +36,7 @@ public class AdminController {
             return "redirect:/login";
         }
      }
-
+     
      //Rota para página de cadastro de admin
      @GetMapping("/administradores/novo")
      public String novo(HttpServletRequest request, Model model){
