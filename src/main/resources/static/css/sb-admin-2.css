@@ -67,6 +67,10 @@ body {
   color: #858796;
   text-align: left;
   background-color: #fff;
+  margin: 0;
+  padding-bottom: 100px; 
+  height: 100%;
+  /* Altura mínima do conteúdo da página */
 }
 
 [tabindex="-1"]:focus:not(:focus-visible) {
