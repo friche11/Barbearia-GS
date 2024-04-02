@@ -1,10 +1,14 @@
 package com.web.BarbeariaGS.models;
 
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -24,8 +28,19 @@ public class Admin {
  
      @Column(name = "senha", length = 10, nullable = false)
      private String senha;
+
+     @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL)
+    private List<Funcionario> funcionarios;
     
-     public int getId() {
+     public List<Funcionario> getFuncionarios() {
+        return funcionarios;
+    }
+
+    public void setFuncionarios(List<Funcionario> funcionarios) {
+        this.funcionarios = funcionarios;
+    }
+
+    public int getId() {
         return id;
     }
 
@@ -55,6 +70,11 @@ public class Admin {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    @Override
+    public String toString() {
+        return nome; // Supondo que o nome seja o atributo que deseja exibir
     }
  }
 

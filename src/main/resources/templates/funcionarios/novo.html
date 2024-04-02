@@ -47,10 +47,17 @@
                       <h1 class="h4 text-gray-900 mb-4" style="text-align: center;">Cadastre um funcionário</h1>
                       
                       <div class="alert alert-danger mt-3" role="alert" th:if="${param.error}">
-                        O e-mail fornecido já está em uso. Por favor, escolha outro e-mail.
+                        O e-mail fornecido já está em uso.
                     </div>
-                        <form id="cadastroForm" method="POST" action="/gerenciar/funcionarios/criar" onsubmit="return confirmarCadastro()">
-                        
+                    <div class="alert alert-danger mt-3" role="alert" th:if="${param.errorSenhaInvalida}">
+                        A senha precisa ter até 10 caracteres.
+                    </div>
+                    <div class="alert alert-danger mt-3" role="alert" th:if="${param.errorEmailInvalido}">
+                        O email deve ter até 100 caracteres.
+                    </div>
+                        <form id="cadastroForm" class="user" action="/gerenciar/funcionarios/criar" method="POST" onsubmit="return confirmarCadastro()">
+    
+                      
                             <div class="form-group">
                               <label for="nome">Nome</label>
                               <input type="text" class="form-control" required id="nome" name="nome" placeholder="Digite seu nome">
@@ -67,15 +74,20 @@
                               <label for="senha">Senha</label>
                               <input type="password" class="form-control" required id="senha" name="senha" placeholder="Digite sua senha">
                             </div>
-                            <button type="submit" class="btn btn-primary">Cadastrar</button>
+                            <input type="hidden" name="adminId" value="${cookie.usuarioId}">
+                            <!-- Botão de envio -->
+                            
+                            <button class="btn btn-primary">Cadastrar</button>
                         
                             
                         </form>
                     </div>
 
                 </div>
-                <script>
-                  document.getElementById('cadastroForm').addEventListener('submit', function(event) {
+
+    <script>
+
+    document.getElementById('cadastroForm').addEventListener('submit', function(event) {
     event.preventDefault(); // Impede o envio padrão do formulário
 
     // Exibe uma caixa de diálogo personalizada
@@ -109,9 +121,13 @@ function enviarFormulario() {
         }
     })
     .catch(error => console.error('Erro:', error));
+
 }
+    document.addEventListener('DOMContentLoaded', function() {
+        var adminId = parseInt(document.getElementById('adminId').value);
+        document.getElementById('adminId').value = adminId;
+    });
 
-
-                </script>
+      </script>
                 <!-- /.container-fluid -->
                 <div th:replace="~{fragments/footer}"></div>

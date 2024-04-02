@@ -30,7 +30,7 @@ public class Funcionario {
      private String senha;
 
     @ManyToOne
-    @JoinColumn(name = "admin_id")
+    @JoinColumn(name = "admin_id", referencedColumnName = "id")
     private Admin admin;
     
      public int getId() {
@@ -81,4 +81,5 @@ public class Funcionario {
         this.admin = admin;
     }
 
+    
 }

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.web.BarbeariaGS.models.Admin;
 import com.web.BarbeariaGS.repository.AdminRepo;
 import com.web.BarbeariaGS.repository.ClientesRepo;
+import com.web.BarbeariaGS.repository.FuncionariosRepo;
 import com.web.BarbeariaGS.services.CookieService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,14 +24,23 @@ public class AdminController {
     @Autowired
     private ClientesRepo clienteRepo;
 
+    @Autowired
+    private FuncionariosRepo funcionariosRepo;
+
      //Rota para página de admin
      @GetMapping("/administradores")
      public String index(HttpServletRequest request, Model model){
          // Verifica se o cookie de usuário existe e está dentro do prazo de validade
          if (CookieService.getCookie(request, "usuarioId") != null) {
-            // Se o cookie existe e está dentro do prazo de validade, redireciona para a página principal
-            model.addAttribute("logado", true);
-            return "administradores/index";
+            // Verifica se o usuário autenticado é um administrador
+            if (CookieService.getCookie(request, "tipoUsuario").equals("admin")) {
+                // Se for administrador, permite o acesso à página de administradores
+                model.addAttribute("logado", true);
+                return "administradores/index";
+            } else {
+                // Se não for administrador, redireciona para a página principal
+                return "redirect:/";
+            }
         } else {
             // Se o cookie não existe ou está expirado, redireciona para a página de login
             return "redirect:/login";
@@ -40,11 +50,17 @@ public class AdminController {
      //Rota para página de cadastro de admin
      @GetMapping("/administradores/novo")
      public String novo(HttpServletRequest request, Model model){
-        // Verifica se o cookie de usuário existe e está dentro do prazo de validade
-        if (CookieService.getCookie(request, "usuarioId") != null) {
-            // Se o cookie existe e está dentro do prazo de validade, redireciona para a página principal
-            model.addAttribute("logado", true);
-            return "administradores/novo";
+         // Verifica se o cookie de usuário existe e está dentro do prazo de validade
+         if (CookieService.getCookie(request, "usuarioId") != null) {
+            // Verifica se o usuário autenticado é um administrador
+            if (CookieService.getCookie(request, "tipoUsuario").equals("admin")) {
+                // Se for administrador, permite o acesso à página de cadastro de administradores
+                model.addAttribute("logado", true);
+                return "administradores/novo";
+            } else {
+                // Se não for administrador, redireciona para a página principal
+                return "redirect:/";
+            }
         } else {
             // Se o cookie não existe ou está expirado, redireciona para a página de login
             return "redirect:/login";
@@ -53,7 +69,16 @@ public class AdminController {
 
     //Rota para metodo POST de cadastro de admin
     @PostMapping("/administradores/criar")
-    public String criar(Admin admin, @RequestParam String email){
+    public String criar(Admin admin, @RequestParam String email, @RequestParam String senha, HttpServletRequest request){
+         // Verifica se a senha ultrapassa 10 caracteres
+         if (senha.length() > 10) {
+            return "redirect:/administradores/novo?errorSenhaInvalida=Senha não pode ter mais de 10 caracteres";
+        }
+
+        // Verifica se o email ultrapassa 100 caracteres
+        if (email.length() > 100) {
+            return "redirect:/administradores/novo?errorEmailInvalido=Email não pode ter mais de 100 caracteres";
+        }
         // Verifica se o e-mail já está em uso
         if (adminRepo.existsByEmail(email)) {
             // Se o e-mail já está em uso, redireciona de volta para a página de cadastro com uma mensagem de erro
@@ -63,9 +88,26 @@ public class AdminController {
             // Se o e-mail já está em uso na tabela cliente, redireciona de volta para a página de cadastro com uma mensagem de erro
             return "redirect:/administradores/novo?error=emailInUse";
         }
-        
-        // Se o e-mail não está em uso, salva o admin e redireciona para a página de admin
-        adminRepo.save(admin);
-        return "redirect:/administradores";
+
+        if(funcionariosRepo.existsByEmail(email)){
+            // Se o e-mail já está em uso na tabela cliente, redireciona de volta para a página de cadastro com uma mensagem de erro
+            return "redirect:/administradores/novo?error=emailInUse";
+        }
+       // Verifica se o cookie de usuário existe e está dentro do prazo de validade
+       if (CookieService.getCookie(request, "usuarioId") != null) {
+        // Verifica se o usuário autenticado é um administrador
+        if (CookieService.getCookie(request, "tipoUsuario").equals("admin")) {
+            // Se for administrador, permite a criação de um novo administrador
+            adminRepo.save(admin);
+            return "redirect:/administradores";
+        } else {
+            // Se não for administrador, redireciona para a página principal
+            return "redirect:/";
+        }
+    } else {
+        // Se o cookie não existe ou está expirado, redireciona para a página de login
+        return "redirect:/login";
+    }
+
     }
 }

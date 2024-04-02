@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.web.BarbeariaGS.models.Admin;
 import com.web.BarbeariaGS.models.Cliente;
+import com.web.BarbeariaGS.models.Funcionario;
 import com.web.BarbeariaGS.repository.AdminRepo;
 import com.web.BarbeariaGS.repository.ClientesRepo;
+import com.web.BarbeariaGS.repository.FuncionariosRepo;
 import com.web.BarbeariaGS.services.CookieService;
 
 @Controller
@@ -26,6 +28,9 @@ public class LoginController {
 
     @Autowired
     private ClientesRepo clienteRepo;
+
+    @Autowired
+    private FuncionariosRepo funcionariosRepo;
 
     //Rota para página de login
     @GetMapping("/login")
@@ -42,9 +47,10 @@ public class LoginController {
     
      // Rota para realizar login
     @PostMapping("/logar")
-    public String logar(Model model, String email, String senha, Admin administrador, Cliente cliente, String lembrar, HttpServletResponse response) throws UnsupportedEncodingException {
+    public String logar(Model model, String email, String senha, Admin administrador, Cliente cliente, Funcionario funcionario, String lembrar, HttpServletResponse response) throws UnsupportedEncodingException {
         Admin adm = this.adminRepo.login(administrador.getEmail(), administrador.getSenha());
         Cliente client = this.clienteRepo.login(cliente.getEmail(), cliente.getSenha());
+        Funcionario func = this.funcionariosRepo.login(funcionario.getEmail(), funcionario.getSenha());
         int tempoLogado = (60 * 60); // 1 hora logado por padrão
         if (adm != null) {
             if (lembrar != null) {
@@ -53,6 +59,7 @@ public class LoginController {
             CookieService.setCookie(response, "usuarioId", String.valueOf(adm.getId()), tempoLogado);
             CookieService.setCookie(response, "usuarioNome", URLEncoder.encode(adm.getNome(), "UTF-8"), tempoLogado);
             CookieService.setCookie(response, "usuarioEmail", URLEncoder.encode(adm.getEmail(), "UTF-8"), tempoLogado);
+            CookieService.setCookie(response, "tipoUsuario", "admin", tempoLogado);
             return "redirect:/administradores";
         } else if (client != null) {
             if (lembrar != null) {
@@ -61,7 +68,19 @@ public class LoginController {
             CookieService.setCookie(response, "usuarioId", String.valueOf(client.getId()), tempoLogado);
             CookieService.setCookie(response, "usuarioNome", URLEncoder.encode(client.getNome(), "UTF-8"), tempoLogado);
             CookieService.setCookie(response, "usuarioEmail", URLEncoder.encode(client.getEmail(), "UTF-8"), tempoLogado);
+            CookieService.setCookie(response, "tipoUsuario", "cliente", tempoLogado);
             return "redirect:/clientes";
+        } else if (func != null) {
+            if (lembrar != null) {
+                tempoLogado = (60 * 60 * 24 * 365); // 1 ano logado
+            }
+            CookieService.setCookie(response, "usuarioId", String.valueOf(func.getId()), tempoLogado);
+            CookieService.setCookie(response, "usuarioNome", URLEncoder.encode(func.getNome(), "UTF-8"),
+                    tempoLogado);
+            CookieService.setCookie(response, "usuarioEmail", URLEncoder.encode(func.getEmail(), "UTF-8"),
+                    tempoLogado);
+            CookieService.setCookie(response, "tipoUsuario", "funcionario", tempoLogado);
+            return "redirect:/funcionarios";
         } else {
             model.addAttribute("erro", "Email ou senha inválidos");
             return "login/index";

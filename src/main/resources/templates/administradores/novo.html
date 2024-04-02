@@ -45,7 +45,13 @@
                       <h1 class="h4 text-gray-900 mb-4" style="text-align: center;">Cadastre outro administrador para seu sistema</h1>
                       
                       <div class="alert alert-danger mt-3" role="alert" th:if="${param.error}">
-                        O e-mail fornecido já está em uso. Por favor, escolha outro e-mail.
+                        O e-mail fornecido já está em uso.
+                    </div>
+                    <div class="alert alert-danger mt-3" role="alert" th:if="${param.errorSenhaInvalida}">
+                        A senha precisa ter até 10 caracteres.
+                    </div>
+                    <div class="alert alert-danger mt-3" role="alert" th:if="${param.errorEmailInvalido}">
+                        O email deve ter até 100 caracteres.
                     </div>
                         <form id="cadastroForm" method="POST" action="/administradores/criar" onsubmit="return confirmarCadastro()">
                         
