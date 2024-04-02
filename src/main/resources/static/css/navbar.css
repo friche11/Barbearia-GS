@@ -87,16 +87,17 @@ align-items: center; /* Centralizar os itens verticalmente */
   display: flex; /* Use flexbox para alinhar o texto e o ícone */
   align-items: center; /* Centralize os itens verticalmente */
   justify-content: center; /* Centralize os itens horizontalmente */
-  width: 10px; 
+  width: 0px; 
   height: 45px;
   border: none;
   border-radius: 5cm;
   background-color: #ffffff; /* Cor de fundo vermelha */
-  color: #fff; /* Cor do texto */
-  font-size: 17px;
+  color: #ffffff; /* Cor do texto */
+  font-size: 20px;
   cursor: pointer;
   box-shadow: 1px 1px 0px #ffffff;
   margin-right: 25px;
+  
 }
 
 .botaoSair:hover {
@@ -107,8 +108,9 @@ align-items: center; /* Centralizar os itens verticalmente */
   display: block;
   margin-left: auto;
   margin-right: auto;
-  width: 100px;
-  height: 105px;
+  width: 50px;
+  height: 50px;
+  
   
 }
   
@@ -140,12 +142,6 @@ align-items: center; /* Centralizar os itens verticalmente */
   margin-top: -20px;
 }
   
-h2 {
-    color: #F47968;
-    margin-left: 4rem;
-    margin-right: 1rem;
-    margin-top: 3rem;
-  }
 
   ul{
     align-items: center; /* Centralizar os itens verticalmente */

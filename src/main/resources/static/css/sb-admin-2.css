@@ -93,6 +93,7 @@ hr {
   background-color: #bf8b15; /* Cor do botão */
 }
 
+
 h1, h2, h3, h4, h5, h6 {
   margin-top: 0;
   margin-bottom: 0.5rem;
@@ -180,6 +181,16 @@ a {
 
 a:hover {
   color: #bf8b15;
+  text-decoration: underline;
+}
+
+.edit:hover {
+  color: #000000;
+  text-decoration: underline;
+}
+
+.delete:hover {
+  color: #ff0000;
   text-decoration: underline;
 }
 
@@ -565,11 +576,13 @@ pre code {
 .container-md,
 .container-lg,
 .container-xl {
-  width: 100%;
+  
   padding-right: 0.75rem;
   padding-left: 0.75rem;
   margin-right: auto;
   margin-left: auto;
+  /* Garante que o conteúdo ocupa pelo menos a altura da janela de visualização */
+   /* Ajuste conforme necessário para garantir que o footer não cubra o conteúdo */
 }
 
 @media (min-width: 576px) {

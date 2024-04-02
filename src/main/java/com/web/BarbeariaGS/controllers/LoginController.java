@@ -93,6 +93,7 @@ public class LoginController {
           CookieService.setCookie(response, "usuarioId", "", 0); 
           CookieService.setCookie(response, "usuarioEmail", "", 0); 
           CookieService.setCookie(response, "usuarioNome", "", 0); 
+          CookieService.setCookie(response, "tipoUsuario", "", 0); 
           return "redirect:/";
       }
 
