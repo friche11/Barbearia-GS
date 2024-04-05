@@ -52,7 +52,7 @@ public class FuncionarioController {
     }
     }
 
-    //Rota para página de gerencia funcionario
+    //Rota para página de gerenciar funcionario
      @GetMapping("/gerenciar/funcionarios")
      public String gerenciar(HttpServletRequest request, Model model, Model modelList){
          // Verifica se o cookie de usuário existe e está dentro do prazo de validade
