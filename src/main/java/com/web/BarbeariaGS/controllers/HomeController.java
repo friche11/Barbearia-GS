@@ -6,11 +6,11 @@ import java.net.URLDecoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.ui.Model;
 
 import com.web.BarbeariaGS.repository.AdminRepo;
 import com.web.BarbeariaGS.repository.ClientesRepo;
+import com.web.BarbeariaGS.repository.FuncionariosRepo;
 import com.web.BarbeariaGS.services.CookieService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,6 +23,9 @@ public class HomeController {
 
     @Autowired
     private ClientesRepo clienteRepo;
+
+    @Autowired
+    private FuncionariosRepo funcionariosRepo;
     
     @GetMapping("/")
     public String index(HttpServletRequest request, Model model) throws UnsupportedEncodingException{
@@ -38,11 +41,19 @@ public class HomeController {
             model.addAttribute("logado", true);
             model.addAttribute("admin", true);
             model.addAttribute("cliente", false);
+            model.addAttribute("funcionario", false);
         } else if (clienteRepo.existsByEmail(userEmail)) {
             // Se o usuário for um cliente, define o atributo "logado" como true e "admin" como false
             model.addAttribute("logado", true);
             model.addAttribute("admin", false);
             model.addAttribute("cliente", true);
+            model.addAttribute("funcionario", false);
+        } else if (funcionariosRepo.existsByEmail(userEmail)) {
+            // Se o usuário for um cliente, define o atributo "logado" como true e "admin" como false
+            model.addAttribute("logado", true);
+            model.addAttribute("admin", false);
+            model.addAttribute("cliente", false);
+            model.addAttribute("funcionario", true);
         } 
     } 
      return "home/index";

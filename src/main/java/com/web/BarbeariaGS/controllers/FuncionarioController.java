@@ -52,7 +52,7 @@ public class FuncionarioController {
     }
     }
 
-    //Rota para página de gerenciar funcionario
+    //Rota para página de gerencia funcionario
      @GetMapping("/gerenciar/funcionarios")
      public String gerenciar(HttpServletRequest request, Model model, Model modelList){
          // Verifica se o cookie de usuário existe e está dentro do prazo de validade
@@ -225,8 +225,8 @@ if(clientesRepo.existsByEmail(email)){
     return "redirect:/gerenciar/funcionarios/{id}?error=emailInUse";
 }
 
-if(funcionariosRepo.existsByEmail(email)){
-    // Se o e-mail já está em uso na tabela cliente, redireciona de volta para a página de cadastro com uma mensagem de erro
+if (funcionariosRepo.existsByEmail(email) && funcionariosRepo.findByEmailAndIdNot(email, id) != null) {
+    // Se o e-mail já está em uso por outro funcionário, redireciona de volta para a página de edição com uma mensagem de erro
     return "redirect:/gerenciar/funcionarios/{id}?error=emailInUse";
 }
 
@@ -282,8 +282,23 @@ if (adminOptional.isPresent()) {
 
       //Rota para excluir cadastro
     @GetMapping("/gerenciar/funcionarios/{id}/excluir")
-    public String excluir(@PathVariable int id){
-        funcionariosRepo.deleteById(id);
-        return "redirect:/gerenciar/funcionarios";
+    public String excluir(@PathVariable int id, HttpServletRequest request){
+           // Verifica se o cookie de usuário existe e está dentro do prazo de validade
+       if (CookieService.getCookie(request, "usuarioId") != null) {
+        // Verifica se o usuário autenticado é um administrador
+        if (CookieService.getCookie(request, "tipoUsuario").equals("admin")) {
+           
+            funcionariosRepo.deleteById(id);
+            return "redirect:/gerenciar/funcionarios";
+    
+        } else {
+            // Se não for administrador, redireciona para a página principal
+            return "redirect:/";
+        }
+    } else {
+        // Se o cookie não existe ou está expirado, redireciona para a página de login
+        return "redirect:/login";
+    }
+       
     }
 }

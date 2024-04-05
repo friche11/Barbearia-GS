@@ -16,4 +16,6 @@ public interface FuncionariosRepo extends CrudRepository<Funcionario, Integer>{
     @Query(value= "select * from funcionarios where email = :email and senha = :senha", nativeQuery = true)
     public Funcionario login(String email, String senha);
 
+    @Query(value = "select * from funcionarios where email = :email and id <> :id", nativeQuery = true)
+    Funcionario findByEmailAndIdNot(String email, int id);
 }
