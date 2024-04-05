@@ -57,8 +57,9 @@
     <!-- Verificação se o usuário é um admin para exibir o botão correto -->
 <div class="botao-container">
   <button class="botao" th:unless="${logado}"  id="btnAgendar">Agendar</button>
-  <button class="botao" th:if="${cliente} and ${logado}" onclick="redirecionarParaClientes()">Agendar</button>
+  <button class="botao" th:if="${cliente} and ${logado}" onclick="redirecionarParaClientes()">Agenda</button>
   <button class="botao" th:if="${admin} and ${logado}" onclick="redirecionarParaEscolhaGerenciar()">Gerenciar</button>
+  <button class="botao" th:if="${funcionario} and ${logado}" onclick="redirecionarParaFuncionarios()">Agenda</button>
 
 </div>
 
@@ -105,6 +106,11 @@ document.getElementById("btnAgendar").addEventListener("click", function() {
     // Função para redirecionar para a página de clientes
 function redirecionarParaClientes() {
     window.location.href = "/clientes";
+}
+
+   // Função para redirecionar para a página de clientes
+   function redirecionarParaFuncionarios() {
+    window.location.href = "/funcionarios";
 }
 
 // Função para redirecionar para a página de administradores
