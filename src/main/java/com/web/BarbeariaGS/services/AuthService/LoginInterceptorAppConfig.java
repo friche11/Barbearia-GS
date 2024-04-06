@@ -18,7 +18,8 @@ public class LoginInterceptorAppConfig implements WebMvcConfigurer  {
                 "/js/**",
                 "/css/**",
                 "/img/**",
-                "/"
+                "/",
+                "/clientes/novo"
                 
             );
     }
