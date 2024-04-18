@@ -1,5 +1,3 @@
-<!DOCTYPE html>
-<html>
 <div th:replace="~{fragments/navbar}"></div>
 <!-- Custom fonts for this template-->
 <link rel="stylesheet" href="/css/navbar.css">
@@ -12,40 +10,46 @@
 
 <!-- Custom styles for this template-->
 <link href="/css/sb-admin-2.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<!-- Custom styles for this template-->
+<link href="/css/sweet-alert.css" rel="stylesheet">
+
 
                 <style>
-                     .container-fluid {
-            max-width: 800px; /* Defina a largura máxima do container */
-            margin: 150px auto; /* Adicione margens superior e inferior automaticamente */
-            padding: 0 15px; /* Adicione preenchimento horizontal */
-        }
+
+        .container-fluid {
+        max-width: fit-content; /* Remova a largura máxima fixa */
+        min-width: 0; /* Remova a largura mínima fixa */
+        margin: 150px auto;
+        padding: 0 15px;
+       
+    }
+    .card-body {
+        max-width: 900px; /* O card-body se expandirá no máximo até o limite do container */
+        overflow-x: auto; /* Adiciona uma barra de rolagem horizontal se o conteúdo do card-body for muito amplo */
+    }
+    .table-responsive {
+        overflow-x: auto; /* Adiciona uma barra de rolagem horizontal se o conteúdo da tabela for muito amplo */
+    
+    }
+
+    @media (min-width: 1700px) {
+        .container-fluid {
+        max-width: 1000px; /* Limita a largura máxima do container a 1400px quando a tela for maior que 1700px */
+    }
+
+    .card-body {
+        max-width: 1400px; /* Limita a largura máxima do card-body a 1400px quando a tela for maior que 1700px */
+        overflow-x: auto; /* Adiciona uma barra de rolagem horizontal se o conteúdo do card-body for muito amplo */
+    }
+
+    .table-responsive {
+        overflow-x: auto; /* Adiciona uma barra de rolagem horizontal se o conteúdo da tabela for muito amplo */
+    }
+}
+
 
                 </style>
 
-<style>
-  .swal2-title {
-    color: #bf8b15 !important; /* Cor do título */
-  }
-  .swal2-content {
-    color: #000 !important; /* Cor do texto */
-  }
-  .swal2-confirm.swal2-styled {
-    background-color: #bf8b15;
-    color: #fff; /* Cor do texto nos botões */
-  }
-  .swal2-cancel.swal2-styled{
-    background-color: #ff0000;
-    color: #fff; /* Cor do texto nos botões */
-  }
-  .swal2-shown.swal2-height-auto {
-    background-color: rgba(0, 0, 0, 0.01); /* Define a cor de fundo desejada com transparência */
-}
-.swal2-container.swal2-backdrop-show, .swal2-container.swal2-noanimation {
-    background: rgba(0,0,0,0.02);
-}
-
-</style>
                 <!-- Begin Page Content -->
                 <div class="container-fluid" style="padding-top: 70px; ">
 
@@ -61,47 +65,37 @@
                             <h6 class="m-0 font-weight-bold text-primary" style="display: inline-block;">Lista de funcionários</h6> 
                         </div>
                         <div class="card-body" style="padding-left: 1rem; ">
-                            <div class="table-responsive" style="overflow-x: hidden; ">
+                            <div class="table-responsive" >
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <thead>
+                                    <thead class="text-center">
                                         <tr>
-                                            <th>Id</th>
-                                            <th>Nome</th>
-                                            <th>Cargo</th>
-                                            <th>Email</th>
-                                            <th>Senha</th>
-                                            <th>Admin</th>
-                                            <th></th>
-                                            <th></th>
+                                            <th class="align-middle">Id</th>
+                                            <th class="align-middle">Nome</th>
+                                            <th class="align-middle">Cargo</th>
+                                            <th class="align-middle">Email</th>
+                                            <th class="align-middle"  style="white-space: nowrap;" >Criado por (Admin)</th>
+                                            <th class="align-middle"  style="white-space: nowrap;">Editado por (Admin)</th>
+                                            <th class="align-middle"></th>
+                                            <th class="align-middle"></th>
                                         </tr>
                                     </thead>
-                                    <tfoot>
-                                        <tr>
-                                            <th>Id</th>
-                                            <th>Nome</th>
-                                            <th>Cargo</th>
-                                            <th>Email</th>
-                                            <th>Senha</th>
-                                            <th>Admin</th>
-                                            <th></th>
-                                            <th></th>
-                                        </tr>
-                                    </tfoot>
-                                    <tbody>
+                                   
+                                    <tbody class="text-center">
                                         <tr th:each="funcionario: ${funcionarios}">
-                                            <td th:text="${funcionario.id}" />
-                                            <td th:text="${funcionario.nome}" />
-                                            <td th:text="${funcionario.cargo}" />
-                                            <td th:text="${funcionario.email}" />
-                                            <td th:text="${funcionario.senha}" />
-                                            <td th:text="${funcionario.admin}"/>
+                                            <td th:text="${funcionario.id}"/>
+                                            <td th:text="${funcionario.nome}"/>
+                                            <td th:text="${funcionario.cargo}"/>
+                                            <td th:text="${funcionario.email}"/>
+                                            <td th:text="${funcionario.adminCriacao}"style="white-space: nowrap;"/>
+                                            <td th:text="${funcionario.adminEdicao != null ? funcionario.adminEdicao : '---------------'}" style="white-space: nowrap;"/>
                                             <td>
                                                 <a class="edit" th:href="@{'/gerenciar/funcionarios/' + ${funcionario.id}}" >
                                                     <i class="fas fa-edit"></i>
                                                 </a>
                                             </td>
                                             <td>
-                                                <a class="delete" href="#" th:href="@{'/gerenciar/funcionarios/' + ${funcionario.id} + '/excluir'}">
+                                                <a class="delete" href="#" th:href="@{'/gerenciar/funcionarios/' + ${funcionario.id} + '/excluir'} " 
+                                                onclick="ConfirmarExclusao(event)">
                                                     <i class="fas fa-trash"></i>
                                                 </a>
                                             </td>
@@ -115,45 +109,15 @@
                     </div>
 
                 </div>
-                <script>
-                  document.getElementById('cadastroForm').addEventListener('submit', function(event) {
-    event.preventDefault(); // Impede o envio padrão do formulário
+                 <!-- Bootstrap core JavaScript-->
+    <script src="/vendor/jquery/jquery.min.js"></script>
+    <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-    // Exibe uma caixa de diálogo personalizada
-    Swal.fire({
-        title: 'Tem certeza que deseja cadastrar novo admin?',
-        icon: 'question',
-        showCancelButton: true,
-        confirmButtonText: 'Cadastrar',
-        cancelButtonText: 'Cancelar',
-        iconColor: '#bf8b15'
-    }).then((result) => {
-        // Se o usuário confirmar, envia o formulário via AJAX
-        if (result.isConfirmed) {
-            enviarFormulario(); // Função para enviar o formulário
-        }
-    });
-});
+    <!-- Core plugin JavaScript-->
+    <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
 
-function enviarFormulario() {
-    var form = document.getElementById('cadastroForm');
-    var formData = new FormData(form);
-
-    // Envia o formulário via AJAX
-    fetch(form.action, {
-        method: form.method,
-        body: formData
-    })
-    .then(response => {
-        if (response.redirected) {
-            window.location.href = response.url; // Redireciona se necessário
-        }
-    })
-    .catch(error => console.error('Erro:', error));
-}
-
-
-                </script>
-</html>
+    <script src="/js/sb-admin-2.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="/js/sweet-alert.js"></script>
                 <!-- /.container-fluid -->
                 <div th:replace="~{fragments/footer}"></div>

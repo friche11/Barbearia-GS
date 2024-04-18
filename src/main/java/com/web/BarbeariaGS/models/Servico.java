@@ -12,33 +12,25 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "clientes")
-public class Cliente {
+@Table(name = "servicos")
+public class Servico {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
      private int id;
 
-     @Column(name = "nome", length = 100, nullable = false)
+     @Column(name = "nome", length = 45, nullable = false)
      private String nome;
 
-     @Column(name = "email", length = 256, nullable = false)
-     private String email;
+     @Column(name = "descricao", columnDefinition = "TEXT", nullable = true)
+    private String descricao;
 
-     @Column(name = "senha", nullable = false)
-     private String senha;
+    @Column(name = "preco", nullable = false)
+    private double preco;
 
-    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "servico", cascade = CascadeType.ALL)
     private List<Agendamento> agendamentos;
-
-     public List<Agendamento> getAgendamentos() {
-        return agendamentos;
-    }
-
-    public void setAgendamentos(List<Agendamento> agendamentos) {
-        this.agendamentos = agendamentos;
-    }
 
     public int getId() {
         return id;
@@ -56,19 +48,27 @@ public class Cliente {
         this.nome = nome;
     }
 
-    public String getEmail() {
-        return email;
+    public String getDescricao() {
+        return descricao;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 
-    public String getSenha() {
-        return senha;
+    public double getPreco() {
+        return preco;
     }
 
-    public void setSenha(String senha) {
-        this.senha = senha;
+    public void setPreco(double preco) {
+        this.preco = preco;
+    }
+
+    public List<Agendamento> getAgendamentos() {
+        return agendamentos;
+    }
+
+    public void setAgendamentos(List<Agendamento> agendamentos) {
+        this.agendamentos = agendamentos;
     }
 }

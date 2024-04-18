@@ -11,32 +11,9 @@
       rel="stylesheet">
 
   <!-- Custom styles for this template-->
-  <link href="/css/sb-admin-2.css" rel="stylesheet">
-     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-     <style>
-.swal2-title {
-    color: #bf8b15 !important; /* Cor do título */
-  }
-  .swal2-content {
-    color: #000 !important; /* Cor do texto */
-  }
-  .swal2-confirm.swal2-styled {
-    background-color: #bf8b15;
-    color: #fff; /* Cor do texto nos botões */
-  }
-
-  .swal2-cancel.swal2-styled{
-    background-color: #ff0000;
-    color: #fff; /* Cor do texto nos botões */
-  }
-  .swal2-shown.swal2-height-auto {
-    background-color: rgba(0, 0, 0, 0.01); /* Define a cor de fundo desejada com transparência */
-}
-.swal2-container.swal2-backdrop-show, .swal2-container.swal2-noanimation {
-    background: rgba(0,0,0,0.02);
-}
-
-     </style>
+<link href="/css/sb-admin-2.css" rel="stylesheet">
+<link href="/css/sweet-alert.css" rel="stylesheet">
+    
 </head>
 <body>
   <header class="header">
@@ -62,27 +39,18 @@
   </button>
 </div>
 
-<script>
-function confirmarSair() {
-    // Exibe uma caixa de diálogo personalizada
-    Swal.fire({
-        title: 'Tem certeza que deseja sair?',
-        icon: 'question',
-        showCancelButton: true,
-        confirmButtonText: 'Sair',
-        cancelButtonText: 'Cancelar',
-        iconColor: '#bf8b15'
-    }).then((result) => {
-        // Se o usuário clicar em "Sim", exclui o cookie e redireciona para a rota de logout
-        if (result.isConfirmed) {
-            document.cookie = "usuarioId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-            window.location.href = "/sair";
-        }
-    });
-}
-</script>
 </div>
   </header>
+        <!-- Bootstrap core JavaScript-->
+        <script src="/vendor/jquery/jquery.min.js"></script>
+        <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    
+        <!-- Core plugin JavaScript-->
+        <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+        <script src="/js/sb-admin-2.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+        <script src="/js/sweet-alert.js"></script>
 </body>
 </html>
 

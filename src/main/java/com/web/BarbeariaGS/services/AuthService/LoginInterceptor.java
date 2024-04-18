@@ -22,8 +22,10 @@ public class LoginInterceptor implements HandlerInterceptor {
       }
       catch(Exception erro) {}
       
-      response.sendError(403, "Acesso negado");
-      return false;
+      
+      // Redireciona para a página de erro 404
+      response.sendRedirect("/error/404");
+      return false; // Retorna false para indicar que a requisição foi tratada e não deve continuar o processamento
    }
 
 

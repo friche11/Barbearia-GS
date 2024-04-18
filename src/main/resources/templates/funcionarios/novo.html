@@ -1,5 +1,3 @@
-<!DOCTYPE html>
-<html>
 <div th:replace="~{fragments/navbar}"></div>
 <!-- Custom fonts for this template-->
 <link rel="stylesheet" href="/css/navbar.css">
@@ -10,10 +8,13 @@
 <link
  href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
  rel="stylesheet">
+ <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
 <!-- Custom styles for this template-->
 <link href="/css/sb-admin-2.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+ <!-- Custom styles for this template-->
+ <link href="/css/sweet-alert.css" rel="stylesheet">
+ <link href="/css/password-eye.css" rel="stylesheet">
 
                 <style>
                      .container-fluid {
@@ -24,28 +25,6 @@
 
                 </style>
 
-<style>
-  .swal2-title {
-    color: #bf8b15 !important; /* Cor do título */
-  }
-  .swal2-content {
-    color: #000 !important; /* Cor do texto */
-  }
-  .swal2-confirm.swal2-styled {
-    background-color: #bf8b15;
-    color: #fff; /* Cor do texto nos botões */
-  }
-  .swal2-cancel.swal2-styled{
-    background-color: #ff0000;
-    color: #fff; /* Cor do texto nos botões */
-  }
-  .swal2-shown.swal2-height-auto {
-    background-color: rgba(0, 0, 0, 0.01); /* Define a cor de fundo desejada com transparência */
-}
-.swal2-container.swal2-backdrop-show, .swal2-container.swal2-noanimation {
-    background: rgba(0,0,0,0.02);
-}
-</style>
                 <!-- Begin Page Content -->
                 <div class="container-fluid" style="padding-top: 70px; ">
 
@@ -57,13 +36,19 @@
                       <div class="alert alert-danger mt-3" role="alert" th:if="${param.error}">
                         O e-mail fornecido já está em uso.
                     </div>
+                    <div class="alert alert-danger mt-3" role="alert" th:if="${param.errorNomeInvalido}">
+                      O nome deve conter apenas letras.
+                  </div>
+                    <div class="alert alert-danger mt-3" role="alert" th:if="${param.errorSenhaInsegura}">
+                      A senha deve ter pelo o menos 1 número, 1 letra e 1 caractere especial.
+                  </div>
                     <div class="alert alert-danger mt-3" role="alert" th:if="${param.errorSenhaInvalida}">
-                        A senha precisa ter até 10 caracteres.
-                    </div>
+                      A senha precisa ter entre 3 e 10 caracteres.
+                  </div>
                     <div class="alert alert-danger mt-3" role="alert" th:if="${param.errorEmailInvalido}">
                         O email deve ter até 100 caracteres.
                     </div>
-                        <form id="cadastroForm" class="user" action="/gerenciar/funcionarios/criar" method="POST" onsubmit="return confirmarCadastro()">
+                        <form id="cadastroFormNovoFuncionario" class="user" action="/gerenciar/funcionarios/criar" method="POST">
     
                       
                             <div class="form-group">
@@ -78,9 +63,10 @@
                               <label for="email">Email</label>
                               <input type="email" class="form-control" required id="email" name="email" placeholder="Digite seu email">
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" style="position: relative;">
                               <label for="senha">Senha</label>
                               <input type="password" class="form-control" required id="senha" name="senha" placeholder="Digite sua senha">
+                              <span toggle="#senha" class="fa fa-fw fa-eye field-icon toggle-password funcionario-page"></span>
                             </div>
                             <input type="hidden" name="adminId" value="${cookie.usuarioId}">
                             <!-- Botão de envio -->
@@ -93,50 +79,19 @@
 
                 </div>
 
-    <script>
+    <!-- Bootstrap core JavaScript-->
+    <script src="/vendor/jquery/jquery.min.js"></script>
+    <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-    document.getElementById('cadastroForm').addEventListener('submit', function(event) {
-    event.preventDefault(); // Impede o envio padrão do formulário
+    <!-- Core plugin JavaScript-->
+    <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
 
-    // Exibe uma caixa de diálogo personalizada
-    Swal.fire({
-        title: 'Tem certeza que deseja cadastrar novo funcionário?',
-        icon: 'question',
-        showCancelButton: true,
-        confirmButtonText: 'Cadastrar',
-        cancelButtonText: 'Cancelar',
-        iconColor: '#bf8b15'
-    }).then((result) => {
-        // Se o usuário confirmar, envia o formulário via AJAX
-        if (result.isConfirmed) {
-            enviarFormulario(); // Função para enviar o formulário
-        }
-    });
-});
-
-function enviarFormulario() {
-    var form = document.getElementById('cadastroForm');
-    var formData = new FormData(form);
-
-    // Envia o formulário via AJAX
-    fetch(form.action, {
-        method: form.method,
-        body: formData
-    })
-    .then(response => {
-        if (response.redirected) {
-            window.location.href = response.url; // Redireciona se necessário
-        }
-    })
-    .catch(error => console.error('Erro:', error));
-
-}
-    document.addEventListener('DOMContentLoaded', function() {
-        var adminId = parseInt(document.getElementById('adminId').value);
-        document.getElementById('adminId').value = adminId;
-    });
-
-      </script>
-      </html>
+    <!-- Custom scripts for all pages-->
+    <script src="/js/sb-admin-2.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="/js/password-eye.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+  <script src="/js/sweet-alert.js"></script>
+    
                 <!-- /.container-fluid -->
                 <div th:replace="~{fragments/footer}"></div>

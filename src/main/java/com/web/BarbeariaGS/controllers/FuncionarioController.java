@@ -17,6 +17,7 @@ import com.web.BarbeariaGS.repository.AdminRepo;
 import com.web.BarbeariaGS.repository.ClientesRepo;
 import com.web.BarbeariaGS.repository.FuncionariosRepo;
 import com.web.BarbeariaGS.services.CookieService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -31,6 +32,11 @@ public class FuncionarioController {
 
     @Autowired
     private ClientesRepo clientesRepo;
+
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+  
 
     //Rota para página de gerencia funcionario
     @GetMapping("/funcionarios")
@@ -100,12 +106,37 @@ public class FuncionarioController {
 
       //Rota para metodo POST de cadastro de funcionario
     @PostMapping("/gerenciar/funcionarios/criar")
-    public String criar(Funcionario funcionario, @RequestParam String email,  @RequestParam String senha, HttpServletRequest request){
-         // Verifica se a senha ultrapassa 10 caracteres
-         if (senha.length() > 10) {
-            return "redirect:/gerenciar/funcionarios/novo?errorSenhaInvalida=Senha não pode ter mais de 10 caracteres";
+    public String criar(Funcionario funcionario, @RequestParam String email,  @RequestParam String senha,  @RequestParam String nome, HttpServletRequest request){
+        // Verifica se a senha contém pelo menos 1 número
+        boolean temNumero = senha.matches(".*[0-9].*");
+
+        // Verifica se a senha contém pelo menos 1 letra
+        boolean temLetra = senha.matches(".*[a-zA-Z].*");
+
+        // Verifica se a senha contém pelo menos 1 caractere especial
+        boolean temCaractereEspecial = senha.matches(".*[@#$%^&+=?!].*");
+
+                // Verifica se o nome contém apenas letras e espaços
+        boolean contemApenasLetras = nome.matches("[a-zA-Z\\s]+");
+
+        // Verifica se o nome contém apenas letras
+        if (!contemApenasLetras) {
+            return "redirect:/gerenciar/funcionarios/novo?errorNomeInvalido=O nome deve conter apenas letras";
         }
 
+        // Verifica se a senha atende a todos os critérios
+         if (!temNumero || !temLetra || !temCaractereEspecial) {
+        return "redirect:/gerenciar/funcionarios/novo?errorSenhaInsegura=A senha deve conter pelo menos 1 número, 1 letra e 1 caractere especial";
+        }
+         // Verifica se a senha ultrapassa 10 caracteres
+         if (senha.length() > 10) {
+            return "redirect:/gerenciar/funcionarios/novo?errorSenhaInvalida=Senha deve ter entre 3 e 10 caracteres";
+        }
+
+         // Verifica se a senha ultrapassa 10 caracteres
+         if (senha.length() < 3) {
+            return "redirect:/gerenciar/funcionarios/novo?errorSenhaInvalida=Senha deve ter entre 3 e 10 caracteres";
+        }
         // Verifica se o email ultrapassa 100 caracteres
         if (email.length() > 100) {
             return "redirect:/gerenciar/funcionarios/novo?errorEmailInvalido=Email não pode ter mais de 100 caracteres";
@@ -154,9 +185,15 @@ if (CookieService.getCookie(request, "usuarioId") != null) {
             // Verifica se o admin com o ID fornecido existe
         Optional<Admin> adminOptional = adminRepo.findById(adminId);
         if (adminOptional.isPresent()) {
-            funcionario.setAdmin(adminOptional.get());
+            funcionario.setAdminCriacao(adminOptional.get());
+            // Garante que o adminCriacao não seja alterado durante a atualização
+            funcionario.setAdminEdicao(funcionario.getAdminEdicao());
+            
+            // Configura a senha do cliente como o hash gerado
+            funcionario.setSenha(bCryptPasswordEncoder.encode(senha));
+
             funcionariosRepo.save(funcionario);
-            return "redirect:/gerenciar/funcionarios";
+            return "redirect:/gerenciar/funcionarios?cadastroSucesso=true";
         } else {
             return "redirect:/gerenciar/funcionarios/novo?error=adminNotFound";
         }
@@ -204,13 +241,28 @@ if (CookieService.getCookie(request, "usuarioId") != null) {
 
      //Rota para alterar cadastro no banco
      @PostMapping("/gerenciar/funcionarios/{id}/atualizar")
-     public String atualizar(@PathVariable int id, @RequestParam String email,  @RequestParam String senha, Funcionario funcionario, HttpServletRequest request){
+     public String atualizar(@PathVariable int id, @RequestParam String email,  @RequestParam String senha,  @RequestParam String nome, Funcionario funcionario, HttpServletRequest request){
+// Verifica se a senha contém pelo menos 1 número
+boolean temNumero = senha.matches(".*[0-9].*");
 
- // Verifica se a senha ultrapassa 10 caracteres
- if (senha.length() > 10) {
-    return "redirect:/gerenciar/funcionarios/{id}?errorSenhaInvalida=Senha não pode ter mais de 10 caracteres";
+// Verifica se a senha contém pelo menos 1 letra
+boolean temLetra = senha.matches(".*[a-zA-Z].*");
+
+// Verifica se a senha contém pelo menos 1 caractere especial
+boolean temCaractereEspecial = senha.matches(".*[@#$%^&+=?!].*");
+
+// Verifica se o nome contém apenas letras e espaços
+boolean contemApenasLetras = nome.matches("[a-zA-Z\\s]+");
+
+// Verifica se o nome contém apenas letras
+if (!contemApenasLetras) {
+    return "redirect:/gerenciar/funcionarios/{id}?errorNomeInvalido=O nome deve conter apenas letras";
 }
 
+// Verifica se a senha atende a todos os critérios
+ if (!temNumero || !temLetra || !temCaractereEspecial) {
+return "redirect:/gerenciar/funcionarios/{id}?errorSenhaInsegura=A senha deve conter pelo menos 1 número, 1 letra e 1 caractere especial";
+}
 // Verifica se o email ultrapassa 100 caracteres
 if (email.length() > 100) {
     return "redirect:/gerenciar/funcionarios/{id}?errorEmailInvalido=Email não pode ter mais de 100 caracteres";
@@ -260,12 +312,18 @@ if (funcionariosRepo.existsByEmail(email) && funcionariosRepo.findByEmailAndIdNo
         
        // Verifica se o admin com o ID fornecido existe
 Optional<Admin> adminOptional = adminRepo.findById(adminId);
+Optional<Funcionario> funcionarioOptional = funcionariosRepo.findById(id);
 if (adminOptional.isPresent()) {
-    funcionario.setAdmin(adminOptional.get());
+    Funcionario funcionarioExistente = funcionarioOptional.get();
+    // Atribui o adminCriacao do funcionário existente ao funcionário que está sendo atualizado
+    funcionario.setAdminCriacao(funcionarioExistente.getAdminCriacao());
+    funcionario.setAdminEdicao(adminOptional.get());
+    // Configura a senha do funcionario como o hash gerado
+    funcionario.setSenha(bCryptPasswordEncoder.encode(senha));
     funcionariosRepo.save(funcionario);
     return "redirect:/gerenciar/funcionarios";
 } else {
-    return "redirect:/gerenciar/funcionarios/novo?error=adminNotFound";
+    return "redirect:/gerenciar/funcionarios?error=adminNotFound";
 }
         
             } else {

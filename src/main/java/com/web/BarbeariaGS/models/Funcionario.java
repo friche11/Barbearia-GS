@@ -1,5 +1,8 @@
 package com.web.BarbeariaGS.models;
 
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -7,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -26,14 +30,29 @@ public class Funcionario {
      @Column(name = "email", length = 256, nullable = false)
      private String email;
  
-     @Column(name = "senha", length = 10, nullable = false)
+     @Column(name = "senha", nullable = false)
      private String senha;
 
     @ManyToOne
-    @JoinColumn(name = "admin_id", referencedColumnName = "id")
-    private Admin admin;
+    @JoinColumn(name = "admin_id_criacao", referencedColumnName = "id")
+    private Admin adminCriacao;
+
+    @ManyToOne
+    @JoinColumn(name = "admin_id_edicao", referencedColumnName = "id")
+    private Admin adminEdicao;
+
+    @OneToMany(mappedBy = "funcionario", cascade = CascadeType.ALL)
+    private List<Agendamento> agendamentos;
     
-     public int getId() {
+     public List<Agendamento> getAgendamentos() {
+        return agendamentos;
+    }
+
+    public void setAgendamentos(List<Agendamento> agendamentos) {
+        this.agendamentos = agendamentos;
+    }
+
+    public int getId() {
         return id;
     }
 
@@ -73,12 +92,20 @@ public class Funcionario {
         this.senha = senha;
     }
 
-    public Admin getAdmin() {
-        return admin;
+    public Admin getAdminCriacao() {
+        return adminCriacao;
     }
     
-    public void setAdmin(Admin admin) {
-        this.admin = admin;
+    public void setAdminCriacao(Admin adminCriacao) {
+        this.adminCriacao = adminCriacao;
+    }
+
+    public Admin getAdminEdicao() {
+        return adminEdicao;
+    }
+    
+    public void setAdminEdicao(Admin adminEdicao) {
+        this.adminEdicao = adminEdicao;
     }
 
     

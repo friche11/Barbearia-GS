@@ -10,6 +10,7 @@ import com.web.BarbeariaGS.models.Cliente;
 import com.web.BarbeariaGS.repository.AdminRepo;
 import com.web.BarbeariaGS.repository.ClientesRepo;
 import com.web.BarbeariaGS.services.CookieService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -27,6 +28,9 @@ public class ClienteController {
 
     @Autowired
     private ClientesRepo funcionariosRepo;
+
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
      //Rota para página de cliente
     @GetMapping("/clientes")
@@ -55,10 +59,37 @@ public class ClienteController {
 
      //Rota para metodo POST de cadastro de cliente
     @PostMapping("/clientes/criar")
-    public String criar(Cliente cliente, @RequestParam String email, @RequestParam String senha){
+    public String criar(Cliente cliente, @RequestParam String email, @RequestParam String senha, @RequestParam String nome){
+        // Verifica se a senha contém pelo menos 1 número
+        boolean temNumero = senha.matches(".*[0-9].*");
+
+        // Verifica se a senha contém pelo menos 1 letra
+        boolean temLetra = senha.matches(".*[a-zA-Z].*");
+
+        // Verifica se a senha contém pelo menos 1 caractere especial
+        boolean temCaractereEspecial = senha.matches(".*[@#$%^&+=?!].*");
+
+        // Verifica se o nome contém apenas letras e espaços
+        boolean contemApenasLetras = nome.matches("[a-zA-Z\\s]+");
+
+        // Verifica se o nome contém apenas letras
+        if (!contemApenasLetras) {
+            return "redirect:/clientes/novo?errorNomeInvalido=O nome deve conter apenas letras";
+        }
+
+        // Verifica se a senha atende a todos os critérios
+         if (!temNumero || !temLetra || !temCaractereEspecial) {
+        return "redirect:/clientes/novo?errorSenhaInsegura=A senha deve conter pelo menos 1 número, 1 letra e 1 caractere especial";
+        }
+
          // Verifica se a senha ultrapassa 10 caracteres
          if (senha.length() > 10) {
-            return "redirect:/clientes/novo?errorSenhaInvalida=Senha não pode ter mais de 10 caracteres";
+            return "redirect:/clientes/novo?errorSenhaInvalida=Senha deve ter entre 3 e 10 caracteres";
+        }
+
+        // Verifica se a senha ultrapassa 10 caracteres
+        if (senha.length() < 3) {
+            return "redirect:/clientes/novo?errorSenhaInvalida=Senha deve ter entre 3 e 10 caracteres";
         }
 
         // Verifica se o email ultrapassa 100 caracteres
@@ -80,10 +111,14 @@ public class ClienteController {
             // Se o e-mail já está em uso na tabela administradores, redireciona de volta para a página de cadastro com uma mensagem de erro
             return "redirect:/clientes/novo?error=emailInUse";
         }
-        
-        // Se o e-mail não está em uso, salva o cliente e redireciona para a página de clientes
+
+        // Configura a senha do cliente como o hash gerado
+        cliente.setSenha(bCryptPasswordEncoder.encode(senha));
+
+        // Salva o cliente
         clientesRepo.save(cliente);
-        return "redirect:/login";
+        // Após o cadastro bem-sucedido
+        return "redirect:/login?cadastroSucesso=true";
         
     }
 }

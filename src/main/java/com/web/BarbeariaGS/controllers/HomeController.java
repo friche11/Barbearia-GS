@@ -56,6 +56,7 @@ public class HomeController {
             model.addAttribute("funcionario", true);
         } 
     } 
+    // Após o cadastro bem-sucedido
      return "home/index";
     }
 

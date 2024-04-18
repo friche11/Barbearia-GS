@@ -26,18 +26,29 @@ public class Admin {
      @Column(name = "email", length = 256, nullable = false)
      private String email;
  
-     @Column(name = "senha", length = 10, nullable = false)
+     @Column(name = "senha", nullable = false)
      private String senha;
 
-     @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL)
-    private List<Funcionario> funcionarios;
+     @OneToMany(mappedBy = "adminCriacao", cascade = CascadeType.ALL)
+    private List<Funcionario> funcionariosCriados;
+
+    @OneToMany(mappedBy = "adminEdicao", cascade = CascadeType.ALL)
+    private List<Funcionario> funcionariosEditados;
     
-     public List<Funcionario> getFuncionarios() {
-        return funcionarios;
+     public List<Funcionario> getFuncionariosCriados() {
+        return funcionariosCriados;
     }
 
-    public void setFuncionarios(List<Funcionario> funcionarios) {
-        this.funcionarios = funcionarios;
+    public void setFuncionariosCriados(List<Funcionario> funcionariosCriados) {
+        this.funcionariosCriados = funcionariosCriados;
+    }
+
+    public List<Funcionario> getFuncionariosEditados() {
+        return funcionariosEditados;
+    }
+
+    public void setFuncionarios(List<Funcionario> funcionariosEditados) {
+        this.funcionariosEditados = funcionariosEditados;
     }
 
     public int getId() {
@@ -77,4 +88,3 @@ public class Admin {
         return nome; // Supondo que o nome seja o atributo que deseja exibir
     }
  }
-

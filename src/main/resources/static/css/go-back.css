@@ -1,16 +1,19 @@
-.go-back{
-    
+.go-back {
     position: absolute;
-    top: 5;
-    right: 18;
+    top: 30px; /* Ajuste fino para a posição vertical */
+    left: 40px; /* Ajuste fino para a posição horizontal */
     margin: 1.5rem;
-    color: #ffffff;
+    color: #ffffff; /* Cor do texto */
+    font-size: 23px; /* Tamanho do ícone */
+    align-items: center;
+    text-decoration: none; /* Remove o sublinhado */
 }
-.go-back i{
-    
-    position: absolute;
-    top: 5;
-    right: 18;
-    margin: 1.5rem;
-    font-size: 24px; /* Defina o tamanho desejado em pixels */
+.go-back:hover{
+    text-decoration: none; /* Remove o sublinhado */
+}
+
+.go-back i {
+    font-size: 25px; 
+    margin-right: 7px; /* Espaçamento entre o ícone e o texto */
+   
 }
