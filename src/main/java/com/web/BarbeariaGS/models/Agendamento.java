@@ -2,7 +2,9 @@ package com.web.BarbeariaGS.models;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -22,9 +25,6 @@ public class Agendamento {
 
     @Column(name = "data", nullable = false)
     private LocalDate data;
-
-    @Column(name = "horario", nullable = false)
-    private LocalDateTime horario;
 
     @Column(name = "status", nullable = false)
     private boolean status;
@@ -41,6 +41,18 @@ public class Agendamento {
     @JoinColumn(name = "servico_id", referencedColumnName = "id")
     private Servico servico;
 
+    @ManyToOne
+    @JoinColumn(name = "horario_id", referencedColumnName = "id")
+    private Horario horario;
+
+    public Horario getHorario() {
+        return horario;
+    }
+
+    public void setHorario(Horario horario) {
+        this.horario = horario;
+    }
+
     public int getId() {
         return id;
     }
@@ -55,14 +67,6 @@ public class Agendamento {
 
     public void setData(LocalDate data) {
         this.data = data;
-    }
-
-    public LocalDateTime getHorario() {
-        return horario;
-    }
-
-    public void setHorario(LocalDateTime horario) {
-        this.horario = horario;
     }
 
     public boolean isStatus() {

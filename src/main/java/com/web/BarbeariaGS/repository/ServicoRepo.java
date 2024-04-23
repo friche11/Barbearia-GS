@@ -15,14 +15,14 @@ public interface ServicoRepo extends CrudRepository<Servico, Integer> {
     public boolean existsByEmail(String email);
 
     @Query(value= "select * from servicos where email = :email and senha = :senha", nativeQuery = true)
-    public Funcionario login(String email, String senha);
+    public Servico login(String email, String senha);
 
     @Query(value = "select * from servicos where email = :email", nativeQuery = true)
-    Funcionario findByEmail(String email);
+    Servico findByEmail(String email);
 
     @Query(value = "select senha from servicos where email = :email", nativeQuery = true)
     String findSenhaByEmail(String email);
 
     @Query(value = "select * from servicos where email = :email and id <> :id", nativeQuery = true)
-    Funcionario findByEmailAndIdNot(String email, int id);
+    Servico findByEmailAndIdNot(String email, int id);
 }

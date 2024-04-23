@@ -18,7 +18,7 @@ import jakarta.persistence.Table;
 public class Funcionario {
      @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    
      private int id;
 
      @Column(name = "nome", length = 100, nullable = false)

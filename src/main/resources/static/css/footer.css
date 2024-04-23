@@ -3,13 +3,13 @@
   width: 100%;
   background-color: #bf8b15;
   padding-top: 2rem;
-  height: 12rem;
-  position: absolute;
-  bottom: 0;
+  padding-bottom: 2rem;
+  position: fixed;
+  bottom: 0; /* Começa abaixo da página */
   left: 0;
-  
-  
+  z-index: 1000; /* Garante que o footer fique sempre sobreposto ao conteúdo */
 }
+
 
 .swal-title {
   color: #bf8b15; /* Cor do título */

@@ -1,14 +1,21 @@
 package com.web.BarbeariaGS.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.web.BarbeariaGS.models.Cliente;
+import com.web.BarbeariaGS.models.Funcionario;
+import com.web.BarbeariaGS.models.Servico;
 import com.web.BarbeariaGS.repository.AdminRepo;
 import com.web.BarbeariaGS.repository.ClientesRepo;
+import com.web.BarbeariaGS.repository.FuncionariosRepo;
+import com.web.BarbeariaGS.repository.ServicoRepo;
 import com.web.BarbeariaGS.services.CookieService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -27,28 +34,38 @@ public class ClienteController {
     private ClientesRepo clientesRepo;
 
     @Autowired
-    private ClientesRepo funcionariosRepo;
+    private FuncionariosRepo funcionariosRepo;
+
+    @Autowired
+    private ServicoRepo servicosRepo;
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-     //Rota para página de cliente
-    @GetMapping("/clientes")
-    public String index(HttpServletRequest request){
+     //Rota para página de agenda
+     @GetMapping("/clientes")
+     public String index(HttpServletRequest request, Model model, Model modelList){
          // Verifica se o cookie de usuário existe e está dentro do prazo de validade
        if (CookieService.getCookie(request, "usuarioId") != null) {
         // Verifica se o usuário autenticado é um administrador
         if (CookieService.getCookie(request, "tipoUsuario").equals("cliente")) {
-            return "clientes/index";
+            // Se o cookie existe e está dentro do prazo de validade, redireciona para a página principal
+            model.addAttribute("logado", true);
+            List<Funcionario> funcionarios = (List<Funcionario>)funcionariosRepo.findAll();
+            modelList.addAttribute("funcionarios", funcionarios);
+            List<Servico> servicos = (List<Servico>)servicosRepo.findAll();
+            modelList.addAttribute("servicos", servicos);
+            return "/clientes/index";
+    
         } else {
-            // Se não for cliente, redireciona para a página principal
+            // Se não for administrador, redireciona para a página principal
             return "redirect:/";
         }
     } else {
         // Se o cookie não existe ou está expirado, redireciona para a página de login
         return "redirect:/login";
     }
-    }
+     }
 
      //Rota para página de cadastro de cliente
      @GetMapping("/clientes/novo")
