@@ -53,21 +53,21 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form>
+                        <form action="/clientes/novo/agendamento/selecao-horarios/criar" method="post">
                             <div class="form-group">
                                 <label for="selectHorario">Escolha o horário para <span id="dataEscolhida"></span></label>
-                                <select class="form-control" id="selectHorario" onchange="habilitarBotao()">
+                                <select class="form-control" id="selectHorario" name="horarioId" required>
                                     <option value="">Escolha o horário</option>
-                                    <option th:each="horario : ${horarios}" 
-                                            th:value="${horario[0]}" th:text="${horario[1]}"></option>
+                                    <option th:each="horario : ${horarios}" th:value="${horario[0]}" th:text="${horario[1]}"></option>
                                 </select>
-                                
                             </div>
+                            <input type="hidden" id="funcionarioId" name="funcionarioId" th:value="${funcionario.id}" />
+                            <input type="hidden" id="servicoId" name="servicoId" th:value="${servico.id}" />
+                            <input type="hidden" id="dataAgendamento" name="dataAgendamento" th:value="${dataAgendamento}" />
+                            <button type="submit" class="btn btn-primary btn-confirmar">Confirmar agendamento</button>
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary btn-confirmar" disabled
-                        onclick="marcarHorario('dataEscolhida', 'horarioSelecionado')">Confirmar</button>
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
                     </div>
                 </div>

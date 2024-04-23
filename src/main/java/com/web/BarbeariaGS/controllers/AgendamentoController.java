@@ -15,10 +15,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.web.BarbeariaGS.models.Agendamento;
+import com.web.BarbeariaGS.models.Cliente;
 import com.web.BarbeariaGS.models.Funcionario;
 import com.web.BarbeariaGS.models.Horario;
 import com.web.BarbeariaGS.models.Servico;
 import com.web.BarbeariaGS.repository.AgendamentoRepo;
+import com.web.BarbeariaGS.repository.ClientesRepo;
 import com.web.BarbeariaGS.repository.FuncionariosRepo;
 import com.web.BarbeariaGS.repository.HorarioRepo;
 import com.web.BarbeariaGS.repository.ServicoRepo;
@@ -34,6 +36,9 @@ public class AgendamentoController {
 
     @Autowired
     private FuncionariosRepo funcionariosRepo;
+    
+    @Autowired
+    private ClientesRepo clienteRepo;
 
     @Autowired
     private HorarioRepo horarioRepo;
@@ -111,49 +116,55 @@ public String abrirModalSelecaoHorarios(Model model, @RequestParam("funcionarioI
 
 
 
-    @PostMapping("/clientes/novo/agendamento/criar")
-    public String criarAgendamento(Model model, HttpServletRequest request, @RequestBody Map<String, Object> requestBody) {
-        // Verifica se o cookie de usuário existe e está dentro do prazo de validade
-        if (CookieService.getCookie(request, "usuarioId") != null) {
-            // Verifica se o usuário autenticado é um cliente
-            if (CookieService.getCookie(request, "tipoUsuario").equals("cliente")) {
-                // Obtém os dados enviados pelo cliente
-                int funcionarioId = Integer.parseInt((String) requestBody.get("funcionarioId"));
-                int servicoId = Integer.parseInt((String) requestBody.get("servicoId"));
-                LocalDate dataAgendamento = LocalDate.parse((String) requestBody.get("dataAgendamento"));
-                int horarioId = Integer.parseInt((String) requestBody.get("horarioId"));
+@PostMapping("/clientes/novo/agendamento/selecao-horarios/criar")
+public String criarAgendamento(Model model, HttpServletRequest request,
+                               @RequestParam("funcionarioId") int funcionarioId,
+                               @RequestParam("servicoId") int servicoId,
+                               @RequestParam("dataAgendamento") String dataAgendamento,
+                               @RequestParam("horarioId") int horarioId) {
+    // Recupera o ID do cliente do cookie
+    int clienteId = Integer.parseInt(CookieService.getCookie(request, "usuarioId"));
+    // Verifica se o cookie de usuário existe e está dentro do prazo de validade
+    if (CookieService.getCookie(request, "usuarioId") != null) {
+        // Verifica se o usuário autenticado é um cliente
+        if (CookieService.getCookie(request, "tipoUsuario").equals("cliente")) {
+             // Busca o cliente pelo ID (assumindo que exista um repository para clientes)
+            Cliente cliente = clienteRepo.findById(clienteId)
+                    .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
 
-                // Busca o funcionário pelo ID
-                Funcionario funcionario = funcionariosRepo.findById(funcionarioId)
-                        .orElseThrow(() -> new RuntimeException("Funcionário não encontrado"));
+            // Busca o funcionário pelo ID
+            Funcionario funcionario = funcionariosRepo.findById(funcionarioId)
+                    .orElseThrow(() -> new RuntimeException("Funcionário não encontrado"));
 
-                // Busca o horário pelo ID
-                Horario horario = horarioRepo.findById(horarioId)
-                        .orElseThrow(() -> new RuntimeException("Horário não encontrado"));
+            // Busca o horário pelo ID
+            Horario horario = horarioRepo.findById(horarioId)
+                    .orElseThrow(() -> new RuntimeException("Horário não encontrado"));
 
-                // Busca o serviço pelo ID
-                Servico servico = servicoRepo.findById(servicoId)
-                        .orElseThrow(() -> new RuntimeException("Serviço não encontrado"));
+            // Busca o serviço pelo ID
+            Servico servico = servicoRepo.findById(servicoId)
+                    .orElseThrow(() -> new RuntimeException("Serviço não encontrado"));
 
-                // Cria uma instância de Agendamento com os dados
-                Agendamento agendamento = new Agendamento();
-                agendamento.setFuncionario(funcionario);
-                agendamento.setServico(servico);
-                agendamento.setData(dataAgendamento);
-                agendamento.setHorario(horario);
+            // Cria uma instância de Agendamento com os dados
+            Agendamento agendamento = new Agendamento();
+            agendamento.setFuncionario(funcionario);
+            agendamento.setServico(servico);
+            agendamento.setData(LocalDate.parse(dataAgendamento));
+            agendamento.setHorario(horario);
+            agendamento.setCliente(cliente);
 
-                // Salva o agendamento no banco de dados
-                agendamentoRepo.save(agendamento);
+            // Salva o agendamento no banco de dados
+            agendamentoRepo.save(agendamento);
 
-                // Redireciona para outra página após o sucesso
-                return "redirect:/clientes/novo/agendamento";
-            } else {
-                // Se não for cliente, redireciona para a página principal
-                return "redirect:/";
-            }
+            // Redireciona para outra página após o sucesso
+            return "redirect:/clientes";
         } else {
-            // Se o cookie não existe ou está expirado, redireciona para a página de login
-            return "redirect:/login";
+            // Se não for cliente, redireciona para a página principal
+            return "redirect:/";
         }
+    } else {
+        // Se o cookie não existe ou está expirado, redireciona para a página de login
+        return "redirect:/login";
     }
+}
+
 }
