@@ -8,10 +8,16 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import com.web.BarbeariaGS.models.Agendamento;
+import com.web.BarbeariaGS.models.Cliente;
 import com.web.BarbeariaGS.models.Funcionario;
 import com.web.BarbeariaGS.models.Horario;
 
 public interface AgendamentoRepo extends CrudRepository<Agendamento, Integer>{
+  
+  // Método para buscar agendamentos por cliente
+  @Query("SELECT a FROM Agendamento a WHERE a.cliente = :cliente")
+    List<Agendamento> findByCliente(Cliente cliente);
+
       @Query(value= "select CASE WHEN count(1)>0 THEN 'true' ELSE 'false' END from agendamentos where id = :id", nativeQuery = true)
     public boolean exist(int id);
 

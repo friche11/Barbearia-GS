@@ -1,13 +1,17 @@
 package com.web.BarbeariaGS.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import com.web.BarbeariaGS.models.Agendamento;
+import com.web.BarbeariaGS.models.Cliente;
 import com.web.BarbeariaGS.models.Funcionario;
 import com.web.BarbeariaGS.models.Horario;
 
 public interface HorarioRepo extends CrudRepository<Horario, Integer>{
+  
       @Query(value= "select CASE WHEN count(1)>0 THEN 'true' ELSE 'false' END from horarios where id = :id", nativeQuery = true)
     public boolean exist(int id);
 

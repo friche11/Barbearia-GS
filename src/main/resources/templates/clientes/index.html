@@ -25,6 +25,28 @@
             Marcar novo horário
         </button>
 
+        <div class="container">
+            <h1>Seus Agendamentos</h1>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Horário</th>
+                        <th>Funcionário</th>
+                        <th>Serviço</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Loop para exibir os agendamentos -->
+                    <tr th:each="agendamento : ${agendamentos}">
+                        <td th:text="${#temporals.format(agendamento.data, 'dd/MM/yyyy')}"></td>
+                        <td th:text="${agendamento.horario.horario}"></td>
+                        <td th:text="${agendamento.funcionario.nome}"></td>
+                        <td th:text="${agendamento.servico.nome}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
         <!-- Modal de seleção de profissional -->
         <div class="modal fade" id="modalSelecaoProfissional" tabindex="-1" role="dialog"
