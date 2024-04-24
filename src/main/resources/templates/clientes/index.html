@@ -20,13 +20,13 @@
     <div th:insert="~{fragments/navbar}"></div>
 
     <div class="container-fluid center-content">
-        <h1>Agenda</h1>
-        <button class="btn btn-primary btn-user btn-block" onclick="abrirModalSelecaoProfissional()">
+        <h1 style="margin-bottom: 30px;">Agenda</h1>
+        <button class="btn btn-primary btn-user btn-block" style="width: 200px;" onclick="abrirModalSelecaoProfissional()">
             Marcar novo horário
         </button>
 
         <div class="container">
-            <h1>Seus Agendamentos</h1>
+            <h4 style="margin-top: 30px;">Seus Agendamentos</h4>
             <table class="table">
                 <thead>
                     <tr>
@@ -203,9 +203,27 @@ function marcarProfissional() {
       marcarHorario(dataEscolhida, horarioSelecionado);
   });
 </script>
-    <div th:insert="~{fragments/footer}"></div>
 
+ <!-- Bootstrap core JavaScript-->
+ <script src="/vendor/jquery/jquery.min.js"></script>
+ <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+ 
+ <!-- Core plugin JavaScript-->
+ <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+ 
+ <!-- Custom scripts for all pages-->
+ <script src="/js/sb-admin-2.js"></script>
+ 
+ 
+ <!-- Bootstrap core JavaScript-->
+<script src="/vendor/jquery/jquery.min.js"></script>
+<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
+<!-- Core plugin JavaScript-->
+<script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="/js/sb-admin-2.js"></script>
 </body>
 
 </html>

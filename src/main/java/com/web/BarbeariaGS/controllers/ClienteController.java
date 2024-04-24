@@ -60,6 +60,12 @@ public String agendamentosCliente(HttpServletRequest request, Model model) {
         Cliente cliente = clientesRepo.findById(clienteId)
                 .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
 
+        List<Servico> servicos = (List<Servico>)servicosRepo.findAll();
+        model.addAttribute("servicos", servicos);
+
+        List<Funcionario> funcionarios = (List<Funcionario>)funcionariosRepo.findAll();
+            model.addAttribute("funcionarios", funcionarios);
+
         // Busca os agendamentos do cliente
         List<Agendamento> agendamentos = agendamentosRepo.findByCliente(cliente);
         
