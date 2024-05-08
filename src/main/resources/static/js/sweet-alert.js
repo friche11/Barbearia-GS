@@ -212,6 +212,28 @@ function redirecionarParaEscolhaGerenciar() {
                 });
             });
             }
+
+            if(document.getElementById('cadastroFormEditHorario')){
+                document.getElementById('cadastroFormEditHorario').addEventListener('submit', function(event) {
+                    event.preventDefault(); // Impede o envio padrão do formulário
+                
+                    // Exibe uma caixa de diálogo personalizada
+                    Swal.fire({
+                        title: 'Tem certeza que deseja confirmar a edição desse horário?',
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonText: 'Confirmar',
+                        cancelButtonText: 'Cancelar',
+                        iconColor: '#bf8b15'
+                    }).then((result) => {
+                        // Se o usuário confirmar, envia o formulário via AJAX
+                        if (result.isConfirmed) {
+                            enviarFormularioEditServico(); // Função para enviar o formulário
+                        }
+                    });
+                });
+                }
+            
         
         function enviarFormularioEdit() {
             var form = document.getElementById('cadastroFormEdit');
@@ -232,6 +254,23 @@ function redirecionarParaEscolhaGerenciar() {
 
         function enviarFormularioEditServico() {
             var form = document.getElementById('cadastroFormEditServico');
+            var formData = new FormData(form);
+        
+            // Envia o formulário via AJAX
+            fetch(form.action, {
+                method: form.method,
+                body: formData
+            })
+            .then(response => {
+                if (response.redirected) {
+                    window.location.href = response.url; // Redireciona se necessário
+                }
+            })
+            .catch(error => console.error('Erro:', error));
+        }
+
+        function enviarFormularioEditHorario() {
+            var form = document.getElementById('cadastroFormEditHorario');
             var formData = new FormData(form);
         
             // Envia o formulário via AJAX
@@ -290,6 +329,28 @@ function redirecionarParaEscolhaGerenciar() {
             });
         });
     }
+
+    // Novo Funcionário
+    if(document.getElementById('cadastroFormNovoHorario')){
+        document.getElementById('cadastroFormNovoHorario').addEventListener('submit', function(event) {
+            event.preventDefault(); // Impede o envio padrão do formulário
+        
+            // Exibe uma caixa de diálogo personalizada
+            Swal.fire({
+                title: 'Tem certeza que deseja cadastrar novo horário?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Cadastrar',
+                cancelButtonText: 'Cancelar',
+                iconColor: '#bf8b15'
+            }).then((result) => {
+                // Se o usuário confirmar, envia o formulário via AJAX
+                if (result.isConfirmed) {
+                    enviarFormularioNovoHorario(); // Função para enviar o formulário
+                }
+            });
+        });
+    }
         
         function enviarFormularioNovoFuncionario() {
             var form = document.getElementById('cadastroFormNovoFuncionario');
@@ -316,6 +377,24 @@ function redirecionarParaEscolhaGerenciar() {
 
         function enviarFormularioNovoServico() {
             var form = document.getElementById('cadastroFormNovoServico');
+            var formData = new FormData(form);
+        
+            // Envia o formulário via AJAX
+            fetch(form.action, {
+                method: form.method,
+                body: formData
+            })
+            .then(response => {
+                if (response.redirected) {
+                    window.location.href = response.url; // Redireciona se necessário
+                }
+            })
+            .catch(error => console.error('Erro:', error));
+        
+        }
+
+        function enviarFormularioNovoHorario() {
+            var form = document.getElementById('cadastroFormNovoHorario');
             var formData = new FormData(form);
         
             // Envia o formulário via AJAX
@@ -431,6 +510,26 @@ function redirecionarParaEscolhaGerenciar() {
         // Exibe uma caixa de diálogo personalizada
         Swal.fire({
             title: 'Tem certeza que deseja excluir este serviço?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Excluir',
+            cancelButtonText: 'Cancelar',
+            iconColor: '#bf8b15'
+        }).then((result) => {
+            // Se o usuário confirmar, envia o formulário via AJAX
+            if (result.isConfirmed) {
+                window.location.href =  url// Redireciona para o URL de exclusão
+            }
+        });
+    }
+
+    // Função para exibir o Swal.fire ao clicar no ícone da lixeira
+    function ConfirmarExclusaoHorario() {
+        event.preventDefault(); // Impede o comportamento padrão do link
+        const url = event.currentTarget.getAttribute('href'); // Obtém o URL de exclusão do atributo href
+        // Exibe uma caixa de diálogo personalizada
+        Swal.fire({
+            title: 'Tem certeza que deseja excluir este horário?',
             icon: 'question',
             showCancelButton: true,
             confirmButtonText: 'Excluir',
