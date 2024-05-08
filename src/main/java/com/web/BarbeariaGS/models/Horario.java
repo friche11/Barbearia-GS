@@ -1,6 +1,5 @@
 package com.web.BarbeariaGS.models;
 
-import java.sql.Time;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;

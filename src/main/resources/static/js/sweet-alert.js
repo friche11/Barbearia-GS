@@ -19,27 +19,55 @@ if(document.getElementById("btnAgendar")){
       window.location.href = "/funcionarios";
     }
     
-    // Função para redirecionar para a página de administradores
-    function redirecionarParaEscolhaGerenciar() {
-      // Exibe uma caixa de diálogo personalizada
-      Swal.fire({
-            title: 'Quer gerenciar administradores ou funcionários?',
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonText: 'Funcionários',
-            cancelButtonText: 'Administradores',
-            iconColor: '#bf8b15'
-        }).then((result) => {
-    
-            if (result.isConfirmed) {
-                window.location.href = "/gerenciar/funcionarios";
-            } else if(result.dismiss === Swal.DismissReason.cancel){
+ // Função para redirecionar para a página de administradores
+function redirecionarParaEscolhaGerenciar() {
+    // Exibe uma caixa de diálogo personalizada
+    Swal.fire({
+        title: 'O que você gostaria de gerenciar?',
+        icon: 'question',
+        showCancelButton: true,
+        showConfirmButton: false,
+        cancelButtonText: 'Cancelar',
+        cancelButtonColor: '#d33',
+        html:
+        '<div class="swal2-row">' +
+        '<button class="swal2-styled swal2-confirm admin" role="button" tabindex="0" aria-label="">Administradores</button>' +
+        '<button class="swal2-styled swal2-confirm employee" role="button" tabindex="0" aria-label="">Funcionários</button>' +
+        '<button class="swal2-styled swal2-confirm schedule" role="button" tabindex="0" aria-label="">Horários</button>' +
+        '<button class="swal2-styled swal2-confirm service" role="button" tabindex="0" aria-label="">Serviços</button>' +
+        '</div>',
+       
+        width: window.innerWidth <= 1366 ? '70%' : '50%', // Aumenta a largura da caixa de diálogo
+        heightAuto: window.innerWidth <= 1366 ? false : true, // Diminui a altura da caixa de diálogo
+        iconColor: '#bf8b15', // Muda a cor do ícone de ponto de interrogação
+        focusConfirm: false,
+        didOpen: () => {
+            const adminButton = document.querySelector('.admin');
+            const employeeButton = document.querySelector('.employee');
+            const scheduleButton = document.querySelector('.schedule');
+            const serviceButton = document.querySelector('.service');
+
+            adminButton.addEventListener('click', function() {
                 window.location.href = "/administradores/novo";
-            } else{
-              window.location.href = "/administradores";
-            }
-        });
-    }
+            });
+
+            employeeButton.addEventListener('click', function() {
+                window.location.href = "/gerenciar/funcionarios";
+            });
+
+            scheduleButton.addEventListener('click', function() {
+                window.location.href = "/gerenciar/horarios";
+            });
+
+            serviceButton.addEventListener('click', function() {
+                window.location.href = "/gerenciar/servicos";
+            });
+        }
+    });
+}
+
+
+    
     
     // Sair da conta logada
     
@@ -163,9 +191,47 @@ if(document.getElementById("btnAgendar")){
             });
         });
         }
+
+        if(document.getElementById('cadastroFormEditServico')){
+            document.getElementById('cadastroFormEditServico').addEventListener('submit', function(event) {
+                event.preventDefault(); // Impede o envio padrão do formulário
+            
+                // Exibe uma caixa de diálogo personalizada
+                Swal.fire({
+                    title: 'Tem certeza que deseja confirmar a edição desse serviço?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'Confirmar',
+                    cancelButtonText: 'Cancelar',
+                    iconColor: '#bf8b15'
+                }).then((result) => {
+                    // Se o usuário confirmar, envia o formulário via AJAX
+                    if (result.isConfirmed) {
+                        enviarFormularioEditServico(); // Função para enviar o formulário
+                    }
+                });
+            });
+            }
         
         function enviarFormularioEdit() {
             var form = document.getElementById('cadastroFormEdit');
+            var formData = new FormData(form);
+        
+            // Envia o formulário via AJAX
+            fetch(form.action, {
+                method: form.method,
+                body: formData
+            })
+            .then(response => {
+                if (response.redirected) {
+                    window.location.href = response.url; // Redireciona se necessário
+                }
+            })
+            .catch(error => console.error('Erro:', error));
+        }
+
+        function enviarFormularioEditServico() {
+            var form = document.getElementById('cadastroFormEditServico');
             var formData = new FormData(form);
         
             // Envia o formulário via AJAX
@@ -202,9 +268,54 @@ if(document.getElementById("btnAgendar")){
             });
         });
     }
+
+     // Novo Funcionário
+     if(document.getElementById('cadastroFormNovoServico')){
+        document.getElementById('cadastroFormNovoServico').addEventListener('submit', function(event) {
+            event.preventDefault(); // Impede o envio padrão do formulário
+        
+            // Exibe uma caixa de diálogo personalizada
+            Swal.fire({
+                title: 'Tem certeza que deseja cadastrar novo serviço?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Cadastrar',
+                cancelButtonText: 'Cancelar',
+                iconColor: '#bf8b15'
+            }).then((result) => {
+                // Se o usuário confirmar, envia o formulário via AJAX
+                if (result.isConfirmed) {
+                    enviarFormularioNovoServico(); // Função para enviar o formulário
+                }
+            });
+        });
+    }
         
         function enviarFormularioNovoFuncionario() {
             var form = document.getElementById('cadastroFormNovoFuncionario');
+            var formData = new FormData(form);
+        
+            // Envia o formulário via AJAX
+            fetch(form.action, {
+                method: form.method,
+                body: formData
+            })
+            .then(response => {
+                if (response.redirected) {
+                    window.location.href = response.url; // Redireciona se necessário
+                }
+            })
+            .catch(error => console.error('Erro:', error));
+        
+        }
+    
+        document.addEventListener('DOMContentLoaded', function() {
+            var adminId = parseInt(document.getElementById('adminId').value);
+            document.getElementById('adminId').value = adminId;
+        });
+
+        function enviarFormularioNovoServico() {
+            var form = document.getElementById('cadastroFormNovoServico');
             var formData = new FormData(form);
         
             // Envia o formulário via AJAX
@@ -300,6 +411,26 @@ if(document.getElementById("btnAgendar")){
         // Exibe uma caixa de diálogo personalizada
         Swal.fire({
             title: 'Tem certeza que deseja excluir este funcionário?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Excluir',
+            cancelButtonText: 'Cancelar',
+            iconColor: '#bf8b15'
+        }).then((result) => {
+            // Se o usuário confirmar, envia o formulário via AJAX
+            if (result.isConfirmed) {
+                window.location.href =  url// Redireciona para o URL de exclusão
+            }
+        });
+    }
+
+     // Função para exibir o Swal.fire ao clicar no ícone da lixeira
+     function ConfirmarExclusaoServico() {
+        event.preventDefault(); // Impede o comportamento padrão do link
+        const url = event.currentTarget.getAttribute('href'); // Obtém o URL de exclusão do atributo href
+        // Exibe uma caixa de diálogo personalizada
+        Swal.fire({
+            title: 'Tem certeza que deseja excluir este serviço?',
             icon: 'question',
             showCancelButton: true,
             confirmButtonText: 'Excluir',
