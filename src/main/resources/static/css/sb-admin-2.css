@@ -580,6 +580,20 @@ pre code {
   }
 }
 
+@media (max-width: 1366px) {
+  .card-body {
+    max-width: 100%; /* Aumenta a largura do card-body para ocupar toda a largura disponível */
+    height: auto; /* Diminui a altura do card-body para se ajustar ao conteúdo */
+  }
+}
+
+@media (min-width: 1366px) {
+  .card-body {
+    max-width: 900px; /* Limita a largura máxima do card-body a 900px quando a tela for maior que 1366px */
+    height: auto; /* Diminui a altura do card-body para se ajustar ao conteúdo */
+  }
+}
+
 @media (min-width: 992px) {
   .container, .container-sm, .container-md, .container-lg {
     max-width: 960px;
