@@ -542,6 +542,26 @@ function redirecionarParaEscolhaGerenciar() {
             }
         });
     }
+
+     // Função para exibir o Swal.fire ao clicar no ícone da lixeira
+     function desmarcarHorario() {
+        event.preventDefault(); // Impede o comportamento padrão do link
+        const url = event.currentTarget.getAttribute('href'); // Obtém o URL de exclusão do atributo href
+        // Exibe uma caixa de diálogo personalizada
+        Swal.fire({
+            title: 'Tem certeza que deseja desmarcar este horário?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Desmarcar',
+            cancelButtonText: 'Cancelar',
+            iconColor: '#bf8b15'
+        }).then((result) => {
+            // Se o usuário confirmar, envia o formulário via AJAX
+            if (result.isConfirmed) {
+                window.location.href =  url// Redireciona para o URL de exclusão
+            }
+        });
+    }
     
     
     

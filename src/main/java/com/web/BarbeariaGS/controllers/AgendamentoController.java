@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -173,5 +174,27 @@ public String criarAgendamento(Model model, HttpServletRequest request,
         return "redirect:/login";
     }
 }
+
+   //Rota para excluir cadastro
+   @GetMapping("/clientes/{id}/excluir")
+   public String excluir(@PathVariable int id, HttpServletRequest request){
+          // Verifica se o cookie de usuário existe e está dentro do prazo de validade
+      if (CookieService.getCookie(request, "usuarioId") != null) {
+       // Verifica se o usuário autenticado é um administrador
+       if (CookieService.getCookie(request, "tipoUsuario").equals("cliente")) {
+          
+           agendamentoRepo.deleteById(id);
+           return "redirect:/clientes";
+   
+       } else {
+           // Se não for administrador, redireciona para a página principal
+           return "redirect:/";
+       }
+   } else {
+       // Se o cookie não existe ou está expirado, redireciona para a página de login
+       return "redirect:/login";
+   }
+      
+   }
 
 }

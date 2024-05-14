@@ -43,6 +43,12 @@
                         <td th:text="${agendamento.horario.horario}"></td>
                         <td th:text="${agendamento.funcionario.nome}"></td>
                         <td th:text="${agendamento.servico.nome}"></td>
+                        <td>
+                            <a class="delete" href="#" th:href="@{'/clientes/' + ${agendamento.id} + '/excluir'}" onclick="desmarcarHorario(event)">
+                                <button class="btn btn-danger">Desmarcar</button>
+                            </a>
+                        </td>
+                        
                     </tr>
                 </tbody>
             </table>
