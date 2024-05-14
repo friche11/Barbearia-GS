@@ -24,8 +24,8 @@ function abrirModalSelecaoHorarios(data, funcionarioId) {
   // Construir a nova URL com o parâmetro 'modal'
   var newUrl = '/clientes/novo/agendamento/selecao-horarios?funcionarioId=' + funcionarioIdUrl + '&servicoId=' + servicoId + '&dataAgendamento=' + dataFormatadaISO + '&modal=true';
 
-  // Redirecionar para a nova URL
-  window.location.href = newUrl;
+   // Redirecionar para a nova URL
+   window.location.href = newUrl;
 }
 
 // Verificar se o parâmetro 'modal' está presente na URL
@@ -142,48 +142,156 @@ if (abrirModal === 'true') {
   });
 
   // Inicializar o calendário FullCalendar
-  var calendarEl = document.getElementById('calendar');
-  var calendar = new FullCalendar.Calendar(calendarEl, {
-    initialView: 'dayGridMonth',
-    locale: 'pt-br',
-    dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
-    dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
-    buttonText: {
-      today: 'Hoje',
-      month: 'Mês',
-      week: 'Semana',
-      day: 'Dia',
-      list: 'Lista'
-    },
-    headerToolbar: {
-      left: 'prev,next today',
-      center: 'title',
-      right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
-    },
-    slotLabelFormat: { hour: '2-digit', minute: '2-digit', hour12: false },
-    dateClick: function (info) {
+var calendarEl = document.getElementById('calendar');
+var calendar = new FullCalendar.Calendar(calendarEl, {
+  initialView: 'dayGridMonth',
+  locale: 'pt-br',
+  dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
+  dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+  buttonText: {
+    today: 'Hoje',
+    month: 'Mês' 
+  },
+  headerToolbar: {
+    left: 'prev,next today',
+    center: 'title',
+    right: ''
+  },
+  slotLabelFormat: { hour: '2-digit', minute: '2-digit', hour12: false },
+  dateClick: function (info) {
+    var today = new Date(); // Obtém a data atual
+    var clickedDate = info.date.getDate(); // Obtém o dia da data clicada
+
+    // Calcula a data depois de 2 meses
+    var twoMonthsLater = new Date(today.getFullYear(), today.getMonth() + 2, today.getDate());
+
+    // Verifica se a data clicada é anterior à data atual
+    if (clickedDate < today.getDate()) {
+      // Se a data clicada já passou, exibe um alerta de erro
+      Swal.fire({
+        text: 'Você não pode selecionar uma data que já passou.',
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
+    } else if(clickedDate > twoMonthsLater.getDate()) {
+      Swal.fire({
+        text: 'Você só pode agendar até dois meses a partir da data atual.',
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
+    }
+    else {
+      // Se a data clicada é atual ou futura, abre o modal de seleção de horários
       var profissionalId = $('#selectProfissional').val();
       abrirModalSelecaoHorarios(info.dateStr, profissionalId);
-      console.log(dateStr)
-    },
-    eventClick: function (info) {
-      var today = new Date(); // Obtém a data atual
-      var clickedDate = new Date(info.event.startStr); // Converte a data do evento para um objeto Date
-
-      // Verifica se a data do evento é anterior à data atual
-      if (clickedDate < today) {
-        // Se a data do evento já passou, exibe um alerta de erro
-        Swal.fire({
-          title: 'Erro',
-          text: 'Você não pode selecionar uma data que já passou.',
-          icon: 'error',
-          confirmButtonText: 'OK'
-        });
-      } else {
-        // Se a data do evento é atual ou futura, abre o modal de seleção de horários
-        abrirModalSelecaoHorarios(info.event.startStr, info.event.extendedProps.profissionalId);
-      }
     }
-  });
-  calendar.render();
+  },
+  eventClick: function (info) {
+    var today = new Date(); // Obtém a data atual
+    var clickedDate = new Date(info.event.startStr); // Converte a data do evento para um objeto Date
+
+    // Calcula a data depois de 2 meses
+    var twoMonthsLater = new Date(today.getFullYear(), today.getMonth() + 2, today.getDate());
+
+    // Verifica se a data do evento é anterior à data atual
+    if (clickedDate < today) {
+      // Se a data do evento já passou, exibe um alerta de erro
+      Swal.fire({
+        title: 'Erro',
+        text: 'Você não pode selecionar uma data que já passou.',
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
+    } else if(clickedDate > twoMonthsLater) {
+      Swal.fire({
+        text: 'Você só pode agendar até dois meses a partir da data atual.',
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
+    } else {
+      // Se a data do evento é atual ou futura, abre o modal de seleção de horários
+      abrirModalSelecaoHorarios(info.event.startStr, info.event.extendedProps.profissionalId);
+    }
+  }
+});
+
+calendar.render();
+// Inicializar o calendário FullCalendar
+var calendarEl = document.getElementById('calendar');
+var calendar = new FullCalendar.Calendar(calendarEl, {
+  initialView: 'dayGridMonth',
+  locale: 'pt-br',
+  dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
+  dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+  buttonText: {
+    today: 'Hoje',
+    month: 'Mês' 
+  },
+  headerToolbar: {
+    left: 'prev,next',
+    center: 'title',
+    right: 'today'
+  },
+  slotLabelFormat: { hour: '2-digit', minute: '2-digit', hour12: false },
+  dateClick: function (info) {
+    var today = new Date(); // Obtém a data atual
+    var clickedDate = info.date; // Obtém o dia da data clicada
+    clickedDate.setHours(23, 59, 59); // Define o horário para 23:59:59
+    // Calcula a data depois de 2 meses
+    var twoMonthsLater = new Date(today.getFullYear(), today.getMonth() + 2, today.getDate());
+    twoMonthsLater.setHours(23, 59, 59); // Define o horário para 23:59:59
+
+    // Verifica se a data clicada é anterior à data atual
+    if (clickedDate < today) {
+      // Se a data clicada já passou, exibe um alerta de erro
+      Swal.fire({
+        text: 'Você não pode selecionar uma data que já passou.',
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
+    } else if(clickedDate > twoMonthsLater) {
+      
+      Swal.fire({
+        text: 'Você só pode agendar até dois meses a partir da data atual.',
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
+    }
+    else {
+      // Se a data clicada é atual ou futura, abre o modal de seleção de horários
+      var profissionalId = $('#selectProfissional').val();
+      abrirModalSelecaoHorarios(info.dateStr, profissionalId);
+    }
+  },
+  eventClick: function (info) {
+    var today = new Date(); // Obtém a data atual
+    var clickedDate = new Date(info.event.startStr); // Converte a data do evento para um objeto Date
+
+    // Calcula a data depois de 2 meses
+    var twoMonthsLater = new Date(today.getFullYear(), today.getMonth() + 2, today.getDate());
+
+    // Verifica se a data do evento é anterior à data atual
+    if (clickedDate < today) {
+      // Se a data do evento já passou, exibe um alerta de erro
+      Swal.fire({
+        title: 'Erro',
+        text: 'Você não pode selecionar uma data que já passou.',
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
+    } else if(clickedDate > twoMonthsLater) {
+      Swal.fire({
+        text: 'Você só pode agendar até dois meses a partir da data atual.',
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
+    } else {
+      // Se a data do evento é atual ou futura, abre o modal de seleção de horários
+      abrirModalSelecaoHorarios(info.event.startStr, info.event.extendedProps.profissionalId);
+    }
+  }
+});
+
+calendar.render();
+
 });
