@@ -12,8 +12,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.web.BarbeariaGS.models.Admin;
+import com.web.BarbeariaGS.models.Agendamento;
 import com.web.BarbeariaGS.models.Funcionario;
+import com.web.BarbeariaGS.models.Servico;
 import com.web.BarbeariaGS.repository.AdminRepo;
+import com.web.BarbeariaGS.repository.AgendamentoRepo;
 import com.web.BarbeariaGS.repository.ClientesRepo;
 import com.web.BarbeariaGS.repository.FuncionariosRepo;
 import com.web.BarbeariaGS.services.CookieService;
@@ -34,29 +37,41 @@ public class FuncionarioController {
     private ClientesRepo clientesRepo;
 
     @Autowired
+    private AgendamentoRepo agendamentosRepo;
+
+    @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
   
 
-    //Rota para página de gerencia funcionario
-    @GetMapping("/funcionarios")
-    public String index(HttpServletRequest request){
-          // Verifica se o cookie de usuário existe e está dentro do prazo de validade
-       if (CookieService.getCookie(request, "usuarioId") != null) {
-        // Verifica se o usuário autenticado é um administrador
-        if (CookieService.getCookie(request, "tipoUsuario").equals("funcionario")) {
-            
-            return "funcionarios/index";
-    
-        } else {
-            // Se não for administrador, redireciona para a página principal
-            return "redirect:/";
-        }
+     //Rota para página de agenda
+     @GetMapping("/funcionarios")
+public String agendamentosCliente(HttpServletRequest request, Model model) {
+    // Verifica se o cookie de usuário existe e está dentro do prazo de validade
+    if (CookieService.getCookie(request, "usuarioId") != null) {
+        // Obtém o ID do cliente logado a partir do cookie
+        int funcionarioId = Integer.parseInt(CookieService.getCookie(request, "usuarioId"));
+        
+        // Busca o funcionario pelo ID
+        Funcionario funcionario = funcionariosRepo.findById(funcionarioId)
+                .orElseThrow(() -> new RuntimeException("Funcionario não encontrado"));
+
+        List<Funcionario> funcionarios = (List<Funcionario>)funcionariosRepo.findAll();
+            model.addAttribute("funcionarios", funcionarios);
+
+        // Busca os agendamentos do funcionario
+        List<Agendamento> agendamentos = agendamentosRepo.findByFuncionario(funcionario);
+        
+        // Adiciona os agendamentos ao modelo para serem exibidos na view
+        model.addAttribute("agendamentos", agendamentos);
+        
+        // Retorna a página de agendamentos do cliente
+        return "/funcionarios/index";
     } else {
         // Se o cookie não existe ou está expirado, redireciona para a página de login
         return "redirect:/login";
     }
-    }
+}
 
     //Rota para página de gerencia funcionario
      @GetMapping("/gerenciar/funcionarios")

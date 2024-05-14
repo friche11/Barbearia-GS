@@ -176,8 +176,8 @@ public String criarAgendamento(Model model, HttpServletRequest request,
 }
 
    //Rota para excluir cadastro
-   @GetMapping("/clientes/{id}/excluir")
-   public String excluir(@PathVariable int id, HttpServletRequest request){
+   @GetMapping("/clientes/{id}/desmarcar")
+   public String clienteDesmarcar(@PathVariable int id, HttpServletRequest request){
           // Verifica se o cookie de usuário existe e está dentro do prazo de validade
       if (CookieService.getCookie(request, "usuarioId") != null) {
        // Verifica se o usuário autenticado é um administrador
@@ -185,6 +185,28 @@ public String criarAgendamento(Model model, HttpServletRequest request,
           
            agendamentoRepo.deleteById(id);
            return "redirect:/clientes";
+   
+       } else {
+           // Se não for administrador, redireciona para a página principal
+           return "redirect:/";
+       }
+   } else {
+       // Se o cookie não existe ou está expirado, redireciona para a página de login
+       return "redirect:/login";
+   }
+      
+   }
+
+   //Rota para excluir cadastro
+   @GetMapping("/funcionarios/{id}/desmarcar")
+   public String funcionarioDesmarcar(@PathVariable int id, HttpServletRequest request){
+          // Verifica se o cookie de usuário existe e está dentro do prazo de validade
+      if (CookieService.getCookie(request, "usuarioId") != null) {
+       // Verifica se o usuário autenticado é um administrador
+       if (CookieService.getCookie(request, "tipoUsuario").equals("funcionario")) {
+          
+           agendamentoRepo.deleteById(id);
+           return "redirect:/funcionarios";
    
        } else {
            // Se não for administrador, redireciona para a página principal

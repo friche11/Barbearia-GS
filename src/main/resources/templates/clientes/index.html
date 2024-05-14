@@ -29,6 +29,7 @@
             <h4 style="margin-top: 30px;">Seus Agendamentos</h4>
             <table class="table">
                 <thead>
+                    
                     <tr>
                         <th>Data</th>
                         <th>Horário</th>
@@ -38,17 +39,19 @@
                 </thead>
                 <tbody>
                     <!-- Loop para exibir os agendamentos -->
+                    <tr th:if="${#lists.isEmpty(agendamentos)}">
+                        <td colspan="5" class="text-center">Nenhum agendamento encontrado.</td>
+                    </tr>
                     <tr th:each="agendamento : ${agendamentos}">
                         <td th:text="${#temporals.format(agendamento.data, 'dd/MM/yyyy')}"></td>
                         <td th:text="${agendamento.horario.horario}"></td>
                         <td th:text="${agendamento.funcionario.nome}"></td>
                         <td th:text="${agendamento.servico.nome}"></td>
                         <td>
-                            <a class="delete" href="#" th:href="@{'/clientes/' + ${agendamento.id} + '/excluir'}" onclick="desmarcarHorario(event)">
+                            <a class="delete" href="#" th:href="@{'/clientes/' + ${agendamento.id} + '/desmarcar'}" onclick="desmarcarHorario(event)">
                                 <button class="btn btn-danger">Desmarcar</button>
                             </a>
                         </td>
-                        
                     </tr>
                 </tbody>
             </table>

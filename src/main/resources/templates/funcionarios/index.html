@@ -1,49 +1,60 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <meta charset="UTF-8">
-  <title>Barbearia GS</title>
-     <link rel="stylesheet" href="../css/navbar.css">
-     <link rel="stylesheet" href="../css/Logo.css">
-     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
-     <link
-      href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-      rel="stylesheet">
-
-  <!-- Custom styles for this template-->
-<link href="/css/sb-admin-2.css" rel="stylesheet">
-<link href="/css/sweet-alert.css" rel="stylesheet">
-    
+    <meta charset="UTF-8" />
+    <title>Barbearia GS</title>
+    <style>
+        .center-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding-top: 300px;
+        }
+    </style>
+    <!-- Seus estilos CSS -->
 </head>
+
 <body>
-  <header class="header">
-    <div class="header-content">
-    <nav class="nav">
-      <img src="/img/Logo.png" alt="Barbearia GS Logo" class="logo">
-      <div class="centralizar">
-      <ul class="list">
-        <li>
-          <a href="/" class="personalizado">Home</a>
-        </li>
-    
-      </ul>
-    </div>
-    
-    </nav>
-   
+    <div th:insert="~{fragments/navbar}"></div>
 
-  <div class="sair-container">
-    <button class="botaoSair" onclick="confirmarSair()">
-      <img src="/img/sair.png" alt="Ícone de saída" class="icone-sair">
-  
-  </button>
-</div>
+    <div class="container-fluid center-content">
+        <h1 style="margin-bottom: 30px;">Agenda</h1>
 
-</div>
-  </header>
-      
+        <div class="container">
+          <h4 style="margin-top: 30px;">Selecione a Data</h4>
+          <input type="date" id="dataSelecionada" onchange="buscarAgendamentos()">
+          <h4 style="margin-top: 30px;">Agendamentos para a Data Selecionada</h4>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Horário</th>
+                        <th>Cliente</th>
+                        <th>Serviço</th>
+                    </tr>
+                </thead>
+                <tbody>
+                 
+                  <tr th:each="agendamento : ${agendamentos}">
+                      <td th:text="${#temporals.format(agendamento.data, 'dd/MM/yyyy')}"></td>
+                      <td th:text="${agendamento.horario.horario}"></td>
+                      <td th:text="${agendamento.cliente.nome}"></td>
+                      <td th:text="${agendamento.servico.nome}"></td>
+                      <td>
+                          <a class="delete" href="#" th:href="@{'/funcionarios/' + ${agendamento.id} + '/desmarcar'}" onclick="desmarcarHorario(event)">
+                              <button class="btn btn-danger">Desmarcar</button>
+                          </a>
+                      </td>
+                  </tr>
+              </tbody>
+            </table>
+        </div>
+
+
     <!-- Bootstrap core JavaScript-->
-    <script src="/js/agendaCliente.js"></script>
+    <script src="/js/agendaFuncionario.js"></script>
     <script src="/vendor/jquery/jquery.min.js"></script>
     <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
@@ -56,10 +67,28 @@
     <script src="/js/password-eye.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="/js/sweet-alert.js"></script>
+   
+
+ <!-- Bootstrap core JavaScript-->
+ <script src="/vendor/jquery/jquery.min.js"></script>
+ <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+ 
+ <!-- Core plugin JavaScript-->
+ <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+ 
+ <!-- Custom scripts for all pages-->
+ <script src="/js/sb-admin-2.js"></script>
+ 
+ 
+ <!-- Bootstrap core JavaScript-->
+<script src="/vendor/jquery/jquery.min.js"></script>
+<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="/js/sb-admin-2.js"></script>
 </body>
+
 </html>
-
-
-
-
-<div th:replace="~{fragments/footer}"></div>

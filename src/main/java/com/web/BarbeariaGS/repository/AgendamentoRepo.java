@@ -18,6 +18,10 @@ public interface AgendamentoRepo extends CrudRepository<Agendamento, Integer>{
   @Query("SELECT a FROM Agendamento a WHERE a.cliente = :cliente")
     List<Agendamento> findByCliente(Cliente cliente);
 
+     // Método para buscar agendamentos por cliente
+  @Query("SELECT a FROM Agendamento a WHERE a.funcionario = :funcionario")
+  List<Agendamento> findByFuncionario(Funcionario funcionario);
+
       @Query(value= "select CASE WHEN count(1)>0 THEN 'true' ELSE 'false' END from agendamentos where id = :id", nativeQuery = true)
     public boolean exist(int id);
 
