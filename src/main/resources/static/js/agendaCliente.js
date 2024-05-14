@@ -6,13 +6,6 @@ $(document).ready(function () {
 
  // Função para abrir o modal de seleção de horários
 function abrirModalSelecaoHorarios(data, funcionarioId) {
-  // Converter a data para o formato desejado: DD/MM/YYYY
-  var dataFormatada = new Date(data + 'T00:00:00').toLocaleDateString('pt-br', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric'
-  });
-  document.getElementById('dataEscolhida').innerText = dataFormatada;
 
   // Obter o funcionarioId e servicoId da URL
   const urlParams = new URLSearchParams(window.location.search);
@@ -171,9 +164,25 @@ if (abrirModal === 'true') {
     dateClick: function (info) {
       var profissionalId = $('#selectProfissional').val();
       abrirModalSelecaoHorarios(info.dateStr, profissionalId);
+      console.log(dateStr)
     },
     eventClick: function (info) {
-      abrirModalSelecaoHorarios(info.event.startStr, info.event.extendedProps.profissionalId);
+      var today = new Date(); // Obtém a data atual
+      var clickedDate = new Date(info.event.startStr); // Converte a data do evento para um objeto Date
+
+      // Verifica se a data do evento é anterior à data atual
+      if (clickedDate < today) {
+        // Se a data do evento já passou, exibe um alerta de erro
+        Swal.fire({
+          title: 'Erro',
+          text: 'Você não pode selecionar uma data que já passou.',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
+      } else {
+        // Se a data do evento é atual ou futura, abre o modal de seleção de horários
+        abrirModalSelecaoHorarios(info.event.startStr, info.event.extendedProps.profissionalId);
+      }
     }
   });
   calendar.render();

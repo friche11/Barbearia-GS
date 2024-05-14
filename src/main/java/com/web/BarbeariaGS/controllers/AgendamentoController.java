@@ -3,6 +3,7 @@ package com.web.BarbeariaGS.controllers;
 import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -103,12 +104,18 @@ public String abrirModalSelecaoHorarios(Model model, @RequestParam("funcionarioI
     // Converte a data de String para LocalDate
     LocalDate data = LocalDate.parse(dataAgendamento);
 
+  // Formatar a data para o formato "dia/mês/ano" (DD/MM/YYYY)
+  DateTimeFormatter formatterEntrada = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+  DateTimeFormatter formatterSaida = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+  String dataFormatada = LocalDate.parse(dataAgendamento, formatterEntrada).format(formatterSaida);
+
     // Busca os horários vagos para o funcionário e data
     List<Object[]> horarios = agendamentoRepo.findHorariosVagosByFuncionarioAndData(funcionarioId, Date.valueOf(data));
     model.addAttribute("funcionario", funcionario);
     model.addAttribute("servico", servico);
     model.addAttribute("horarios", horarios);
     model.addAttribute("dataAgendamento", data);
+    model.addAttribute("dataFormatada", dataFormatada);
 
     return "clientes/selecaoHorarios"; // Nome da sua view do modal de seleção de horários
 }

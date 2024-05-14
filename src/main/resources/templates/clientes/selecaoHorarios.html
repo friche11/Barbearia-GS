@@ -55,7 +55,7 @@
                     <div class="modal-body">
                         <form action="/clientes/novo/agendamento/selecao-horarios/criar" method="post">
                             <div class="form-group">
-                                <label for="selectHorario">Escolha o horário para <span id="dataEscolhida"></span></label>
+                                <label for="selectHorario">Escolha o horário para <span th:text="${dataFormatada}"></span></label>
                                 <select class="form-control" id="selectHorario" name="horarioId" required>
                                     <option value="">Escolha o horário</option>
                                     <option th:each="horario : ${horarios}" th:value="${horario[0]}" th:text="${horario[1]}"></option>
@@ -64,17 +64,22 @@
                             <input type="hidden" id="funcionarioId" name="funcionarioId" th:value="${funcionario.id}" />
                             <input type="hidden" id="servicoId" name="servicoId" th:value="${servico.id}" />
                             <input type="hidden" id="dataAgendamento" name="dataAgendamento" th:value="${dataAgendamento}" />
-                            <button type="submit" class="btn btn-primary btn-confirmar">Confirmar agendamento</button>
+                            
+                            
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary btn-confirmar">Confirmar agendamento</button>
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                            </div>
                         </form>
-                    </div>
-                    <div class="modal-footer">
-                       
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+        
+    </script>
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <!-- Bootstrap core JavaScript -->
