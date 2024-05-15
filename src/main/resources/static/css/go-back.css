@@ -10,6 +10,7 @@
 }
 .go-back:hover{
     text-decoration: none; /* Remove o sublinhado */
+    color: #1d79b3;
 }
 
 .go-back i {

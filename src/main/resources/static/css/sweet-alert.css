@@ -1,11 +1,11 @@
 .swal2-title {
-    color: #bf8b15 !important; /* Cor do título */
+    color: #05263A !important; /* Cor do título */
   }
   .swal2-content {
     color: #000 !important; /* Cor do texto */
   }
   .swal2-confirm.swal2-styled {
-    background-color: #bf8b15 !important;
+    background-color: #05263A !important;
     color: #fff  !important;/* Cor do texto nos botões */
   }
 

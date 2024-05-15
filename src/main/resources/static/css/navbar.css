@@ -64,6 +64,7 @@ margin-top: -20px;
 }
 
 .botao{
+color:#F2EFE6;
 margin-right: 200px;
 display: block;
 margin-right: auto;
@@ -72,7 +73,7 @@ width: 120px;
 height: 45px;
 border: none;
 border-radius:5cm;
-background-color: #bf8b15;
+background-color: #05263A;
 font-size: 17px;
 cursor: pointer;
 box-shadow: 1px 1px 0px #000000;

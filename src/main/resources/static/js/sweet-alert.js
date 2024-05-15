@@ -39,7 +39,7 @@ function redirecionarParaEscolhaGerenciar() {
        
         width: window.innerWidth <= 1366 ? '70%' : '50%', // Aumenta a largura da caixa de diálogo
         heightAuto: window.innerWidth <= 1366 ? false : true, // Diminui a altura da caixa de diálogo
-        iconColor: '#bf8b15', // Muda a cor do ícone de ponto de interrogação
+        iconColor: '#1a242f', // Muda a cor do ícone de ponto de interrogação
         focusConfirm: false,
         didOpen: () => {
             const adminButton = document.querySelector('.admin');
@@ -79,7 +79,7 @@ function redirecionarParaEscolhaGerenciar() {
             showCancelButton: true,
             confirmButtonText: 'Sim',
             cancelButtonText: 'Cancelar',
-            iconColor: '#bf8b15'
+            iconColor: '#1a242f'
         }).then((result) => {
             // Se o usuário clicar em "Sim", exclui o cookie e redireciona para a rota de logout
             if (result.isConfirmed) {
@@ -102,7 +102,7 @@ function redirecionarParaEscolhaGerenciar() {
             showCancelButton: true,
             confirmButtonText: 'Cadastrar',
             cancelButtonText: 'Cancelar',
-            iconColor: '#bf8b15'
+            iconColor: '#1a242f'
         }).then((result) => {
             // Se o usuário confirmar, envia o formulário via AJAX
             if (result.isConfirmed) {
@@ -142,7 +142,7 @@ function redirecionarParaEscolhaGerenciar() {
             showCancelButton: true,
             confirmButtonText: 'Cadastrar',
             cancelButtonText: 'Cancelar',
-            iconColor: '#bf8b15'
+            iconColor: '#1a242f'
         }).then((result) => {
             // Se o usuário confirmar, envia o formulário via AJAX
             if (result.isConfirmed) {
@@ -182,7 +182,7 @@ function redirecionarParaEscolhaGerenciar() {
                 showCancelButton: true,
                 confirmButtonText: 'Confirmar',
                 cancelButtonText: 'Cancelar',
-                iconColor: '#bf8b15'
+                iconColor: '#1a242f'
             }).then((result) => {
                 // Se o usuário confirmar, envia o formulário via AJAX
                 if (result.isConfirmed) {
@@ -203,7 +203,7 @@ function redirecionarParaEscolhaGerenciar() {
                     showCancelButton: true,
                     confirmButtonText: 'Confirmar',
                     cancelButtonText: 'Cancelar',
-                    iconColor: '#bf8b15'
+                    iconColor: '#1a242f'
                 }).then((result) => {
                     // Se o usuário confirmar, envia o formulário via AJAX
                     if (result.isConfirmed) {
@@ -224,7 +224,7 @@ function redirecionarParaEscolhaGerenciar() {
                         showCancelButton: true,
                         confirmButtonText: 'Confirmar',
                         cancelButtonText: 'Cancelar',
-                        iconColor: '#bf8b15'
+                        iconColor: '#1a242f'
                     }).then((result) => {
                         // Se o usuário confirmar, envia o formulário via AJAX
                         if (result.isConfirmed) {
@@ -298,7 +298,7 @@ function redirecionarParaEscolhaGerenciar() {
                 showCancelButton: true,
                 confirmButtonText: 'Cadastrar',
                 cancelButtonText: 'Cancelar',
-                iconColor: '#bf8b15'
+                iconColor: '#1a242f'
             }).then((result) => {
                 // Se o usuário confirmar, envia o formulário via AJAX
                 if (result.isConfirmed) {
@@ -320,7 +320,7 @@ function redirecionarParaEscolhaGerenciar() {
                 showCancelButton: true,
                 confirmButtonText: 'Cadastrar',
                 cancelButtonText: 'Cancelar',
-                iconColor: '#bf8b15'
+                iconColor: '#1a242f'
             }).then((result) => {
                 // Se o usuário confirmar, envia o formulário via AJAX
                 if (result.isConfirmed) {
@@ -342,7 +342,7 @@ function redirecionarParaEscolhaGerenciar() {
                 showCancelButton: true,
                 confirmButtonText: 'Cadastrar',
                 cancelButtonText: 'Cancelar',
-                iconColor: '#bf8b15'
+                iconColor: '#1a242f'
             }).then((result) => {
                 // Se o usuário confirmar, envia o formulário via AJAX
                 if (result.isConfirmed) {
@@ -494,7 +494,7 @@ function redirecionarParaEscolhaGerenciar() {
             showCancelButton: true,
             confirmButtonText: 'Excluir',
             cancelButtonText: 'Cancelar',
-            iconColor: '#bf8b15'
+            iconColor: '#1a242f'
         }).then((result) => {
             // Se o usuário confirmar, envia o formulário via AJAX
             if (result.isConfirmed) {
@@ -514,7 +514,7 @@ function redirecionarParaEscolhaGerenciar() {
             showCancelButton: true,
             confirmButtonText: 'Excluir',
             cancelButtonText: 'Cancelar',
-            iconColor: '#bf8b15'
+            iconColor: '#1a242f'
         }).then((result) => {
             // Se o usuário confirmar, envia o formulário via AJAX
             if (result.isConfirmed) {
@@ -534,7 +534,7 @@ function redirecionarParaEscolhaGerenciar() {
             showCancelButton: true,
             confirmButtonText: 'Excluir',
             cancelButtonText: 'Cancelar',
-            iconColor: '#bf8b15'
+            iconColor: '#1a242f'
         }).then((result) => {
             // Se o usuário confirmar, envia o formulário via AJAX
             if (result.isConfirmed) {
@@ -554,7 +554,7 @@ function redirecionarParaEscolhaGerenciar() {
             showCancelButton: true,
             confirmButtonText: 'Desmarcar',
             cancelButtonText: 'Cancelar',
-            iconColor: '#bf8b15'
+            iconColor: '#1a242f'
         }).then((result) => {
             // Se o usuário confirmar, envia o formulário via AJAX
             if (result.isConfirmed) {
@@ -574,7 +574,7 @@ function redirecionarParaEscolhaGerenciar() {
             showCancelButton: true,
             confirmButtonText: 'Concluir',
             cancelButtonText: 'Cancelar',
-            iconColor: '#bf8b15'
+            iconColor: '#1a242f'
         }).then((result) => {
             // Se o usuário confirmar, envia o formulário
             if (result.isConfirmed) {
