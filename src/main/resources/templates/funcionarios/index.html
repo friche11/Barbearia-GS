@@ -13,44 +13,152 @@
             padding-top: 300px;
         }
     </style>
-    <!-- Seus estilos CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+
 </head>
 
 <body>
     <div th:insert="~{fragments/navbar}"></div>
 
     <div class="container-fluid center-content">
-        <h1 style="margin-bottom: 30px;">Agenda</h1>
+      <!DOCTYPE html>
+      <html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+      <head>
+          <meta charset="UTF-8">
+          <title>Agendamentos</title>
+          <style>
+            body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fc;
+        }
 
-        <div class="container">
-          <h4 style="margin-top: 30px;">Selecione a Data</h4>
-          <input type="date" id="dataSelecionada" onchange="buscarAgendamentos()">
-          <h4 style="margin-top: 30px;">Agendamentos para a Data Selecionada</h4>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Data</th>
-                        <th>Horário</th>
-                        <th>Cliente</th>
-                        <th>Serviço</th>
-                    </tr>
-                </thead>
-                <tbody>
-                 
-                  <tr th:each="agendamento : ${agendamentos}">
-                      <td th:text="${#temporals.format(agendamento.data, 'dd/MM/yyyy')}"></td>
-                      <td th:text="${agendamento.horario.horario}"></td>
-                      <td th:text="${agendamento.cliente.nome}"></td>
-                      <td th:text="${agendamento.servico.nome}"></td>
-                      <td>
-                          <a class="delete" href="#" th:href="@{'/funcionarios/' + ${agendamento.id} + '/desmarcar'}" onclick="desmarcarHorario(event)">
-                              <button class="btn btn-danger">Desmarcar</button>
-                          </a>
-                      </td>
-                  </tr>
-              </tbody>
-            </table>
-        </div>
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        form {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        input[type="date"] {
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button[type="submit"] {
+            padding: 8px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        table {
+            width: 60%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+            max-width: 100px; /* Largura máxima para as células */
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+        </style>
+      </head>
+      <body>
+      
+        <h1>Seus agendamentos: <span th:text="${#temporals.format(dataSelecionada, 'dd/MM/yyyy')}">em</span></h1>
+
+    <form action="/funcionarios/agendamentos" method="get">
+        <label for="data">Selecione a data para filtrar:</label>
+        <input type="date" id="data" name="data" required>
+        <button type="submit">Buscar</button>
+    </form>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Data</th>
+            <th>Horário</th>
+            <th>Cliente</th>
+            <th>Serviço</th>
+            <th>Concluir horário</th>
+            <th>Desmarcar horário</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="agendamento : ${agendamentos}">
+            <td th:text="${#temporals.format(agendamento.data, 'dd/MM/yyyy')}"></td>
+            <td th:text="${agendamento.horario.horario}"></td>
+            <td th:text="${agendamento.cliente.nome}"></td>
+            <td th:text="${agendamento.servico.nome}"></td>
+
+            
+       
+            <td>
+              <form id="concluirForm" method="post" th:action="@{/funcionarios/{id}/marcar-concluido(id=${agendamento.id})}">
+                  <div class="form-group">
+                      <label for="nome"></label>
+                      <input type="hidden" th:value="${agendamento.status}" required id="status" name="status">
+                      <button class="concluida" type="submit" onclick="marcarHorarioConcluido(event)">
+                          <i class="fas fa-check-circle"></i>
+                      </button>
+                  </div>
+              </form>
+          </td>          
+
+
+
+        <td>
+              <a class="delete" href="#" th:href="@{'/funcionarios/' + ${agendamento.id} + '/desmarcar'}" onclick="desmarcarHorario(event)">
+                <i class="fas fa-times-circle"></i>
+              </a>
+          </td>
+        </tr>
+        </tbody>
+    </table>
+
+      </body>
+      </html>
+      
+  </div>
 
 
     <!-- Bootstrap core JavaScript-->
@@ -89,6 +197,8 @@
 
 <!-- Custom scripts for all pages-->
 <script src="/js/sb-admin-2.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </body>
 
 </html>

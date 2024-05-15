@@ -60,7 +60,7 @@ public String agendamentosCliente(HttpServletRequest request, Model model) {
             model.addAttribute("funcionarios", funcionarios);
 
         // Busca os agendamentos do funcionario
-        List<Agendamento> agendamentos = agendamentosRepo.findByFuncionario(funcionario);
+        List<Agendamento> agendamentos = agendamentosRepo.findByFuncionarioOrderByData(funcionario);
         
         // Adiciona os agendamentos ao modelo para serem exibidos na view
         model.addAttribute("agendamentos", agendamentos);

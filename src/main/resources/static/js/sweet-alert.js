@@ -562,6 +562,57 @@ function redirecionarParaEscolhaGerenciar() {
             }
         });
     }
+
+    function marcarHorarioConcluido(event) {
+        event.preventDefault(); // Impede o comportamento padrão do formulário
+        const form = event.currentTarget.closest('form'); // Obtém o formulário mais próximo
+        const url = form.getAttribute('action'); // Obtém o URL do formulário
+        // Exibe uma caixa de diálogo personalizada
+        Swal.fire({
+            title: 'Tem certeza que deseja marcar esse horário como concluído?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Concluir',
+            cancelButtonText: 'Cancelar',
+            iconColor: '#bf8b15'
+        }).then((result) => {
+            // Se o usuário confirmar, envia o formulário
+            if (result.isConfirmed) {
+                // Envie o formulário via AJAX
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: $(form).serialize(),
+                    success: function(response) {
+                        // Se o envio do formulário for bem-sucedido, exiba uma mensagem de sucesso
+                        Swal.fire({
+                            title: 'Horário marcado como concluído!',
+                            icon: 'success',
+                            showCancelButton: false,
+                            confirmButtonText: 'OK',
+                            iconColor: '#28a745'
+                        }).then(() => {
+                            // Redirecionar ou fazer outra ação após o usuário clicar em OK
+                            // Por exemplo, você pode redirecionar para outra página
+                            window.location.href = '/funcionarios';
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        // Se ocorrer um erro ao enviar o formulário, exiba uma mensagem de erro
+                        Swal.fire({
+                            title: 'Erro ao marcar horário!',
+                            text: 'Por favor, tente novamente mais tarde.',
+                            icon: 'error',
+                            showCancelButton: false,
+                            confirmButtonText: 'OK',
+                            iconColor: '#dc3545'
+                        });
+                    }
+                });
+            }
+        });
+    }
+    
     
     
     

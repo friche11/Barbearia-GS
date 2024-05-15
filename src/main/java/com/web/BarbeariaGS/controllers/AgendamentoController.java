@@ -6,13 +6,17 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -175,6 +179,33 @@ public String criarAgendamento(Model model, HttpServletRequest request,
     }
 }
 
+@GetMapping("/funcionarios/agendamentos")
+public String getAgendamentosPorData(@RequestParam("data") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data,
+                                     Model model, HttpServletRequest request) {
+
+                                        // Verifica se o cookie de usuário existe e está dentro do prazo de validade
+      if (CookieService.getCookie(request, "usuarioId") != null) {
+        // Verifica se o usuário autenticado é um administrador
+        if (CookieService.getCookie(request, "tipoUsuario").equals("funcionario")) {
+
+    // Obtém o ID do cliente logado a partir do cookie
+    int funcionarioId = Integer.parseInt(CookieService.getCookie(request, "usuarioId"));
+
+    // Busca o funcionario pelo ID
+    Funcionario funcionario = funcionariosRepo.findById(funcionarioId)
+    .orElseThrow(() -> new RuntimeException("Funcionario não encontrado"));
+
+    List<Agendamento> agendamentos = agendamentoRepo.findByDataAndFuncionarioOrderByData(data, funcionario);
+    model.addAttribute("agendamentos", agendamentos);
+    model.addAttribute("dataSelecionada", data);
+        }
+        return "funcionarios/index";
+    } else {
+        // Se o cookie não existe ou está expirado, redireciona para a página de login
+        return "redirect:/login";
+    }
+}
+
    //Rota para excluir cadastro
    @GetMapping("/clientes/{id}/desmarcar")
    public String clienteDesmarcar(@PathVariable int id, HttpServletRequest request){
@@ -218,5 +249,36 @@ public String criarAgendamento(Model model, HttpServletRequest request,
    }
       
    }
+
+
+
+@PostMapping("/funcionarios/{id}/marcar-concluido")
+public String funcionarioMarcarConcluido(@PathVariable int id, HttpServletRequest request) {
+    // Verifica se o cookie de usuário existe e está dentro do prazo de validade
+    if (CookieService.getCookie(request, "usuarioId") != null) {
+        // Verifica se o usuário autenticado é um funcionário
+        if (CookieService.getCookie(request, "tipoUsuario").equals("funcionario")) {
+            // Verifique se o agendamento com o ID fornecido existe
+            Optional<Agendamento> agendamentoOptional = agendamentoRepo.findById(id);
+            if (agendamentoOptional.isPresent()) {
+                Agendamento agendamento = agendamentoOptional.get();
+                // Marque o horário como concluído
+                agendamento.setStatus(true);
+                agendamentoRepo.save(agendamento);
+                return "redirect:/funcionarios"; // Redireciona para a página de funcionários
+            } else {
+                // Se o agendamento não for encontrado, redireciona com uma mensagem de erro
+                return "redirect:/funcionarios?error=agendamentoNotFound";
+            }
+        } else {
+            // Se não for funcionário, redireciona para a página principal
+            return "redirect:/";
+        }
+    } else {
+        // Se o cookie não existe ou está expirado, redireciona para a página de login
+        return "redirect:/login";
+    }
+}
+
 
 }

@@ -3,7 +3,6 @@ package com.web.BarbeariaGS.repository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
-import com.web.BarbeariaGS.models.Funcionario;
 import com.web.BarbeariaGS.models.Servico;
 
 
