@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class ErrorController {
     @GetMapping("/error/404")
     public String index() {
-        return "error/index"; // Retorna o nome do arquivo HTML sem a extensão
+        return "error/404"; // Retorna o nome do arquivo HTML sem a extensão
     }
 }

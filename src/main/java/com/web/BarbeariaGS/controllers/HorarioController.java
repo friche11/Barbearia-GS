@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.web.BarbeariaGS.models.Horario;
-import com.web.BarbeariaGS.models.Servico;
 import com.web.BarbeariaGS.repository.HorarioRepo;
 import com.web.BarbeariaGS.services.CookieService;
 
