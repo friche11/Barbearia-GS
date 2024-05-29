@@ -53,6 +53,7 @@ public class ClienteController {
 public String agendamentosCliente(HttpServletRequest request, Model model) {
     // Verifica se o cookie de usuário existe e está dentro do prazo de validade
     if (CookieService.getCookie(request, "usuarioId") != null) {
+        if (CookieService.getCookie(request, "tipoUsuario").equals("cliente")) {
         // Obtém o ID do cliente logado a partir do cookie
         int clienteId = Integer.parseInt(CookieService.getCookie(request, "usuarioId"));
         
@@ -75,9 +76,13 @@ public String agendamentosCliente(HttpServletRequest request, Model model) {
         // Retorna a página de agendamentos do cliente
         return "/clientes/index";
     } else {
-        // Se o cookie não existe ou está expirado, redireciona para a página de login
-        return "redirect:/login";
+        // Se não for administrador, redireciona para a página principal
+        return "redirect:/";
     }
+} else {
+    // Se o cookie não existe ou está expirado, redireciona para a página de login
+    return "redirect:/login";
+}
 }
 
      //Rota para página de cadastro de cliente

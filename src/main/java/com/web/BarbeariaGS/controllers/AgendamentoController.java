@@ -174,6 +174,7 @@ public String criarAgendamento(Model model, HttpServletRequest request,
     }
 }
 
+//Rota de filtro por dia dos agendamentos do funcionarios
 @GetMapping("/funcionarios/agendamentos")
 public String getAgendamentosPorData(@RequestParam("data") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data,
                                      Model model, HttpServletRequest request) {

@@ -19,8 +19,8 @@ public class LoginInterceptorAppConfig implements WebMvcConfigurer  {
                 "/css/**",
                 "/img/**",
                 "/",
-                "/clientes/novo/**",
-                "/clientes/**",
+                "/clientes/novo",
+                "/clientes",
                 "/error/404"
             
             );
