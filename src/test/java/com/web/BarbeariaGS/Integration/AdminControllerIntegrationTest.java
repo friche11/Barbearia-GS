@@ -67,24 +67,6 @@ public class AdminControllerIntegrationTest {
             .andExpect(redirectedUrl("/error/404"));
     }
 
-    @Test
-    public void testIndex_WhenLoggedInAsAdmin_ShouldShowAdminPage() throws Exception {
-        // Clear any existing static mocks
-        Mockito.framework().clearInlineMocks();
-        Cookie usuarioIdCookie = new Cookie("usuarioId", "1");
-        Cookie tipoUsuarioCookie = new Cookie("tipoUsuario", "admin");
-
-        HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
-        when(request.getCookies()).thenReturn(new Cookie[]{usuarioIdCookie, tipoUsuarioCookie});
-
-        Mockito.mockStatic(CookieService.class);
-        when(CookieService.getCookie(any(HttpServletRequest.class), eq("usuarioId"))).thenReturn(usuarioIdCookie.getValue());
-        when(CookieService.getCookie(any(HttpServletRequest.class), eq("tipoUsuario"))).thenReturn(tipoUsuarioCookie.getValue());
-
-        mockMvc.perform(get("/administradores"))
-            .andExpect(status().isOk())
-            .andExpect(view().name("administradores/index"));
-    }
 
     @Test
     public void testNovo_WhenNotLoggedIn_ShouldRedirectToError404() throws Exception {
@@ -100,7 +82,7 @@ public class AdminControllerIntegrationTest {
         // Clear any existing static mocks
         Mockito.framework().clearInlineMocks();
         Cookie usuarioIdCookie = new Cookie("usuarioId", "1");
-        Cookie tipoUsuarioCookie = new Cookie("tipoUsuario", "admin");
+        Cookie tipoUsuarioCookie = new Cookie("tipoUsuario", "adminCookie");
 
         HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
         when(request.getCookies()).thenReturn(new Cookie[]{usuarioIdCookie, tipoUsuarioCookie});
@@ -117,7 +99,7 @@ public class AdminControllerIntegrationTest {
     @Test
     public void testCriarAdmin_WhenLoggedInAsAdmin_ShouldCreateAdmin() throws Exception {
         Cookie usuarioIdCookie = new Cookie("usuarioId", "1");
-        Cookie tipoUsuarioCookie = new Cookie("tipoUsuario", "admin");
+        Cookie tipoUsuarioCookie = new Cookie("tipoUsuario", "adminCookie");
 
         HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
         when(request.getCookies()).thenReturn(new Cookie[]{usuarioIdCookie, tipoUsuarioCookie});

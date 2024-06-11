@@ -109,7 +109,7 @@ public class AdminController {
        // Verifica se o cookie de usuário existe e está dentro do prazo de validade
        if (CookieService.getCookie(request, "usuarioId") != null) {
         // Verifica se o usuário autenticado é um administrador
-        if (CookieService.getCookie(request, "tipoUsuario").equals("admin")) {
+        if (CookieService.getCookie(request, "tipoUsuario").equals("adminCookie")) {
             // Se for administrador, permite a criação de um novo administrador
               // Configura a senha do cliente como o hash gerado
             admin.setSenha(bCryptPasswordEncoder.encode(senha));
