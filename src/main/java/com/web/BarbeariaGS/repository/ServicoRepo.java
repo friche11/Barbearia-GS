@@ -24,5 +24,4 @@ public interface ServicoRepo extends CrudRepository<Servico, Integer> {
 
     @Query(value = "select * from servicos where email = :email and id <> :id", nativeQuery = true)
     Servico findByEmailAndIdNot(String email, int id);
-
 }

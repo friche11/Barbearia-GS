@@ -53,10 +53,11 @@ public class ClienteController {
 public String agendamentosCliente(HttpServletRequest request, Model model) {
     // Verifica se o cookie de usuário existe e está dentro do prazo de validade
     if (CookieService.getCookie(request, "usuarioId") != null) {
-        if (CookieService.getCookie(request, "tipoUsuario").equals("cliente")) {
+        if (CookieService.getCookie(request, "tipoUsuario").equals("clienteCookie")) {
         // Obtém o ID do cliente logado a partir do cookie
         int clienteId = Integer.parseInt(CookieService.getCookie(request, "usuarioId"));
-        
+        model.addAttribute("logado", true);
+          model.addAttribute("clienteCookie", true);
         // Busca o cliente pelo ID
         Cliente cliente = clientesRepo.findById(clienteId)
                 .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
@@ -99,13 +100,13 @@ public String agendamentosCliente(HttpServletRequest request, Model model) {
         boolean temNumero = senha.matches(".*[0-9].*");
 
         // Verifica se a senha contém pelo menos 1 letra
-        boolean temLetra = senha.matches(".*[a-zA-Z].*");
+        boolean temLetra = senha.matches(".*[a-zA-ZçÇ].*");
 
         // Verifica se a senha contém pelo menos 1 caractere especial
         boolean temCaractereEspecial = senha.matches(".*[@#$%^&+=?!].*");
 
         // Verifica se o nome contém apenas letras e espaços
-        boolean contemApenasLetras = nome.matches("[a-zA-Z\\s]+");
+        boolean contemApenasLetras = nome.matches("[a-zA-ZçÇ\\s]+");
 
         // Verifica se o nome contém apenas letras
         if (!contemApenasLetras) {

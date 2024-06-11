@@ -32,25 +32,7 @@ public class AdminController {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
    
-     //Rota para página de admin
-     @GetMapping("/administradores")
-     public String index(HttpServletRequest request, Model model){
-         // Verifica se o cookie de usuário existe e está dentro do prazo de validade
-         if (CookieService.getCookie(request, "usuarioId") != null) {
-            // Verifica se o usuário autenticado é um administrador
-            if (CookieService.getCookie(request, "tipoUsuario").equals("admin")) {
-                // Se for administrador, permite o acesso à página de administradores
-                model.addAttribute("logado", true);
-                return "administradores/index";
-            } else {
-                // Se não for administrador, redireciona para a página principal
-                return "redirect:/";
-            }
-        } else {
-            // Se o cookie não existe ou está expirado, redireciona para a página de login
-            return "redirect:/login";
-        }
-     }
+   
      
      //Rota para página de cadastro de admin
      @GetMapping("/administradores/novo")
@@ -58,9 +40,10 @@ public class AdminController {
          // Verifica se o cookie de usuário existe e está dentro do prazo de validade
          if (CookieService.getCookie(request, "usuarioId") != null) {
             // Verifica se o usuário autenticado é um administrador
-            if (CookieService.getCookie(request, "tipoUsuario").equals("admin")) {
+            if (CookieService.getCookie(request, "tipoUsuario").equals("adminCookie")) {
                 // Se for administrador, permite o acesso à página de cadastro de administradores
                 model.addAttribute("logado", true);
+                model.addAttribute("adminCookie", true);
                 return "administradores/novo";
             } else {
                 // Se não for administrador, redireciona para a página principal
@@ -79,13 +62,13 @@ public class AdminController {
         boolean temNumero = senha.matches(".*[0-9].*");
 
         // Verifica se a senha contém pelo menos 1 letra
-        boolean temLetra = senha.matches(".*[a-zA-Z].*");
+        boolean temLetra = senha.matches(".*[a-zA-ZçÇ].*");
 
         // Verifica se a senha contém pelo menos 1 caractere especial
         boolean temCaractereEspecial = senha.matches(".*[@#$%^&+=?!].*");
 
         // Verifica se o nome contém apenas letras e espaços
-        boolean contemApenasLetras = nome.matches("[a-zA-Z\\s]+");
+        boolean contemApenasLetras = nome.matches("[a-zA-ZçÇ\\s]+");
 
         // Verifica se o nome contém apenas letras
         if (!contemApenasLetras) {

@@ -64,8 +64,8 @@ public class LoginController {
      CookieService.setCookie(response, "usuarioId", String.valueOf(adm.getId()), tempoLogado);
      CookieService.setCookie(response, "usuarioNome", URLEncoder.encode(adm.getNome(), "UTF-8"), tempoLogado);
      CookieService.setCookie(response, "usuarioEmail", URLEncoder.encode(adm.getEmail(), "UTF-8"), tempoLogado);
-     CookieService.setCookie(response, "tipoUsuario", "admin", tempoLogado);
-     return "redirect:/administradores?loginSucesso=true";
+     CookieService.setCookie(response, "tipoUsuario", "adminCookie", tempoLogado);
+     return "redirect:/?loginSucesso=true";
  }
 
  // Verifica se é um cliente
@@ -79,7 +79,7 @@ public class LoginController {
      CookieService.setCookie(response, "usuarioId", String.valueOf(client.getId()), tempoLogado);
      CookieService.setCookie(response, "usuarioNome", URLEncoder.encode(client.getNome(), "UTF-8"), tempoLogado);
      CookieService.setCookie(response, "usuarioEmail", URLEncoder.encode(client.getEmail(), "UTF-8"), tempoLogado);
-     CookieService.setCookie(response, "tipoUsuario", "cliente", tempoLogado);
+     CookieService.setCookie(response, "tipoUsuario", "clienteCookie", tempoLogado);
      // Após o cadastro bem-sucedido
      return "redirect:/clientes?loginSucesso=true";
  }
@@ -95,7 +95,7 @@ public class LoginController {
      CookieService.setCookie(response, "usuarioId", String.valueOf(func.getId()), tempoLogado);
      CookieService.setCookie(response, "usuarioNome", URLEncoder.encode(func.getNome(), "UTF-8"), tempoLogado);
      CookieService.setCookie(response, "usuarioEmail", URLEncoder.encode(func.getEmail(), "UTF-8"), tempoLogado);
-     CookieService.setCookie(response, "tipoUsuario", "funcionario", tempoLogado);
+     CookieService.setCookie(response, "tipoUsuario", "funcionarioCookie", tempoLogado);
      return "redirect:/funcionarios?loginSucesso=true";
  }
 

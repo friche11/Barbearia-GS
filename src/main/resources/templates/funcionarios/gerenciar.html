@@ -21,6 +21,7 @@
         min-width: 0; /* Remova a largura mínima fixa */
         margin: 150px auto;
         padding: 0 15px;
+        
        
     }
     .card-body {
@@ -54,7 +55,7 @@
                 <div class="container-fluid" style="padding-top: 70px; ">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Funcionários</h1>
+                
                     
                     </p>
 
@@ -107,8 +108,10 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
+                 <!--desbugando footer-->
+                 <section style="background-color: 0.0 ;   height: 40%;">
+                </section>
                  <!-- Bootstrap core JavaScript-->
     <script src="/vendor/jquery/jquery.min.js"></script>
     <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -120,4 +123,4 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="/js/sweet-alert.js"></script>
                 <!-- /.container-fluid -->
-            
+        <div th:replace="~{fragments/footer}"></div>

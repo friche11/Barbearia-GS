@@ -6,7 +6,8 @@
   top: 0;
   left: 0;
   z-index: 9999;
-  background-color: #ffffff;
+  background-color: #2e4067;
+  ;
 }
 
 .header-content {
@@ -31,6 +32,7 @@ transform: translateY(-0.25em);
   justify-content: center;
   margin-left: 0;
   z-index: 9999;
+  height: 150px;
   
 }
 
@@ -38,7 +40,8 @@ transform: translateY(-0.25em);
   display:flex;
   max-width: max-content;
   gap: 1rem;
-  background-color: #ffffff;
+  background-color: #2e4067;
+  ;
   padding-top: 30px;
   justify-content: center; /* Centralizar os itens horizontalmente */
   align-items: center; /* Centralizar os itens verticalmente */
@@ -57,6 +60,7 @@ justify-content: center; /* Centralizar os itens horizontalmente */
 align-items: center; /* Centralizar os itens verticalmente */
 }
 
+
 .botao-container {
 margin-left:auto; /* Move o container do botão para a direita */
 margin-right: 50px;
@@ -64,7 +68,7 @@ margin-top: -20px;
 }
 
 .botao{
-color:#F2EFE6;
+color:rgb(0, 0, 0);
 margin-right: 200px;
 display: block;
 margin-right: auto;
@@ -73,7 +77,7 @@ width: 120px;
 height: 45px;
 border: none;
 border-radius:5cm;
-background-color: #05263A;
+background-color: #fff;
 font-size: 17px;
 cursor: pointer;
 box-shadow: 1px 1px 0px #000000;
@@ -92,32 +96,30 @@ width: 0px;
 height: 45px;
 border: none;
 border-radius: 5cm;
-background-color: #ffffff; /* Cor de fundo vermelha */
-color: #ffffff; /* Cor do texto */
 font-size: 20px;
 cursor: pointer;
-box-shadow: 1px 1px 0px #ffffff;
 margin-right: 25px;
+background-color: #2e4067;
 
 }
 
 .botaoSair:hover {
-transform: scale(1.05);
+transform: scale(1.10);
 }
 
 .icone-sair {
 display: block;
 margin-left: auto;
 margin-right: auto;
-width: 50px;
-height: 50px;
-
+width: 35px;
+height: 35px;
+background-color: #2e4067;
 
 }
 
 .list .personalizado {
   text-decoration: none;
-  color: rgb(0, 0, 0);
+  color:white;
   padding: 0px 25px 10px 0px;
   position: relative;
   
@@ -127,7 +129,7 @@ height: 50px;
 content: "";
 width: 0%;
 height: 4px;
-background-color: rgb(0, 0, 0);
+background-color:white;
 position:absolute;
 bottom:0;
 left: 0;
@@ -147,6 +149,7 @@ margin-top: -20px;
 ul{
   align-items: center; /* Centralizar os itens verticalmente */
   justify-content: center; /* Centralizar os itens horizontalmente */
+  
 
 }
 

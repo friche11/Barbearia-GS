@@ -8,35 +8,50 @@
     <style>
         /* Estilo para o calendário */
 
-        #calendar {
-            min-width: 700px;
-            margin: 0 auto;
-            padding-top: 40px;
+        
+    #calendar {
+      min-width: 700px;
+      margin: 0 auto;
+      padding-top: 40px;
+      margin-bottom: 200px;
+      
 
-        }
+    }
 
-        h4 {
-            text-align: center;
-            /* Centralizar o texto */
-            margin-bottom: 20px;
-            /* Espaçamento inferior */
-        }
+    /* Remover imagem de fundo para a classe específica */
+    .no-bg-img {
+      background-image: none !important;
+      background-color: rgb(255, 251, 251);
+    }
 
-        .center-content {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding-top: 240px;
+    h4 {
+      text-align: center;
+      /* Centralizar o texto */
+      margin-bottom: 20px;
+      /* Espaçamento inferior */
+    }
 
-        }
+    .center-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding-top: 200px;
+      
+
+    }
+
+    .container-fluid.center-content {
+      background-color: rgb(255, 251, 251);
+      height: 100%;
+    }
     </style>
 
 </head>
 
-<body>
+<body class="no-bg-img">
 
-    <div th:insert="~{fragments/navbar}"></div>
+    <div th:replace="~{fragments/navbar}"></div>
     <div class="container-fluid center-content">
         <h4>Escolha o dia e o horário de seu agendamento</h4>
         <div id='calendar'></div>

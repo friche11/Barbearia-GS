@@ -49,7 +49,7 @@ public String agendamentosCliente(HttpServletRequest request, Model model) {
     // Verifica se o cookie de usuário existe e está dentro do prazo de validade
     if (CookieService.getCookie(request, "usuarioId") != null) {
         // Verifica se o usuário autenticado é um administrador
-        if (CookieService.getCookie(request, "tipoUsuario").equals("funcionario")) {
+        if (CookieService.getCookie(request, "tipoUsuario").equals("funcionarioCookie")) {
         // Obtém o ID do cliente logado a partir do cookie
         int funcionarioId = Integer.parseInt(CookieService.getCookie(request, "usuarioId"));
         
@@ -65,6 +65,8 @@ public String agendamentosCliente(HttpServletRequest request, Model model) {
         
         // Adiciona os agendamentos ao modelo para serem exibidos na view
         model.addAttribute("agendamentos", agendamentos); 
+        model.addAttribute("logado", true);
+        model.addAttribute("funcionarioCookie", true);
     } else {
         // Se não for administrador, redireciona para a página principal
         return "redirect:/";
@@ -83,9 +85,10 @@ public String agendamentosCliente(HttpServletRequest request, Model model) {
          // Verifica se o cookie de usuário existe e está dentro do prazo de validade
        if (CookieService.getCookie(request, "usuarioId") != null) {
         // Verifica se o usuário autenticado é um administrador
-        if (CookieService.getCookie(request, "tipoUsuario").equals("admin")) {
+        if (CookieService.getCookie(request, "tipoUsuario").equals("adminCookie")) {
             // Se o cookie existe e está dentro do prazo de validade, redireciona para a página principal
             model.addAttribute("logado", true);
+                model.addAttribute("adminCookie", true);
             List<Funcionario> funcionarios = (List<Funcionario>)funcionariosRepo.findAll();
             modelList.addAttribute("funcionarios", funcionarios);
             return "funcionarios/gerenciar";
@@ -107,9 +110,10 @@ public String agendamentosCliente(HttpServletRequest request, Model model) {
           // Verifica se o cookie de usuário existe e está dentro do prazo de validade
        if (CookieService.getCookie(request, "usuarioId") != null) {
         // Verifica se o usuário autenticado é um administrador
-        if (CookieService.getCookie(request, "tipoUsuario").equals("admin")) {
+        if (CookieService.getCookie(request, "tipoUsuario").equals("adminCookie")) {
             // Se o cookie existe e está dentro do prazo de validade, redireciona para a página principal
             model.addAttribute("logado", true);
+                model.addAttribute("adminCookie", true);
             return "funcionarios/novo";
     
         } else {
@@ -130,13 +134,13 @@ public String agendamentosCliente(HttpServletRequest request, Model model) {
         boolean temNumero = senha.matches(".*[0-9].*");
 
         // Verifica se a senha contém pelo menos 1 letra
-        boolean temLetra = senha.matches(".*[a-zA-Z].*");
+        boolean temLetra = senha.matches(".*[a-zA-ZçÇ].*");
 
         // Verifica se a senha contém pelo menos 1 caractere especial
         boolean temCaractereEspecial = senha.matches(".*[@#$%^&+=?!].*");
 
                 // Verifica se o nome contém apenas letras e espaços
-        boolean contemApenasLetras = nome.matches("[a-zA-Z\\s]+");
+        boolean contemApenasLetras = nome.matches("[a-zA-ZçÇ\\s]+");
 
         // Verifica se o nome contém apenas letras
         if (!contemApenasLetras) {
@@ -179,7 +183,7 @@ public String agendamentosCliente(HttpServletRequest request, Model model) {
           // Verifica se o cookie de usuário existe e está dentro do prazo de validade
 if (CookieService.getCookie(request, "usuarioId") != null) {
         // Verifica se o usuário autenticado é um administrador
-    if (CookieService.getCookie(request, "tipoUsuario").equals("admin")) {
+    if (CookieService.getCookie(request, "tipoUsuario").equals("adminCookie")) {
             // Se o cookie existe e está dentro do prazo de validade, redireciona para a página principal
           
             // Obter o valor do cookie "usuarioId" e convertê-lo para um número inteiro
@@ -236,12 +240,14 @@ if (CookieService.getCookie(request, "usuarioId") != null) {
           // Verifica se o cookie de usuário existe e está dentro do prazo de validade
        if (CookieService.getCookie(request, "usuarioId") != null) {
         // Verifica se o usuário autenticado é um administrador
-        if (CookieService.getCookie(request, "tipoUsuario").equals("admin")) {
+        if (CookieService.getCookie(request, "tipoUsuario").equals("adminCookie")) {
             // Se o cookie existe e está dentro do prazo de validade, redireciona para a página principal
             
         Optional<Funcionario> funcionario = funcionariosRepo.findById(id);
         try{
         model.addAttribute("funcionario", funcionario.get());
+        model.addAttribute("logado", true);
+        model.addAttribute("adminCookie", true);
         }catch(Exception err){
             return "redirect:/gerenciar/funcionarios";
         }
@@ -265,13 +271,13 @@ if (CookieService.getCookie(request, "usuarioId") != null) {
 boolean temNumero = senha.matches(".*[0-9].*");
 
 // Verifica se a senha contém pelo menos 1 letra
-boolean temLetra = senha.matches(".*[a-zA-Z].*");
+boolean temLetra = senha.matches(".*[a-zA-ZçÇ].*");
 
 // Verifica se a senha contém pelo menos 1 caractere especial
 boolean temCaractereEspecial = senha.matches(".*[@#$%^&+=?!].*");
 
 // Verifica se o nome contém apenas letras e espaços
-boolean contemApenasLetras = nome.matches("[a-zA-Z\\s]+");
+boolean contemApenasLetras = nome.matches("[a-zA-ZçÇ\\s]+");
 
 // Verifica se o nome contém apenas letras
 if (!contemApenasLetras) {
@@ -305,7 +311,7 @@ if (funcionariosRepo.existsByEmail(email) && funcionariosRepo.findByEmailAndIdNo
           // Verifica se o cookie de usuário existe e está dentro do prazo de validade
           if (CookieService.getCookie(request, "usuarioId") != null) {
             // Verifica se o usuário autenticado é um administrador
-            if (CookieService.getCookie(request, "tipoUsuario").equals("admin")) {
+            if (CookieService.getCookie(request, "tipoUsuario").equals("adminCookie")) {
                 // Se o cookie existe e está dentro do prazo de validade, redireciona para a página principal
             // Obter o valor do cookie "usuarioId" e convertê-lo para um número inteiro
     String adminIdStr = CookieService.getCookie(request, "usuarioId");
@@ -363,7 +369,7 @@ if (adminOptional.isPresent()) {
            // Verifica se o cookie de usuário existe e está dentro do prazo de validade
        if (CookieService.getCookie(request, "usuarioId") != null) {
         // Verifica se o usuário autenticado é um administrador
-        if (CookieService.getCookie(request, "tipoUsuario").equals("admin")) {
+        if (CookieService.getCookie(request, "tipoUsuario").equals("adminCookie")) {
            
             funcionariosRepo.deleteById(id);
             return "redirect:/gerenciar/funcionarios";

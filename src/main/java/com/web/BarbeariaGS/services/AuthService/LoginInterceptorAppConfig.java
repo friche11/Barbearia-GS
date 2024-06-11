@@ -20,8 +20,10 @@ public class LoginInterceptorAppConfig implements WebMvcConfigurer  {
                 "/img/**",
                 "/",
                 "/clientes/novo",
+                "/clientes/criar",
                 "/clientes",
-                "/error/404"
+                "/error/404",
+                "/login?cadastroSucesso=true"
             
             );
            

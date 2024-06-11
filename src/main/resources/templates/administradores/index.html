@@ -1,51 +1,56 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="UTF-8">
-  <title>Barbearia GS</title>
-  <!-- Custom fonts for this template-->
-<link rel="stylesheet" href="../css/navbar.css">
-<link rel="stylesheet" href="../css/Logo.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
-<link
- href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
- rel="stylesheet">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Barbearia GS</title>
+    <!-- Custom fonts for this template-->
+    <link rel="stylesheet" href="../css/navbar.css" />
+    <link rel="stylesheet" href="../css/Logo.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+      rel="stylesheet"
+    />
 
-<!-- Custom styles for this template-->
-<link href="/css/sb-admin-2.css" rel="stylesheet">
-<link href="/css/sweet-alert.css" rel="stylesheet">
-</head>
-<body>
-  <header class="header">
-    <div class="header-content">
-    <nav class="nav">
-      <img src="/img/Logo.png" alt="Barbearia GS Logo" class="logo">
-      <div class="centralizar">
-      <ul class="list">
-        <li>
-          <a href="/" class="personalizado">Home</a>
-        </li>
+    <!-- Custom styles for this template-->
+    <link href="/css/sb-admin-2.css" rel="stylesheet" />
+    <link href="/css/sweet-alert.css" rel="stylesheet" />
+    <!-- Favicon -->
+  <link rel="icon" href="/img/Logo.ico" type="image/x-icon" />
     
-      </ul>
-    </div>
-    
-    </nav>
+  </head>
+  <body>
+    <header class="header">
+      <div class="header-content">
+        <nav class="nav">
+          <img src="/img/Logo.png" alt="Barbearia GS Logo" class="logo" />
+          <div class="centralizar">
+            <ul class="list">
+              <li>
+                <a href="/" class="personalizado">Home</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
 
-    <div class="botao-container">
-    <button class="botao" onclick="redirecionarParaEscolhaGerenciar()">Gerenciar</button>
+        <div class="botao-container">
+          <button class="botao" onclick="redirecionarParaEscolhaGerenciar()">
+            Gerenciar
+          </button>
+        </div>
 
-  </div>
+        <div class="sair-container">
+          <button class="botaoSair" onclick="confirmarSair()">
+            <img src="/img/sair.png" alt="Ícone de saída" class="icone-sair" />
+          </button>
+        </div>
+      </div>
+    </header>
 
-    <div class="sair-container">
-      <button class="botaoSair" onclick="confirmarSair()">
-        <img src="/img/sair.png" alt="Ícone de saída" class="icone-sair">
-    
-    </button>
-  </div>
-    
-</div>
-  </header>
-  
+   
     <!-- Bootstrap core JavaScript-->
     <script src="/js/agendaCliente.js"></script>
     <script src="/vendor/jquery/jquery.min.js"></script>
@@ -61,9 +66,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="/js/sweet-alert.js"></script>
 
-</body>
+   
+  </body>
 </html>
-
-
-
-<div th:replace="~{fragments/footer}"></div>

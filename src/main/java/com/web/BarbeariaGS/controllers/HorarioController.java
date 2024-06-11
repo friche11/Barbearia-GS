@@ -33,9 +33,10 @@ public class HorarioController {
          // Verifica se o cookie de usuário existe e está dentro do prazo de validade
        if (CookieService.getCookie(request, "usuarioId") != null) {
         // Verifica se o usuário autenticado é um administrador
-        if (CookieService.getCookie(request, "tipoUsuario").equals("admin")) {
+        if (CookieService.getCookie(request, "tipoUsuario").equals("adminCookie")) {
             // Se o cookie existe e está dentro do prazo de validade, redireciona para a página principal
             model.addAttribute("logado", true);
+            model.addAttribute("adminCookie", true);
             List<Horario> horarios = (List<Horario>)horarioRepo.findAll();
             modelList.addAttribute("horarios", horarios);
             return "horarios/gerenciar";
@@ -57,9 +58,10 @@ public class HorarioController {
           // Verifica se o cookie de usuário existe e está dentro do prazo de validade
        if (CookieService.getCookie(request, "usuarioId") != null) {
         // Verifica se o usuário autenticado é um administrador
-        if (CookieService.getCookie(request, "tipoUsuario").equals("admin")) {
+        if (CookieService.getCookie(request, "tipoUsuario").equals("adminCookie")) {
             // Se o cookie existe e está dentro do prazo de validade, redireciona para a página principal
             model.addAttribute("logado", true);
+            model.addAttribute("adminCookie", true);
             return "horarios/novo";
     
         } else {
@@ -83,7 +85,7 @@ public class HorarioController {
           // Verifica se o cookie de usuário existe e está dentro do prazo de validade
           if (CookieService.getCookie(request, "usuarioId") != null) {
               // Verifica se o usuário autenticado é um administrador
-              if (CookieService.getCookie(request, "tipoUsuario").equals("admin")) {
+              if (CookieService.getCookie(request, "tipoUsuario").equals("adminCookie")) {
                   // Se for administrador, permite a criação de um novo serviço
                   horario.setHorario(horario2);
                   horarioRepo.save(horario);
@@ -107,7 +109,7 @@ public class HorarioController {
           // Verifica se o cookie de usuário existe e está dentro do prazo de validade
        if (CookieService.getCookie(request, "usuarioId") != null) {
         // Verifica se o usuário autenticado é um administrador
-        if (CookieService.getCookie(request, "tipoUsuario").equals("admin")) {
+        if (CookieService.getCookie(request, "tipoUsuario").equals("adminCookie")) {
             // Se o cookie existe e está dentro do prazo de validade, redireciona para a página principal
             
         Optional<Horario> horarios = horarioRepo.findById(id);
@@ -116,6 +118,8 @@ public class HorarioController {
         }catch(Exception err){
             return "redirect:/gerenciar/horarios";
         }
+        model.addAttribute("logado", true);
+        model.addAttribute("adminCookie", true);
         return "horarios/editar";
     
         } else {
@@ -139,7 +143,7 @@ public String atualizar(@PathVariable int id, @RequestParam String horario2, Htt
     // Verifica se o cookie de usuário existe e está dentro do prazo de validade
     if (CookieService.getCookie(request, "usuarioId") != null) {
         // Verifica se o usuário autenticado é um administrador
-        if (CookieService.getCookie(request, "tipoUsuario").equals("admin")) {
+        if (CookieService.getCookie(request, "tipoUsuario").equals("adminCookie")) {
             // Busca o serviço no banco de dados pelo ID
             Optional<Horario> horarioOptional = horarioRepo.findById(id);
             if (horarioOptional.isPresent()) {
@@ -169,9 +173,10 @@ public String atualizar(@PathVariable int id, @RequestParam String horario2, Htt
            // Verifica se o cookie de usuário existe e está dentro do prazo de validade
        if (CookieService.getCookie(request, "usuarioId") != null) {
         // Verifica se o usuário autenticado é um administrador
-        if (CookieService.getCookie(request, "tipoUsuario").equals("admin")) {
+        if (CookieService.getCookie(request, "tipoUsuario").equals("adminCookie")) {
            
             horarioRepo.deleteById(id);
+
             return "redirect:/gerenciar/horarios";
     
         } else {

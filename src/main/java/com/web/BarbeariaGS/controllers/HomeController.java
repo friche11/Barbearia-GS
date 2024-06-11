@@ -39,21 +39,21 @@ public class HomeController {
         if (adminRepo.existsByEmail(userEmail)) {
             // Se o usuário for um admin, define o atributo "logado" como true e "admin" como true
             model.addAttribute("logado", true);
-            model.addAttribute("admin", true);
-            model.addAttribute("cliente", false);
-            model.addAttribute("funcionario", false);
+            model.addAttribute("adminCookie", true);
+            model.addAttribute("clienteCookie", false);
+            model.addAttribute("funcionarioCookie", false);
         } else if (clienteRepo.existsByEmail(userEmail)) {
             // Se o usuário for um cliente, define o atributo "logado" como true e "admin" como false
             model.addAttribute("logado", true);
-            model.addAttribute("admin", false);
-            model.addAttribute("cliente", true);
-            model.addAttribute("funcionario", false);
+            model.addAttribute("adminCookie", false);
+            model.addAttribute("clienteCookie", true);
+            model.addAttribute("funcionarioCookie", false);
         } else if (funcionariosRepo.existsByEmail(userEmail)) {
             // Se o usuário for um cliente, define o atributo "logado" como true e "admin" como false
             model.addAttribute("logado", true);
-            model.addAttribute("admin", false);
-            model.addAttribute("cliente", false);
-            model.addAttribute("funcionario", true);
+            model.addAttribute("adminCookie", false);
+            model.addAttribute("clienteCookie", false);
+            model.addAttribute("funcionarioCookie", true);
         } 
     } 
     // Após o cadastro bem-sucedido

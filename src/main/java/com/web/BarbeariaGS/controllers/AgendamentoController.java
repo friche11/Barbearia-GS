@@ -55,9 +55,8 @@ public class AgendamentoController {
         // Verifica se o cookie de usuário existe e está dentro do prazo de validade
         if (CookieService.getCookie(request, "usuarioId") != null) {
             // Verifica se o usuário autenticado é um cliente
-            if (CookieService.getCookie(request, "tipoUsuario").equals("cliente")) {
-                // Se for cliente, permite o acesso à página de agendamento
-                model.addAttribute("logado", true);
+            if (CookieService.getCookie(request, "tipoUsuario").equals("clienteCookie")) {
+                
                 
                 // Busca o funcionário pelo ID
                 Funcionario funcionario = funcionariosRepo.findById(funcionarioId)
@@ -67,15 +66,15 @@ public class AgendamentoController {
                 Servico servico = servicoRepo.findById(servicoId)
                         .orElseThrow(() -> new RuntimeException("Serviço não encontrado"));
     
-                // Adiciona o funcionário e serviço ao model para serem utilizados na view
-    model.addAttribute("funcionario", funcionario);
     model.addAttribute("servico", servico);
     List<Object[]> horarios = agendamentoRepo.findHorariosVagosByFuncionarioAndData(funcionarioId, dataAgendamento);
     // Verifica se foi fornecida uma data de agendamento
+     model.addAttribute("funcionario", funcionario);
         modelList.addAttribute("horarios", horarios);
         System.out.println(dataAgendamento);
         model.addAttribute("dataAgendamento", dataAgendamento); // Adiciona a data para uso na view
-    
+        model.addAttribute("logado", true);
+        model.addAttribute("clienteCookie", true);
 
     
                 return "clientes/agendamento";
@@ -116,6 +115,8 @@ public String abrirModalSelecaoHorarios(Model model, @RequestParam("funcionarioI
     model.addAttribute("horarios", horarios);
     model.addAttribute("dataAgendamento", data);
     model.addAttribute("dataFormatada", dataFormatada);
+    model.addAttribute("logado", true);
+    model.addAttribute("clienteCookie", true);
 
     return "clientes/selecaoHorarios"; // Nome da sua view do modal de seleção de horários
 }
@@ -134,7 +135,7 @@ public String criarAgendamento(Model model, HttpServletRequest request,
     // Verifica se o cookie de usuário existe e está dentro do prazo de validade
     if (CookieService.getCookie(request, "usuarioId") != null) {
         // Verifica se o usuário autenticado é um cliente
-        if (CookieService.getCookie(request, "tipoUsuario").equals("cliente")) {
+        if (CookieService.getCookie(request, "tipoUsuario").equals("clienteCookie")) {
              // Busca o cliente pelo ID (assumindo que exista um repository para clientes)
             Cliente cliente = clienteRepo.findById(clienteId)
                     .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
@@ -182,7 +183,7 @@ public String getAgendamentosPorData(@RequestParam("data") @DateTimeFormat(iso =
                                         // Verifica se o cookie de usuário existe e está dentro do prazo de validade
       if (CookieService.getCookie(request, "usuarioId") != null) {
         // Verifica se o usuário autenticado é um administrador
-        if (CookieService.getCookie(request, "tipoUsuario").equals("funcionario")) {
+        if (CookieService.getCookie(request, "tipoUsuario").equals("funcionarioCookie")) {
 
     // Obtém o ID do cliente logado a partir do cookie
     int funcionarioId = Integer.parseInt(CookieService.getCookie(request, "usuarioId"));
@@ -208,7 +209,7 @@ public String getAgendamentosPorData(@RequestParam("data") @DateTimeFormat(iso =
           // Verifica se o cookie de usuário existe e está dentro do prazo de validade
       if (CookieService.getCookie(request, "usuarioId") != null) {
        // Verifica se o usuário autenticado é um administrador
-       if (CookieService.getCookie(request, "tipoUsuario").equals("cliente")) {
+       if (CookieService.getCookie(request, "tipoUsuario").equals("clienteCookie")) {
           
            agendamentoRepo.deleteById(id);
            return "redirect:/clientes";
@@ -230,7 +231,7 @@ public String getAgendamentosPorData(@RequestParam("data") @DateTimeFormat(iso =
           // Verifica se o cookie de usuário existe e está dentro do prazo de validade
       if (CookieService.getCookie(request, "usuarioId") != null) {
        // Verifica se o usuário autenticado é um administrador
-       if (CookieService.getCookie(request, "tipoUsuario").equals("funcionario")) {
+       if (CookieService.getCookie(request, "tipoUsuario").equals("funcionarioCookie")) {
           
            agendamentoRepo.deleteById(id);
            return "redirect:/funcionarios";
@@ -253,7 +254,7 @@ public String funcionarioMarcarConcluido(@PathVariable int id, HttpServletReques
     // Verifica se o cookie de usuário existe e está dentro do prazo de validade
     if (CookieService.getCookie(request, "usuarioId") != null) {
         // Verifica se o usuário autenticado é um funcionário
-        if (CookieService.getCookie(request, "tipoUsuario").equals("funcionario")) {
+        if (CookieService.getCookie(request, "tipoUsuario").equals("funcionarioCookie")) {
             // Verifique se o agendamento com o ID fornecido existe
             Optional<Agendamento> agendamentoOptional = agendamentoRepo.findById(id);
             if (agendamentoOptional.isPresent()) {

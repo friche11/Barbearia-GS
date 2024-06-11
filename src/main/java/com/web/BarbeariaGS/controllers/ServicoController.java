@@ -29,9 +29,10 @@ public class ServicoController {
          // Verifica se o cookie de usuário existe e está dentro do prazo de validade
        if (CookieService.getCookie(request, "usuarioId") != null) {
         // Verifica se o usuário autenticado é um administrador
-        if (CookieService.getCookie(request, "tipoUsuario").equals("admin")) {
+        if (CookieService.getCookie(request, "tipoUsuario").equals("adminCookie")) {
             // Se o cookie existe e está dentro do prazo de validade, redireciona para a página principal
             model.addAttribute("logado", true);
+            model.addAttribute("adminCookie", true);
             List<Servico> servicos = (List<Servico>)servicoRepo.findAll();
             modelList.addAttribute("servicos", servicos);
             return "servicos/gerenciar";
@@ -53,9 +54,10 @@ public class ServicoController {
           // Verifica se o cookie de usuário existe e está dentro do prazo de validade
        if (CookieService.getCookie(request, "usuarioId") != null) {
         // Verifica se o usuário autenticado é um administrador
-        if (CookieService.getCookie(request, "tipoUsuario").equals("admin")) {
+        if (CookieService.getCookie(request, "tipoUsuario").equals("adminCookie")) {
             // Se o cookie existe e está dentro do prazo de validade, redireciona para a página principal
             model.addAttribute("logado", true);
+            model.addAttribute("adminCookie", true);
             return "servicos/novo";
     
         } else {
@@ -72,7 +74,7 @@ public class ServicoController {
       @PostMapping("/gerenciar/servicos/criar")
       public String criar(Servico servico, @RequestParam String descricao, @RequestParam String nome, @RequestParam double preco, HttpServletRequest request) {
           // Verifica se o nome contém apenas letras e espaços
-          boolean contemApenasLetras = nome.matches("[a-zA-Z\\s]+");
+          boolean contemApenasLetras = nome.matches("[a-zA-ZçÇ\\s]+");
       
           // Verifica se o nome contém apenas letras e não ultrapassa 45 caracteres
           if (!contemApenasLetras || nome.length() > 45) {
@@ -88,7 +90,8 @@ public class ServicoController {
           // Verifica se o cookie de usuário existe e está dentro do prazo de validade
           if (CookieService.getCookie(request, "usuarioId") != null) {
               // Verifica se o usuário autenticado é um administrador
-              if (CookieService.getCookie(request, "tipoUsuario").equals("admin")) {
+              if (CookieService.getCookie(request, "tipoUsuario").equals("adminCookie")) {
+                
                   // Se for administrador, permite a criação de um novo serviço
                   servico.setDescricao(descricao);
                   servico.setNome(nome);
@@ -114,7 +117,7 @@ public class ServicoController {
           // Verifica se o cookie de usuário existe e está dentro do prazo de validade
        if (CookieService.getCookie(request, "usuarioId") != null) {
         // Verifica se o usuário autenticado é um administrador
-        if (CookieService.getCookie(request, "tipoUsuario").equals("admin")) {
+        if (CookieService.getCookie(request, "tipoUsuario").equals("adminCookie")) {
             // Se o cookie existe e está dentro do prazo de validade, redireciona para a página principal
             
         Optional<Servico> servicos = servicoRepo.findById(id);
@@ -123,6 +126,8 @@ public class ServicoController {
         }catch(Exception err){
             return "redirect:/gerenciar/servicos";
         }
+        model.addAttribute("logado", true);
+        model.addAttribute("adminCookie", true);
         return "servicos/editar";
     
         } else {
@@ -139,7 +144,7 @@ public class ServicoController {
     @PostMapping("/gerenciar/servicos/{id}/atualizar")
 public String atualizar(@PathVariable int id, @RequestParam String descricao, @RequestParam String nome, @RequestParam double preco, HttpServletRequest request) {
     // Verifica se o nome contém apenas letras e espaços
-    boolean contemApenasLetras = nome.matches("[a-zA-Z\\s]+");
+    boolean contemApenasLetras = nome.matches("[a-zA-ZçÇ\\s]+");
 
     // Verifica se o nome contém apenas letras e não ultrapassa 45 caracteres
     if (!contemApenasLetras || nome.length() > 45) {
@@ -154,7 +159,7 @@ public String atualizar(@PathVariable int id, @RequestParam String descricao, @R
     // Verifica se o cookie de usuário existe e está dentro do prazo de validade
     if (CookieService.getCookie(request, "usuarioId") != null) {
         // Verifica se o usuário autenticado é um administrador
-        if (CookieService.getCookie(request, "tipoUsuario").equals("admin")) {
+        if (CookieService.getCookie(request, "tipoUsuario").equals("adminCookie")) {
             // Busca o serviço no banco de dados pelo ID
             Optional<Servico> servicoOptional = servicoRepo.findById(id);
             if (servicoOptional.isPresent()) {
@@ -187,7 +192,7 @@ public String atualizar(@PathVariable int id, @RequestParam String descricao, @R
            // Verifica se o cookie de usuário existe e está dentro do prazo de validade
        if (CookieService.getCookie(request, "usuarioId") != null) {
         // Verifica se o usuário autenticado é um administrador
-        if (CookieService.getCookie(request, "tipoUsuario").equals("admin")) {
+        if (CookieService.getCookie(request, "tipoUsuario").equals("adminCookie")) {
            
             servicoRepo.deleteById(id);
             return "redirect:/gerenciar/servicos";
