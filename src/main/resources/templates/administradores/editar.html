@@ -12,6 +12,7 @@
   href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
   rel="stylesheet"
 />
+
 <!-- Custom styles for this template-->
 <link href="/css/sb-admin-2.css" rel="stylesheet" />
 <link href="/css/sweet-alert.css" rel="stylesheet" />
@@ -28,7 +29,7 @@
   <!-- DataTales Example -->
   <div class="card shadow mb-4" style="padding: 30px">
     <h1 class="h4 text-gray-900 mb-4" style="text-align: center">
-      Edite um serviço
+      Edite um administrador
     </h1>
     <div
       class="alert alert-danger mt-3"
@@ -40,21 +41,31 @@
     <div
       class="alert alert-danger mt-3"
       role="alert"
-      th:if="${param.errorPrecoInvalido}"
+      th:if="${param.errorSenhaInsegura}"
     >
-      O preço deve ser um número positivo válido.
+      A senha deve ter pelo o menos 1 número, 1 letra e 1 caractere especial.
+    </div>
+    <div class="alert alert-danger mt-3" role="alert" th:if="${param.error}">
+      O e-mail fornecido já está em uso. Por favor, escolha outro e-mail.
+    </div>
+    <div
+      class="alert alert-danger mt-3"
+      role="alert"
+      th:if="${param.errorEmailInvalido}"
+    >
+      O email deve ter até 100 caracteres.
     </div>
     <form
-      id="cadastroFormEditServico"
+      id="cadastroFormEdit"
       method="POST"
-      th:action="@{'/gerenciar/servicos/' + ${servico.id} + '/atualizar'}"
+      th:action="@{'/gerenciar/administradores/' + ${administrador.id} + '/atualizar'}"
     >
       <div class="form-group">
         <label for="nome">Nome</label>
         <input
           type="text"
           class="form-control"
-          th:value="${servico.nome}"
+          th:value="${administrador.nome}"
           required
           id="nome"
           name="nome"
@@ -62,27 +73,30 @@
         />
       </div>
       <div class="form-group">
-        <label for="nome">Descrição</label>
+      
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
         <input
-          type="text"
+          type="email"
           class="form-control"
-          th:value="${servico.descricao}"
+          th:value="${administrador.email}"
           required
-          id="descricao"
-          name="descricao"
-          placeholder="Digite sua descrição"
+          id="email"
+          name="email"
+          placeholder="Digite seu email"
         />
       </div>
       <div class="form-group">
-        <label for="preco">Preço (Coloque no formato 00.00)</label>
+        <label for="senha">Senha</label>
         <input
-          type="text"
+          type="password"
           class="form-control"
-          th:value="${servico.preco}"
+          th:value="${administrador.senha}"
           required
-          id="preco"
-          name="preco"
-          placeholder="Digite seu preço"
+          id="senha"
+          name="senha"
+          placeholder="Digite sua senha"
         />
       </div>
       <button type="submit" class="btn btn-primary">Confirmar</button>

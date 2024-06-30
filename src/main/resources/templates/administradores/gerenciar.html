@@ -62,8 +62,8 @@
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4" >
                         <div class="card-header py-3" >
-                            <a href="/gerenciar/funcionarios/novo" class="btn btn-primary" style="margin-right: 20px;">Novo</a>
-                            <h6 class="m-0 font-weight-bold text-primary" style="display: inline-block;">Lista de funcionários</h6> 
+                            <a href="/gerenciar/administradores/novo" class="btn btn-primary" style="margin-right: 20px;">Novo</a>
+                            <h6 class="m-0 font-weight-bold text-primary" style="display: inline-block;">Lista de administradores</h6> 
                         </div>
                         <div class="card-body" style="padding-left: 1rem; ">
                             <div class="table-responsive" >
@@ -72,45 +72,40 @@
                                         <tr>
                                             <th class="align-middle">Id</th>
                                             <th class="align-middle">Nome</th>
-                                            <th class="align-middle">Cargo</th>
                                             <th class="align-middle">Email</th>
-                                            <th class="align-middle"  style="white-space: nowrap;" >Criado por (Admin)</th>
-                                            <th class="align-middle"  style="white-space: nowrap;">Editado por (Admin)</th>
                                             <th class="align-middle"></th>
                                             <th class="align-middle"></th>
                                         </tr>
                                     </thead>
                                    
                                     <tbody class="text-center">
-                                        <tr th:each="funcionario: ${funcionarios}">
-                                            <td th:text="${funcionario.id}"/>
-                                            <td th:text="${funcionario.nome}"/>
-                                            <td th:text="${funcionario.cargo}"/>
-                                            <td th:text="${funcionario.email}"/>
-                                            <td th:text="${funcionario.adminCriacao}"style="white-space: nowrap;"/>
-                                            <td th:text="${funcionario.adminEdicao != null ? funcionario.adminEdicao : '---------------'}" style="white-space: nowrap;"/>
+                                        <tr th:each="administrador: ${administradores}">
+                                            <td th:text="${administrador.id}"/>
+                                            <td th:text="${administrador.nome}"/>
+                                            <td th:text="${administrador.email}"/>
                                             <td>
-                                                <a class="edit" th:href="@{'/gerenciar/funcionarios/' + ${funcionario.id}}" >
+                                                <!-- Verifica se o ID do administrador é diferente de 1 -->
+                                                <a th:if="${administrador.id != 1}" class="edit" th:href="@{'/gerenciar/administradores/' + ${administrador.id}}" >
                                                     <i class="fas fa-edit"></i>
                                                 </a>
                                             </td>
                                             <td>
-                                                <a class="delete" href="#" th:href="@{'/gerenciar/funcionarios/' + ${funcionario.id} + '/excluir'} " 
-                                                onclick="ConfirmarExclusao(event)">
+                                                <!-- Verifica se o ID do administrador é diferente de 1 -->
+                                                <a th:if="${administrador.id != 1}" class="delete" href="#" th:href="@{'/gerenciar/administradores/' + ${administrador.id} + '/excluir'} " 
+                                                onclick="ConfirmarExclusaoAdmin(event)">
                                                     <i class="fas fa-trash"></i>
                                                 </a>
                                             </td>
-                                                </td>
-                                                
                                         </tr>
                                     </tbody>
+                                    
                                 </table>
                             </div>
                         </div>
                     </div>
                 </div>
                  <!--desbugando footer-->
-                 <section style="background-color: 0.0 ;   height: 45%;">
+                 <section style="background-color: 0.0 ;   height: 40%;">
                 </section>
                  <!-- Bootstrap core JavaScript-->
     <script src="/vendor/jquery/jquery.min.js"></script>

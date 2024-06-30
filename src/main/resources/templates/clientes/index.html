@@ -3,7 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <title>Barbearia GS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
     <style>
+
+      .btn.danger{
+        width: 10px;
+      }
       .center-content {
         display: flex;
         flex-direction: column;
@@ -27,7 +32,7 @@
       }
 
       .container-fluid center-content {
-        background-color: #2e4067;
+        background-color: #2e4067 ;
         
       }
       .ian {
@@ -36,13 +41,54 @@
       bady {
         background-color: #ac2bac;
       }
+
+      
+            .desmarcar {
+              width: 26px;
+              height: 26px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              border: none;
+              border-radius: 50%;
+              cursor: pointer;
+              transition: background-color 0.3s ease;
+              font-size: 18px;
+              margin-left: 20px;
+            }
+
+
+            .desmarcar {
+              background-color: #dc3545;
+              color: white;
+              text-decoration: none;
+              margin-left: 26px;
+              
+            }
+
+            .desmarcar:hover {
+              background-color: #77161f;
+              text-decoration: none;
+            }
+
+            .desmarcar i {
+              pointer-events: none;
+              color: white; /* Define a cor do ícone como branco */
+            }
+
+            .desmarcar:hover i {
+              color: white;
+              
+            }
+
+    
     </style>
     <!-- Seus estilos CSS -->
   </head>
 
   <body>
     <div th:replace="~{fragments/navbar}"></div>
-
+ 
     <div class="ian">
       <div class="container-fluid center-content" style="margin-top: 5px">
         <button
@@ -57,11 +103,12 @@
             <h4 style="margin-top: 30px">Seus Agendamentos</h4>
             <table class="table">
               <thead>
-                <tr 3px solid #05263a>
+                <tr >
                   <th>Data</th>
                   <th>Horário</th>
                   <th>Funcionário</th>
                   <th>Serviço</th>
+                  <th>Desmarcar</th>
                 </tr>
               </thead>
               <tbody>
@@ -82,15 +129,11 @@
                   <td th:text="${agendamento.funcionario.nome}"></td>
                   <td th:text="${agendamento.servico.nome}"></td>
                   <td>
-                    <a
-                      class="delete"
-                      href="#"
-                      th:href="@{'/clientes/' + ${agendamento.id} + '/desmarcar'}"
-                      onclick="desmarcarHorario(event)"
-                    >
-                      <button class="btn btn-danger">Desmarcar</button>
+                    <a th:if="${podeDesmarcarMap[agendamento.id]}" class="desmarcar" th:href="@{'/clientes/' + ${agendamento.id} + '/desmarcar'}" onclick="desmarcarHorario(event)">
+                        <i class="fas fa-times-circle"></i>
                     </a>
-                  </td>
+                    <span th:unless="${podeDesmarcarMap[agendamento.id]}">Indisponível</span>
+                </td>
                 </tr>
               </tbody>
             </table>

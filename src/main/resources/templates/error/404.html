@@ -7,7 +7,7 @@
   <title>Barbearia GS</title>
   <!-- Custom fonts for this template-->
 <link rel="stylesheet" href="/css/navbar.css">
-<link rel="stylesheet" href="/css/Logo.css">
+<link rel="stylesheet" href="/css/logo.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.css">
 <link
  href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
@@ -17,46 +17,11 @@
 <link href="/css/sb-admin-2.css" rel="stylesheet">
 <link href="/css/sweet-alert.css" rel="stylesheet">
 <!-- Favicon -->
-<link rel="icon" href="/img/Logo.ico" type="image/x-icon" />
+<link rel="icon" href="/img/logo.ico" type="image/x-icon" />
      
-</head>
+<div th:replace="~{fragments/navbar}"></div>
 <body class="no-bg-img">
-  <header class="header">
-    <div class="header-content">
-    <nav class="nav">
-      <img src="/img/Logo.png" alt="Barbearia GS Logo" class="logo">
-      <div class="centralizar">
-      <ul class="list">
-        
-
-        
-        
-      </ul>
-    </div>
-    
-    </nav>
-    
-    <!-- Verificação se o usuário é um admin para exibir o botão correto -->
-<div class="botao-container">
-  <button class="botao"  id="btnAgendar">Agendar</button>
-
-</div>
-
-  <!-- Verificação de autenticação para exibir o botão "Sair" -->
-  <div class="sair-container" th:if="${logado}">
-    <button class="botaoSair" onclick="confirmarSair()">
-      <img src="/img/sair.png" alt="Ícone de saída" class="icone-sair">
-    
   
-  </button>
-</div>
-
-</div>
-
-</header>
-
-</div>
-  </header>
 
   <script src="/js/sb-admin-2.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
@@ -66,7 +31,7 @@
 </html>
 <!-- Custom fonts for this template-->
 <link rel="stylesheet" href="/css/navbar.css">
-<link rel="stylesheet" href="/css/Logo.css">
+<link rel="stylesheet" href="/css/logo.css">
 <link rel="stylesheet" href="/css/footer.css">
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">

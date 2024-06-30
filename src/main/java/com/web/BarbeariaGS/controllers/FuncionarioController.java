@@ -1,6 +1,12 @@
 package com.web.BarbeariaGS.controllers;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +51,7 @@ public class FuncionarioController {
 
      //Rota para página de agenda
      @GetMapping("/funcionarios")
-public String agendamentosCliente(HttpServletRequest request, Model model) {
+public String agendamentosFuncionario(HttpServletRequest request, Model model) {
     // Verifica se o cookie de usuário existe e está dentro do prazo de validade
     if (CookieService.getCookie(request, "usuarioId") != null) {
         // Verifica se o usuário autenticado é um administrador
@@ -60,24 +66,47 @@ public String agendamentosCliente(HttpServletRequest request, Model model) {
         List<Funcionario> funcionarios = (List<Funcionario>)funcionariosRepo.findAll();
             model.addAttribute("funcionarios", funcionarios);
 
-        // Busca os agendamentos do funcionario
-        List<Agendamento> agendamentos = agendamentosRepo.findByFuncionarioOrderByData(funcionario);
-        
+       // Busca os agendamentos do funcionario
+List<Agendamento> agendamentos = agendamentosRepo.findByFuncionarioOrderByData(funcionario);
+
+// Cria um mapa para armazenar os atributos "podeConcluir" para cada agendamento
+Map<Integer, Boolean> podeConcluirMap = new HashMap<>();
+
+for (Agendamento agendamento : agendamentos) {
+    // Obtém a data e o horário do agendamento
+    LocalDate dataAgendamento = agendamento.getData();
+    LocalTime horarioAgendamento = LocalTime.parse(agendamento.getHorario().getHorario(), DateTimeFormatter.ofPattern("HH:mm"));
+
+    // Calcula a data e a hora limite para poder concluir o agendamento
+    LocalDateTime dataHoraLimite = LocalDateTime.of(dataAgendamento, horarioAgendamento).plusHours(1);
+
+    // Verifica se a data e a hora atual são após a data e hora limite
+    boolean podeConcluir = LocalDateTime.now().isAfter(dataHoraLimite);
+
+    // Adiciona o atributo "podeConcluir" para o agendamento no mapa
+    podeConcluirMap.put(agendamento.getId(), podeConcluir);
+}
+
+// Adiciona o mapa de atributos "podeConcluir" ao modelo
+model.addAttribute("podeConcluirMap", podeConcluirMap);
+
         // Adiciona os agendamentos ao modelo para serem exibidos na view
         model.addAttribute("agendamentos", agendamentos); 
         model.addAttribute("logado", true);
         model.addAttribute("funcionarioCookie", true);
+        // Retorna a página de agendamentos do cliente
+        return "funcionarios/index";
     } else {
-        // Se não for administrador, redireciona para a página principal
+        // Se não for funcionario, redireciona para a página principal
         return "redirect:/";
     }
-    // Retorna a página de agendamentos do cliente
-    return "/funcionarios/index";
+    
 }else {
     // Se o cookie não existe ou está expirado, redireciona para a página de login
     return "redirect:/login";
 }
 }
+
 
     //Rota para página de gerencia funcionario
      @GetMapping("/gerenciar/funcionarios")
@@ -343,8 +372,14 @@ if (adminOptional.isPresent()) {
     // Atribui o adminCriacao do funcionário existente ao funcionário que está sendo atualizado
     funcionario.setAdminCriacao(funcionarioExistente.getAdminCriacao());
     funcionario.setAdminEdicao(adminOptional.get());
+
+     // Verifica se a senha foi alterada
+     if (senha != null && !senha.isEmpty() && !senha.equals(funcionarioExistente.getSenha())) {
+        funcionario.setSenha(bCryptPasswordEncoder.encode(senha));
+    } else {
+        funcionario.setSenha(funcionarioExistente.getSenha());
+    }
     // Configura a senha do funcionario como o hash gerado
-    funcionario.setSenha(bCryptPasswordEncoder.encode(senha));
     funcionariosRepo.save(funcionario);
     return "redirect:/gerenciar/funcionarios";
 } else {

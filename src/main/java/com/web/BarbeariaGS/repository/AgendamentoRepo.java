@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 
 import com.web.BarbeariaGS.models.Agendamento;
 import com.web.BarbeariaGS.models.Cliente;
@@ -17,6 +18,9 @@ public interface AgendamentoRepo extends CrudRepository<Agendamento, Integer>{
   
   @Query("SELECT a FROM Agendamento a WHERE a.cliente = :cliente AND a.status = false")
 List<Agendamento> findByCliente(Cliente cliente);
+
+@Query("SELECT a FROM Agendamento a WHERE a.data >= :data ORDER BY a.data")
+List<Agendamento> findByDataGreaterThanEqualOrderByData(@Param("data") LocalDate data);
 
     @Query("SELECT a FROM Agendamento a WHERE a.funcionario = :funcionario AND a.status = false ORDER BY a.data")
     List<Agendamento> findByFuncionarioOrderByData(Funcionario funcionario);
@@ -42,7 +46,9 @@ List<Agendamento> findByCliente(Cliente cliente);
     @Query("SELECT a FROM Agendamento a WHERE a.data = :data AND a.funcionario = :funcionario AND a.status = false ORDER BY a.data")
 List<Agendamento> findByDataAndFuncionarioOrderByData(LocalDate data, Funcionario funcionario);
 
-    
+
+@Query("SELECT a FROM Agendamento a WHERE a.data < :data AND a.status != true")
+List<Agendamento> findAgendamentosAntesDe(@Param("data") LocalDate data);
 
 @Query(value = "SELECT h.id, h.horario " +
 "FROM horarios h " +
@@ -52,6 +58,70 @@ List<Agendamento> findByDataAndFuncionarioOrderByData(LocalDate data, Funcionari
 "ORDER BY h.horario", nativeQuery = true)
 List<Object[]> findHorariosVagosByFuncionarioAndData(int funcionarioId, Date dataAgendamento);
 
+// Querys de relatorio financeiro para funcionario
 
+@Query("SELECT a FROM Agendamento a WHERE a.data = :data AND a.funcionario = :funcionario AND a.status = true ORDER BY a.data")
+List<Agendamento> findByDataAndFuncionarioOrderByDataWithStatus1(@Param("data") LocalDate data, @Param("funcionario") Funcionario funcionario);
+
+@Query(value = "SELECT SUM(s.preco) " +
+                 "FROM agendamentos a " +
+                 "JOIN servicos s ON a.servico_id = s.id " +
+                 "WHERE a.status = true " +
+                 "AND a.funcionario_id = :funcionarioId " +
+                 "AND a.data = :data", nativeQuery = true)
+  Double findTotalValueByFuncionarioAndData(@Param("funcionarioId") int funcionarioId, @Param("data") LocalDate data);
+
+// Query to get appointments within a date range
+@Query(value = "SELECT * FROM agendamentos " +
+    "WHERE funcionario_id = :funcionarioId " +
+    "AND data BETWEEN :startDate AND :endDate " +
+    "AND status = true", nativeQuery = true)
+List<Agendamento> findByFuncionarioAndDateRange(@Param("funcionarioId") int funcionarioId,
+                                     @Param("startDate") LocalDate startDate,
+                                     @Param("endDate") LocalDate endDate);
+
+// Query to sum the service prices of completed appointments within a date range
+@Query(value = "SELECT SUM(s.preco) " +
+    "FROM agendamentos a " +
+    "JOIN servicos s ON a.servico_id = s.id " +
+    "WHERE a.status = true " +
+    "AND a.funcionario_id = :funcionarioId " +
+    "AND a.data BETWEEN :startDate AND :endDate", nativeQuery = true)
+Double findTotalValueByFuncionarioAndDateRange(@Param("funcionarioId") int funcionarioId,
+                                    @Param("startDate") LocalDate startDate,
+                                    @Param("endDate") LocalDate endDate);
+
+// Querys de relatorio financeiro para cliente
+
+@Query("SELECT a FROM Agendamento a WHERE a.data = :data AND a.cliente = :cliente AND a.status = true ORDER BY a.data")
+List<Agendamento> findByDataAndClienteOrderByDataWithStatus1(@Param("data") LocalDate data, @Param("cliente") Cliente cliente);
+
+@Query(value = "SELECT SUM(s.preco) " +
+                 "FROM agendamentos a " +
+                 "JOIN servicos s ON a.servico_id = s.id " +
+                 "WHERE a.status = true " +
+                 "AND a.cliente_id = :clienteId " +
+                 "AND a.data = :data", nativeQuery = true)
+Double findTotalValueByClienteAndData(@Param("clienteId") int clienteId, @Param("data") LocalDate data);
+
+// Query to get appointments within a date range for a client
+@Query(value = "SELECT * FROM agendamentos " +
+    "WHERE cliente_id = :clienteId " +
+    "AND data BETWEEN :startDate AND :endDate " +
+    "AND status = true", nativeQuery = true)
+List<Agendamento> findByClienteAndDateRange(@Param("clienteId") int clienteId,
+                                     @Param("startDate") LocalDate startDate,
+                                     @Param("endDate") LocalDate endDate);
+
+// Query to sum the service prices of completed appointments within a date range for a client
+@Query(value = "SELECT SUM(s.preco) " +
+    "FROM agendamentos a " +
+    "JOIN servicos s ON a.servico_id = s.id " +
+    "WHERE a.status = true " +
+    "AND a.cliente_id = :clienteId " +
+    "AND a.data BETWEEN :startDate AND :endDate", nativeQuery = true)
+Double findTotalValueByClienteAndDateRange(@Param("clienteId") int clienteId,
+                                    @Param("startDate") LocalDate startDate,
+                                    @Param("endDate") LocalDate endDate);
 
 }

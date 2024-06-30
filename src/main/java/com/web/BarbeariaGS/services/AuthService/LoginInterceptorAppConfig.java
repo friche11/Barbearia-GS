@@ -24,7 +24,7 @@ public class LoginInterceptorAppConfig implements WebMvcConfigurer  {
                 "/clientes",
                 "/error/404",
                 "/login?cadastroSucesso=true"
-            
+
             );
            
     }

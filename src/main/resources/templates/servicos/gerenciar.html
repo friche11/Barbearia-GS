@@ -1,7 +1,7 @@
 <div th:replace="~{fragments/navbar}"></div>
 <!-- Custom fonts for this template-->
 <link rel="stylesheet" href="/css/navbar.css">
-<link rel="stylesheet" href="/css/Logo.css">
+<link rel="stylesheet" href="/css/logo.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
 <link
  href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
@@ -82,7 +82,12 @@
                                         <tr th:each="servico: ${servicos}">
                                             <td th:text="${servico.nome}"/>
                                             <td th:text="${servico.descricao}"/>
-                                            <td th:text="${' R$' + #numbers.formatDecimal(servico.preco, 0, 'COMMA', 2, 'COMMA')} "></td>
+                                            <td th:if="${servico.preco != 0}">
+                                                <span th:text="${' R$' + #numbers.formatDecimal(servico.preco, 0, 'COMMA', 2, 'COMMA')}"></span>
+                                            </td>
+                                            <td th:unless="${servico.preco != 0}">
+                                                <span>R$ 0,00</span>
+                                            </td>
                                             <td>
                                                 <a class="edit" th:href="@{'/gerenciar/servicos/' + ${servico.id}}" >
                                                     <i class="fas fa-edit"></i>
@@ -105,7 +110,7 @@
 
                 </div>
                  <!--desbugando footer-->
-                 <section style="background-color: 0.0 ;   height: 40%;">
+                 <section style="background-color: 0.0 ;   height: 45%;">
                 </section>
                  <!-- Bootstrap core JavaScript-->
     <script src="/vendor/jquery/jquery.min.js"></script>

@@ -48,7 +48,7 @@ function redirecionarParaEscolhaGerenciar() {
             const serviceButton = document.querySelector('.service');
 
             adminButton.addEventListener('click', function() {
-                window.location.href = "/administradores/novo";
+                window.location.href = "/gerenciar/administradores";
             });
 
             employeeButton.addEventListener('click', function() {
@@ -192,6 +192,27 @@ function redirecionarParaEscolhaGerenciar() {
         });
         }
 
+        if(document.getElementById('cadastroFormEditAdmin')){
+            document.getElementById('cadastroFormEditAdmin').addEventListener('submit', function(event) {
+                event.preventDefault(); // Impede o envio padrão do formulário
+            
+                // Exibe uma caixa de diálogo personalizada
+                Swal.fire({
+                    title: 'Tem certeza que deseja confirmar a edição desse admin?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'Confirmar',
+                    cancelButtonText: 'Cancelar',
+                    iconColor: '#1a242f'
+                }).then((result) => {
+                    // Se o usuário confirmar, envia o formulário via AJAX
+                    if (result.isConfirmed) {
+                        enviarFormularioEdit(); // Função para enviar o formulário
+                    }
+                });
+            });
+            }
+
         if(document.getElementById('cadastroFormEditServico')){
             document.getElementById('cadastroFormEditServico').addEventListener('submit', function(event) {
                 event.preventDefault(); // Impede o envio padrão do formulário
@@ -237,6 +258,23 @@ function redirecionarParaEscolhaGerenciar() {
         
         function enviarFormularioEdit() {
             var form = document.getElementById('cadastroFormEdit');
+            var formData = new FormData(form);
+        
+            // Envia o formulário via AJAX
+            fetch(form.action, {
+                method: form.method,
+                body: formData
+            })
+            .then(response => {
+                if (response.redirected) {
+                    window.location.href = response.url; // Redireciona se necessário
+                }
+            })
+            .catch(error => console.error('Erro:', error));
+        }
+
+        function enviarFormularioEditAdmin() {
+            var form = document.getElementById('cadastroFormEditAdmin');
             var formData = new FormData(form);
         
             // Envia o formulário via AJAX
@@ -490,6 +528,26 @@ function redirecionarParaEscolhaGerenciar() {
         // Exibe uma caixa de diálogo personalizada
         Swal.fire({
             title: 'Tem certeza que deseja excluir este funcionário?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Excluir',
+            cancelButtonText: 'Cancelar',
+            iconColor: '#1a242f'
+        }).then((result) => {
+            // Se o usuário confirmar, envia o formulário via AJAX
+            if (result.isConfirmed) {
+                window.location.href =  url// Redireciona para o URL de exclusão
+            }
+        });
+    }
+
+    // Função para exibir o Swal.fire ao clicar no ícone da lixeira
+    function ConfirmarExclusaoAdmin() {
+        event.preventDefault(); // Impede o comportamento padrão do link
+        const url = event.currentTarget.getAttribute('href'); // Obtém o URL de exclusão do atributo href
+        // Exibe uma caixa de diálogo personalizada
+        Swal.fire({
+            title: 'Tem certeza que deseja excluir este admin?',
             icon: 'question',
             showCancelButton: true,
             confirmButtonText: 'Excluir',

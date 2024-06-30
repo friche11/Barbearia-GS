@@ -15,18 +15,17 @@ public class LoginInterceptor implements HandlerInterceptor {
    @Override
    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
       
-      try{
          if(CookieService.getCookie(request, "usuarioId") != null){
             return true;
-         }
-      }
-      catch(Exception erro) {}
-      
-      
-      // Redireciona para a página de erro 404
+         }else if(CookieService.getCookie(request, "tipoUsuario") != null){
+            return true;
+         }else{
+         // Redireciona para a página de erro 404
       response.sendRedirect("/error/404");
       return false; // Retorna false para indicar que a requisição foi tratada e não deve continuar o processamento
    }
+   }
+      
 
 
    // @Override

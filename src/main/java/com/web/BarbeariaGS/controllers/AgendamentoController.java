@@ -2,9 +2,14 @@ package com.web.BarbeariaGS.controllers;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -110,6 +115,15 @@ public String abrirModalSelecaoHorarios(Model model, @RequestParam("funcionarioI
 
     // Busca os horários vagos para o funcionário e data
     List<Object[]> horarios = agendamentoRepo.findHorariosVagosByFuncionarioAndData(funcionarioId, Date.valueOf(data));
+
+     // Filtra os horários que já passaram, se a data de agendamento for hoje
+    if (data.equals(LocalDate.now())) {
+        LocalTime now = LocalTime.now();
+        horarios = horarios.stream()
+                           .filter(horario -> LocalTime.parse(horario[1].toString()).isAfter(now))
+                           .collect(Collectors.toList());
+    }
+
     model.addAttribute("funcionario", funcionario);
     model.addAttribute("servico", servico);
     model.addAttribute("horarios", horarios);
@@ -175,26 +189,49 @@ public String criarAgendamento(Model model, HttpServletRequest request,
     }
 }
 
-//Rota de filtro por dia dos agendamentos do funcionarios
 @GetMapping("/funcionarios/agendamentos")
 public String getAgendamentosPorData(@RequestParam("data") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data,
                                      Model model, HttpServletRequest request) {
 
-                                        // Verifica se o cookie de usuário existe e está dentro do prazo de validade
-      if (CookieService.getCookie(request, "usuarioId") != null) {
-        // Verifica se o usuário autenticado é um administrador
+    // Verifica se o cookie de usuário existe e está dentro do prazo de validade
+    if (CookieService.getCookie(request, "usuarioId") != null) {
+        // Verifica se o usuário autenticado é um funcionário
         if (CookieService.getCookie(request, "tipoUsuario").equals("funcionarioCookie")) {
 
-    // Obtém o ID do cliente logado a partir do cookie
-    int funcionarioId = Integer.parseInt(CookieService.getCookie(request, "usuarioId"));
+            // Obtém o ID do funcionário logado a partir do cookie
+            int funcionarioId = Integer.parseInt(CookieService.getCookie(request, "usuarioId"));
 
-    // Busca o funcionario pelo ID
-    Funcionario funcionario = funcionariosRepo.findById(funcionarioId)
-    .orElseThrow(() -> new RuntimeException("Funcionario não encontrado"));
+            // Busca o funcionário pelo ID
+            Funcionario funcionario = funcionariosRepo.findById(funcionarioId)
+                .orElseThrow(() -> new RuntimeException("Funcionario não encontrado"));
 
-    List<Agendamento> agendamentos = agendamentoRepo.findByDataAndFuncionarioOrderByData(data, funcionario);
-    model.addAttribute("agendamentos", agendamentos);
-    model.addAttribute("dataSelecionada", data);
+            // Busca os agendamentos do funcionário na data especificada
+            List<Agendamento> agendamentos = agendamentoRepo.findByDataAndFuncionarioOrderByData(data, funcionario);
+
+            // Cria um mapa para armazenar os atributos "podeConcluir" para cada agendamento
+            Map<Integer, Boolean> podeConcluirMap = new HashMap<>();
+            for (Agendamento agendamento : agendamentos) {
+                // Obtém a data e o horário do agendamento
+                LocalDate dataAgendamento = agendamento.getData();
+                LocalTime horarioAgendamento = LocalTime.parse(agendamento.getHorario().getHorario(), DateTimeFormatter.ofPattern("HH:mm"));
+
+                // Calcula a data e a hora limite para poder concluir o agendamento
+                LocalDateTime dataHoraLimite = LocalDateTime.of(dataAgendamento, horarioAgendamento).plusHours(1);
+
+                // Verifica se a data e a hora atual são após a data e hora limite
+                boolean podeConcluir = LocalDateTime.now().isAfter(dataHoraLimite);
+
+                // Adiciona o atributo "podeConcluir" para o agendamento no mapa
+                podeConcluirMap.put(agendamento.getId(), podeConcluir);
+            }
+
+            // Adiciona o mapa de atributos "podeConcluir" ao modelo
+            model.addAttribute("podeConcluirMap", podeConcluirMap);
+            model.addAttribute("logado", true);
+            model.addAttribute("funcionarioCookie", true);
+            // Adiciona os agendamentos ao modelo
+            model.addAttribute("agendamentos", agendamentos);
+            model.addAttribute("dataSelecionada", data);
         }
         return "funcionarios/index";
     } else {
@@ -202,6 +239,7 @@ public String getAgendamentosPorData(@RequestParam("data") @DateTimeFormat(iso =
         return "redirect:/login";
     }
 }
+
 
    //Rota para excluir cadastro
    @GetMapping("/clientes/{id}/desmarcar")

@@ -6,34 +6,122 @@
     <title>Barbearia GS</title>
     <link rel="stylesheet" href="/css/home.css" />
     <link rel="stylesheet" href="/css/testeR.css" />
+
+     <!--=============== REMIXICONS ===============-->
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css" crossorigin="">
+
+     <!--=============== SWIPER CSS ===============-->
+     <link rel="stylesheet" href="/css/swiper-bundle.min.css">
+
+     <!--=============== CSS ===============-->
+     <link rel="stylesheet" href="/css/styles.css">
   </head>
+  <style>
+  body{
+   padding-top: 60px;
+  }
+  </style>
   <body>
-    <section>
-      <ul class="produtos">
-        <li>
-          <h2>Cabelo</h2>
-          <img src="/img/cabelo.jpg" />
-          <p class="produto-descricao">
-            Na tesoura ou máquina, como o cliente preferir
-          </p>
-          <p class="produto-preco">R$ 30,00</p>
-        </li>
-        <li>
-          <h2>Barba</h2>
-          <img src="/img/barba.jpg" />
-          <p class="produto-descricao">Corte e desenho profissional de barba</p>
-          <p class="produto-preco">R$ 30,00</p>
-        </li>
-        <li>
-          <h2>Cabelo + Barba</h2>
-          <img src="/img/cabelo+barba.jpg" />
-          <p class="produto-descricao">Pacote completo de cabelo e barba</p>
-          <p class="produto-preco">R$ 55,00</p>
-        </li>
-      </ul>
-    </section>
- <!----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
- 
+    <section class="containery">
+      <div class="card__container swiper">
+         <div class="card__content">
+            <div class="swiper-wrapper">
+               <article class="card__article swiper-slide">
+                  <div class="card__image">
+                     <img src="/img/desfarcado.jpg" alt="image" class="card__img">
+                     <div class="card__shadow"></div>
+                  </div>
+                  
+                  <div class="card__data">
+                     <h3 class="card__name">Corte degradê</h3>
+                     <p class="card__description">
+                       Corte de cabelo degradê com máquina, tesoura e navalha
+                     </p>
+   
+                    
+                  </div>
+               </article>
+   
+               <article class="card__article swiper-slide">
+                  <div class="card__image">
+                     <img src="/img/plat.jpg" alt="image" class="card__img">
+                     <div class="card__shadow"></div>
+                  </div>
+   
+                  <div class="card__data">
+                     <h3 class="card__name">Platinagem</h3>
+                     <p class="card__description">
+                        Platinagem de cabelo com descoloração e matização 
+                     </p>
+   
+                   
+                  </div>
+               </article>
+   
+               <article class="card__article swiper-slide">
+                  <div class="card__image">
+                     <img src="/img/cabmb.jpg" alt="image" class="card__img">
+                     <div class="card__shadow"></div>
+                  </div>
+   
+                  <div class="card__data">
+                     <h3 class="card__name">Cabelo + Barba</h3>
+                     <p class="card__description">
+                        Corte de cabelo e barba com maquina, navalha e tesoura 
+                     </p>
+   
+                  </div>
+               </article>
+   
+               <article class="card__article swiper-slide">
+                  <div class="card__image">
+                     <img src="/img/barba.jpg" alt="image" class="card__img">
+                     <div class="card__shadow"></div>
+                  </div>
+   
+                  <div class="card__data">
+                     <h3 class="card__name">Barba</h3>
+                     <p class="card__description">
+                     Barba com maquina, navalha e tesoura e espuma de barbear
+                     </p>
+   
+               
+                  </div>
+               </article>
+
+               <article class="card__article swiper-slide">
+                  <div class="card__image">
+                     <img src="/img/social.jpg" alt="image" class="card__img">
+                     <div class="card__shadow"></div>
+                  </div>
+   
+                  <div class="card__data">
+                     <h3 class="card__name">Corte social</h3>
+                     <p class="card__description">
+                        Corte de cabelo social com tesoura e navalha
+                     </p>
+   
+                    
+                  </div>
+               </article>
+            </div>
+         </div>
+
+         <!-- Navigation buttons -->
+         <div class="swiper-button-next">
+            <i class="ri-arrow-right-s-line"></i>
+         </div>
+         
+         <div class="swiper-button-prev">
+            <i class="ri-arrow-left-s-line"></i>
+         </div>
+
+         <!-- Pagination -->
+         <div class="swiper-pagination"></div>
+      </div>
+   </section>
+   
+  
  <!----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
     <section class="about">
       <div class="container about-content">
@@ -86,6 +174,11 @@
         ></iframe>
       </div>
     </section>
+     <!--=============== SWIPER JS ===============-->
+   <script src="/js/swiper-bundle.min.js"></script>
+
+   <!--=============== MAIN JS ===============-->
+   <script src="/js/main.js"></script>
     <script src="carrosel.js"></script>
   </body>
 </html>

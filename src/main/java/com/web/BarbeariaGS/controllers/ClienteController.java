@@ -1,6 +1,10 @@
 package com.web.BarbeariaGS.controllers;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -48,43 +52,66 @@ public class ClienteController {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-     //Rota para página de agenda
-     @GetMapping("/clientes")
+    // Rota para página de agenda do cliente
+@GetMapping("/clientes")
 public String agendamentosCliente(HttpServletRequest request, Model model) {
     // Verifica se o cookie de usuário existe e está dentro do prazo de validade
     if (CookieService.getCookie(request, "usuarioId") != null) {
+        // Verifica se o usuário autenticado é um cliente
         if (CookieService.getCookie(request, "tipoUsuario").equals("clienteCookie")) {
-        // Obtém o ID do cliente logado a partir do cookie
-        int clienteId = Integer.parseInt(CookieService.getCookie(request, "usuarioId"));
-        model.addAttribute("logado", true);
-          model.addAttribute("clienteCookie", true);
-        // Busca o cliente pelo ID
-        Cliente cliente = clientesRepo.findById(clienteId)
-                .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+            // Obtém o ID do cliente logado a partir do cookie
+            int clienteId = Integer.parseInt(CookieService.getCookie(request, "usuarioId"));
+            
+            // Busca o cliente pelo ID
+            Cliente cliente = clientesRepo.findById(clienteId)
+                    .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
 
-        List<Servico> servicos = (List<Servico>)servicosRepo.findAll();
+            // Busca os agendamentos do cliente
+            List<Agendamento> agendamentos = agendamentosRepo.findByCliente(cliente);
+
+            // Cria um mapa para armazenar os atributos "podeDesmarcar" para cada agendamento
+            Map<Integer, Boolean> podeDesmarcarMap = new HashMap<>();
+
+            // Verifica se o botão "Desmarcar" deve ser exibido para cada agendamento
+            for (Agendamento agendamento : agendamentos) {
+                LocalDateTime dataHoraAgendamento = LocalDateTime.of(agendamento.getData(), LocalTime.parse(agendamento.getHorario().getHorario()));
+                
+                // Calcula a data e hora limite para desmarcar (10 minutos antes do agendamento)
+                LocalDateTime dataHoraLimite = dataHoraAgendamento.minusMinutes(10);
+                
+                // Verifica se a data e hora atual estão antes da data e hora limite
+                boolean podeDesmarcar = LocalDateTime.now().isBefore(dataHoraLimite);
+                
+                // Adiciona o atributo "podeDesmarcar" para o agendamento no mapa
+                podeDesmarcarMap.put(agendamento.getId(), podeDesmarcar);
+            }
+
+            List<Servico> servicos = (List<Servico>)servicosRepo.findAll();
         model.addAttribute("servicos", servicos);
 
         List<Funcionario> funcionarios = (List<Funcionario>)funcionariosRepo.findAll();
             model.addAttribute("funcionarios", funcionarios);
+            
+            // Adiciona o mapa de atributos "podeDesmarcar" ao modelo
+            model.addAttribute("podeDesmarcarMap", podeDesmarcarMap);
 
-        // Busca os agendamentos do cliente
-        List<Agendamento> agendamentos = agendamentosRepo.findByCliente(cliente);
-        
-        // Adiciona os agendamentos ao modelo para serem exibidos na view
-        model.addAttribute("agendamentos", agendamentos);
-        
-        // Retorna a página de agendamentos do cliente
-        return "/clientes/index";
+            // Adiciona os agendamentos ao modelo para serem exibidos na view
+            model.addAttribute("agendamentos", agendamentos);
+            model.addAttribute("logado", true);
+            model.addAttribute("clienteCookie", true);
+            
+            // Retorna a página de agendamentos do cliente
+            return "clientes/index";
+        } else {
+            // Se não for cliente, redireciona para a página principal
+            return "redirect:/";
+        }
     } else {
-        // Se não for administrador, redireciona para a página principal
-        return "redirect:/";
+        // Se o cookie não existe ou está expirado, redireciona para a página de login
+        return "redirect:/login";
     }
-} else {
-    // Se o cookie não existe ou está expirado, redireciona para a página de login
-    return "redirect:/login";
 }
-}
+
 
      //Rota para página de cadastro de cliente
      @GetMapping("/clientes/novo")
