@@ -17,7 +17,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
@@ -91,7 +90,7 @@ public class AdminControllerIntegrationTest {
         when(CookieService.getCookie(any(HttpServletRequest.class), eq("usuarioId"))).thenReturn(usuarioIdCookie.getValue());
         when(CookieService.getCookie(any(HttpServletRequest.class), eq("tipoUsuario"))).thenReturn(tipoUsuarioCookie.getValue());
 
-        mockMvc.perform(get("/administradores/novo"))
+        mockMvc.perform(get("/gerenciar/administradores/novo"))
             .andExpect(status().isOk())
             .andExpect(view().name("administradores/novo"));
     }
@@ -108,11 +107,11 @@ public class AdminControllerIntegrationTest {
         when(CookieService.getCookie(any(HttpServletRequest.class), eq("usuarioId"))).thenReturn(usuarioIdCookie.getValue());
         when(CookieService.getCookie(any(HttpServletRequest.class), eq("tipoUsuario"))).thenReturn(tipoUsuarioCookie.getValue());
 
-        mockMvc.perform(post("/administradores/criar")
+        mockMvc.perform(post("/gerenciar/administradores/criar")
             .param("email", "admin@example.com")
             .param("senha", "Senha123!")
             .param("nome", "Admin Name"))
             .andExpect(status().is3xxRedirection())
-            .andExpect(redirectedUrl("/administradores?cadastroSucesso=true"));
+            .andExpect(redirectedUrl("/gerenciar/administradores?cadastroSucesso=true"));
     }
 }

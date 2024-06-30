@@ -1,18 +1,8 @@
 package com.web.BarbeariaGS.Integration;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-
-import java.util.Optional;
-
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,7 +10,6 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
@@ -28,16 +17,15 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.web.BarbeariaGS.controllers.ClienteController;
 import com.web.BarbeariaGS.controllers.FuncionarioController;
-import com.web.BarbeariaGS.models.Cliente;
+
 import com.web.BarbeariaGS.repository.AgendamentoRepo;
 import com.web.BarbeariaGS.repository.AdminRepo;
 import com.web.BarbeariaGS.repository.ClientesRepo;
 import com.web.BarbeariaGS.repository.FuncionariosRepo;
 import com.web.BarbeariaGS.repository.HorarioRepo;
 import com.web.BarbeariaGS.repository.ServicoRepo;
-import com.web.BarbeariaGS.services.CookieService;
+
 
 @ActiveProfiles("test")
 @WebMvcTest(FuncionarioController.class)
